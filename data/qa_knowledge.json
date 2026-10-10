@@ -1,0 +1,62 @@
+{
+  "convective_rain": {
+    "keywords": ["对流雨", "午后下雨", "阵雨", "convective", "afternoon rain", "thunderstorm"],
+    "answer": {
+      "zh": "对流雨是热带午后最常见的降水形式：地表被太阳强辐射加热，近地层暖湿空气剧烈上升，在积雨云中凝结并骤降短时强降水，通常持续30-60分钟。当前路线实况：{city}温度约{tmp}℃、降水{pre}mm，{advice}",
+      "en": "Convective rain is the most common afternoon rainfall in the tropics: strong solar heating lifts warm moist air, which condenses in cumulonimbus and dumps brief intense rain, usually lasting 30–60 min. Current route data: {city} about {tmp}°C, precipitation {pre}mm. {advice}"
+    },
+    "advice": {
+      "zh": "建议户外安排在上午，午后随身带伞。",
+      "en": "Schedule outdoor activities in the morning and carry an umbrella after noon."
+    }
+  },
+  "monsoon": {
+    "keywords": ["季风", "雨季", "旱季", "monsoon", "wet season", "dry season"],
+    "answer": {
+      "zh": "中南半岛季风由海陆热力差异驱动：5-10月西南季风多雨(雨季)，11-4月东北季风干凉少雨(旱季)。当前{city}处于{season}，温度{tmp}℃、降水{pre}mm。",
+      "en": "Indochina's monsoon is driven by land–sea thermal contrast: SW monsoon May–Oct is wet; NE monsoon Nov–Apr is dry and cool. {city} is now in {season}, {tmp}°C, precipitation {pre}mm."
+    },
+    "advice": {"zh": "", "en": ""}
+  },
+  "typhoon": {
+    "keywords": ["台风", "风暴", "typhoon", "cyclone", "storm"],
+    "answer": {
+      "zh": "南海台风多见于6-11月，需高海温与低风切变，可带来狂风暴雨并影响越南中北部与泰国湾。当前{city}降水{pre}mm、风力约{wind}级，{risk}",
+      "en": "South China Sea typhoons peak Jun–Nov, needing warm seas and low shear; they bring destructive wind/rain to central-northern Vietnam and the Gulf of Thailand. {city} now: precipitation {pre}mm, wind ~{wind}. {risk}"
+    },
+    "advice": {
+      "zh": "台风影响期避免出海跳岛，关注停航与航班变动。",
+      "en": "Avoid sea trips during typhoon influence; watch port/flight disruptions."
+    }
+  },
+  "haze": {
+    "keywords": ["雾霾", "烧山", "PM2.5", "能见度低", "haze", "burning", "smoke"],
+    "answer": {
+      "zh": "旱季中南半岛的刀耕火种与秸秆焚烧释放PM2.5，在稳定大气下积聚成跨境雾霾，能见度{vis}km，影响呼吸道。{advice}",
+      "en": "Dry-season slash-and-burn and crop burning release PM2.5 that accumulates under stable air into cross-border haze; visibility {vis}km, irritating airways. {advice}"
+    },
+    "advice": {
+      "zh": "建议佩戴N95口罩、减少户外剧烈运动。",
+      "en": "Wear an N95 mask and reduce strenuous outdoor activity."
+    }
+  },
+  "fog": {
+    "keywords": ["雾", "晨雾", "能见度", "fog", "mist"],
+    "answer": {
+      "zh": "夜间辐射降温使近地层水汽饱和凝结成雾，山谷与湖区更易形成。当前{city}能见度约{vis}km，风力{wind}级。{advice}",
+      "en": "Nighttime radiative cooling saturates near-surface moisture into fog, common in valleys and over lakes. {city} visibility ~{vis}km, wind {wind}. {advice}"
+    },
+    "advice": {
+      "zh": "晨雾时段山路湿滑能见度低，注意行车；雾散后通透适合拍摄。",
+      "en": "Mountain roads are slippery and visibility low during morning fog; after it lifts, clarity suits photography."
+    }
+  },
+  "general": {
+    "keywords": [],
+    "answer": {
+      "zh": "这是一个东南亚常见气象现象。当前路线{city}实况：温度{tmp}℃、降水{pre}mm、风力{wind}级、能见度{vis}km。{advice}",
+      "en": "This is a common SE-Asia weather phenomenon. Current route data for {city}: {tmp}°C, precipitation {pre}mm, wind {wind}, visibility {vis}km. {advice}"
+    },
+    "advice": {"zh": "", "en": ""}
+  }
+}

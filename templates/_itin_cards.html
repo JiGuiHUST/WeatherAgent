@@ -1,0 +1,36 @@
+{# 行程卡片渲染：供同步渲染或参考结构，实际异步场景由 JS 动态生成同等结构。
+   days: itin['days']；每天元素 {city,country,date,weekday,avg_tmp,total_pre,tag,source,schedule:[{time,title,detail}],notes}
+#}
+<div class="row g-3">
+  {% for d in days %}
+  <div class="col-lg-6 reveal">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-header bg-white border-0 py-3">
+        <span class="fw-bold">{{ d.city }}</span>
+        <span class="text-muted small ms-2">{{ d.date }} · {{ d.weekday }}</span>
+        <span class="badge bg-light text-dark float-end">{{ d.tag }}</span>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled itinerary-schedule mb-2">
+          {% for s in d.schedule %}
+          <li class="it-slot d-flex">
+            <div class="it-time flex-shrink-0">
+              <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis fw-semibold small">{{ s.time }}</span>
+            </div>
+            <div class="it-content flex-grow-1 ms-3">
+              <div class="fw-semibold">{{ s.title }}</div>
+              {% if s.detail %}<div class="small text-muted mt-1">{{ s.detail }}</div>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% if d.notes %}
+        <div class="small text-muted border-top pt-2 mt-1">
+          <i class="bi bi-info-circle me-1"></i>{{ d.notes }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}{{ destination }} · 旅行攻略{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="/" class="btn btn-link text-decoration-none px-0"><i class="bi bi-arrow-left"></i> {{ lang=='en' and 'Back' or '返回重新查询' }}</a>
+  <div class="text-end">
+    <span class="text-muted small">{{ lang=='en' and 'Source' or '数据来源' }}：{{ weather.source }} · {{ lang=='en' and 'Updated' or '更新于' }} {{ weather.update_time }}</span>
+    {% if weather.forecast_availability %}
+    <span class="ms-2 small badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-pill">
+      <i class="bi bi-clock-history me-1"></i>
+      {% if lang=='en' %}
+        Run: {{ weather.forecast_availability.run_time[:10] }} · T+{{ weather.forecast_availability.hours_ahead }}h ·
+        Limit {{ weather.forecast_availability.limit_hours }}h
+      {% else %}
+        起报 {{ weather.forecast_availability.run_time[5:16] }} · T+{{ weather.forecast_availability.hours_ahead }}h ·
+        上限 {{ weather.forecast_availability.limit_hours }}h
+      {% endif %}
+    </span>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 时效与数据质量警告（单城） -->
+{% if weather.warn_out_of_range or weather.warn_observation_align or weather.used_climate_fallback %}
+<div class="alert {% if weather.warn_out_of_range %}alert-warning{% else %}alert-info{% endif %} shadow-sm rounded-4 mb-4">
+  <h6 class="fw-bold mb-2">
+    <i class="bi bi-{% if weather.warn_out_of_range %}exclamation-triangle-fill text-warning{% else %}info-circle-fill text-info{% endif %} me-1"></i>
+    {{ lang=='en' and 'Data Quality Notice' or '数据质量说明' }}
+  </h6>
+  <ul class="mb-0 small">
+    {% if weather.warn_out_of_range %}
+    <li><b class="text-warning-emphasis">{{ lang=='en' and 'Forecast out of range.' or '已超出 GOWFS 预报最大时效（168h / 7天）。' }}</b>
+        {{ lang=='en' and 'Below uses the city historical seasonal climate average.' or '以下展示内容使用该城市对应季节历史气候均值作为参考，不代表实时实况/预报。' }}</li>
+    {% endif %}
+    {% if weather.used_climate_fallback %}
+    <li>{{ lang=='en' and 'Observation/forecast API unreachable; fell back to climate default values.' or '实况/预报接口暂不可达，已自动降级为该城市季节气候默认值（属正常兜底机制）。' }}</li>
+    {% endif %}
+    {% if weather.warn_observation_align %}
+    <li><i class="bi bi-info-circle me-1"></i>{{ weather.warn_observation_align }}</li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- ===== 目的地标题卡片 ===== -->
+<div class="dest-card text-white p-4 p-md-5 rounded-4 mb-4">
+  <div class="d-flex flex-wrap align-items-center mb-2">
+    <h1 class="fw-bold mb-0 me-3">{{ destination }}</h1>
+    <span class="badge bg-light text-dark fs-6">{{ country }}</span>
+  </div>
+  <p class="mb-3 opacity-90">{{ city_intro }}</p>
+  <div class="d-flex flex-wrap gap-2">
+    <span class="badge bg-warning text-dark"><i class="bi bi-bookmark-star me-1"></i>{{ preference }}</span>
+    {% for tag in fit_tags %}
+      <span class="badge bg-light text-primary">{{ tag }}</span>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ===== 基础信息栏 ===== -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="info-tile h-100 p-3 rounded-3">
+      <div class="text-muted small">建议游玩天数</div>
+      <div class="fs-4 fw-bold text-primary">{{ recommend_days }} 天</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="info-tile h-100 p-3 rounded-3">
+      <div class="text-muted small">推荐出行季节</div>
+      <div class="fs-6 fw-semibold">{{ best_season }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="info-tile h-100 p-3 rounded-3">
+      <div class="text-muted small">出行时段气象</div>
+      <div class="fs-5 fw-bold text-success">{{ weather.tag }}</div>
+      <div class="small text-muted">{{ season_label }} · {{ weather.avg_tmp }}℃ / {{ weather.total_pre }}mm</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="info-tile h-100 p-3 rounded-3">
+      <div class="text-muted small">温度区间</div>
+      <div class="fs-5 fw-bold">{{ weather.min_tmp }} ~ {{ weather.max_tmp }}℃</div>
+      <div class="small text-muted">累计降水 {{ weather.total_pre }}mm</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 气象色斑图 ===== -->
+{% if plot_tmp or plot_pre %}
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <h4 class="fw-bold mb-3"><i class="bi bi-map text-primary me-2"></i>格点气象分布</h4>
+    <div class="row g-3">
+      {% if plot_tmp %}
+      <div class="col-md-6">
+        <figure class="figure m-0">
+          <img src="{{ plot_tmp }}" class="figure-img img-fluid rounded-3 w-100" alt="温度分布">
+          <figcaption class="figure-caption text-center">{{ destination }} 温度分布(℃)</figcaption>
+        </figure>
+      </div>
+      {% endif %}
+      {% if plot_pre %}
+      <div class="col-md-6">
+        <figure class="figure m-0">
+          <img src="{{ plot_pre }}" class="figure-img img-fluid rounded-3 w-100" alt="降水分布">
+          <figcaption class="figure-caption text-center">{{ destination }} 累计降水(mm)</figcaption>
+        </figure>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- ===== 时段气象出行建议 ===== -->
+<div class="card advice-card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <h4 class="fw-bold mb-3"><i class="bi bi-clipboard-check text-success me-2"></i>时段气象出行建议</h4>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="advice-item p-3 h-100 rounded-3">
+          <div class="fw-semibold mb-1"><i class="bi bi-person-badge me-1 text-primary"></i>穿搭建议</div>
+          <div class="small text-muted">{{ weather_advice.clothing }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="advice-item p-3 h-100 rounded-3">
+          <div class="fw-semibold mb-1"><i class="bi bi-umbrella me-1 text-info"></i>出行避雨</div>
+          <div class="small text-muted">{{ weather_advice.rain_tip }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="advice-item p-3 h-100 rounded-3">
+          <div class="fw-semibold mb-1"><i class="bi bi-clock-history me-1 text-warning"></i>最佳游玩时段</div>
+          <div class="small text-muted">{{ weather_advice.best_hours }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 四大分类打卡板块 ===== -->
+<div class="row g-4">
+  {% for cat in categories %}
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-header bg-white border-0 pt-3 pb-0 d-flex align-items-center">
+        <span class="me-2 fs-4">{{ cat.icon }}</span>
+        <h5 class="mb-0 fw-bold">{{ cat.name }}</h5>
+      </div>
+      <div class="card-body pt-2">
+        {% for spot in cat.spots %}
+        <div class="spot-item py-2 {% if not loop.last %}border-bottom{% endif %}">
+          <div class="fw-semibold">{{ spot.name }}</div>
+          <div class="small text-muted mb-1">{{ spot.desc }}</div>
+          {% if spot.weather_tip %}
+          <div class="badge bg-light text-success border align-middle">
+            <i class="bi bi-info-circle me-1"></i>{{ spot.weather_tip }}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

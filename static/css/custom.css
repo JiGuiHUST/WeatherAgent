@@ -1,0 +1,240 @@
+:root {
+  --travel-primary: #4361ee;
+  --travel-accent: #7209b7;
+  --brand-gradient: linear-gradient(120deg, #4361ee 0%, #7209b7 55%, #f72585 100%);
+  --hero-gradient: linear-gradient(120deg, #4361ee 0%, #4895ef 50%, #4cc9f0 100%);
+  --dest-gradient: linear-gradient(120deg, #f72585 0%, #ff8fab 100%);
+  --surface: #ffffff;
+  --bg: #eef2fb;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.55);
+  --shadow-sm: 0 4px 14px rgba(67,97,238,.08);
+  --shadow-md: 0 10px 30px rgba(31,36,48,.10);
+  --shadow-lg: 0 18px 50px rgba(31,36,48,.16);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(67,97,238,.10), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(114,9,183,.10), transparent 42%),
+    radial-gradient(circle at 78% 92%, rgba(247,37,133,.08), transparent 45%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #c7d0ee; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #4361ee; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ===== 导航 ===== */
+.travel-navbar {
+  background: var(--brand-gradient);
+  backdrop-filter: saturate(160%) blur(8px);
+  box-shadow: 0 4px 18px rgba(67,97,238,.22);
+}
+.navbar-brand i { animation: spinSlow 14s linear infinite; display:inline-block; }
+@keyframes spinSlow { to { transform: rotate(360deg);} }
+
+/* AI 脉冲点 */
+.ai-pulse { display:inline-block; width:9px; height:9px; border-radius:50%; background:#39ff14; box-shadow:0 0 0 rgba(57,255,20,.7); margin-right:.4rem; vertical-align:middle; animation: pulse 1.6s infinite; }
+@keyframes pulse {
+  0% { box-shadow:0 0 0 0 rgba(57,255,20,.6);}
+  70% { box-shadow:0 0 0 8px rgba(57,255,20,0);}
+  100% { box-shadow:0 0 0 0 rgba(57,255,20,0);}
+}
+
+/* ===== 玻璃卡片基类 ===== */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius);
+}
+
+/* ===== Hero ===== */
+.hero-card {
+  background: var(--hero-gradient);
+  background-size: 200% 200%;
+  animation: gradMove 9s ease infinite;
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.hero-card::after {
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.25), transparent 40%);
+  pointer-events:none;
+}
+@keyframes gradMove { 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
+
+.dest-card { background: var(--dest-gradient); color:#fff; box-shadow: var(--shadow-lg); }
+.dest-card .badge.bg-light { box-shadow: 0 4px 10px rgba(0,0,0,.12); }
+
+/* ===== 基础信息卡 / 统计芯片 ===== */
+.info-tile {
+  background: var(--surface);
+  border: 1px solid #eef0f5;
+  border-radius: 14px;
+  transition: transform .18s ease, box-shadow .18s ease;
+  position: relative; overflow: hidden;
+}
+.info-tile::before {
+  content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background: var(--brand-gradient);
+}
+.info-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.stat-chip {
+  display:inline-flex; align-items:center; gap:.4rem;
+  background: var(--surface); border:1px solid #e7ecf7; border-radius: 999px;
+  padding: .3rem .7rem; font-size: .82rem; box-shadow: var(--shadow-sm);
+}
+.stat-chip i { color: var(--travel-primary); }
+
+/* ===== 建议 / 景点卡 ===== */
+.advice-card { background: linear-gradient(180deg,#ffffff 0%,#f6f9ff 100%); }
+.advice-item { background:#f6f9ff; border:1px solid #e8eefc; transition: transform .15s ease; border-radius:12px; }
+.advice-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.spot-item { transition: background .15s ease; border-radius: 8px; padding-left:4px;}
+.spot-item:hover { background: #f3f7ff; }
+
+/* ===== 预报表 ===== */
+.forecast-table { font-size: .82rem; border-collapse: separate; border-spacing: 0; }
+.forecast-table thead th { position: sticky; top: 0; background:#eef3fc; z-index:2; white-space: nowrap; }
+.forecast-table tbody tr { transition: background .12s ease; }
+.forecast-table tbody tr:hover { background: #f3f7ff; }
+.forecast-table td { vertical-align: middle; }
+.tmp-hot { color:#c0392b; font-weight:700; }
+.tmp-warm { color:#e67e22; font-weight:600; }
+.tmp-cool { color:#2980b9; }
+.comfort-badge { border-radius: 999px; padding:.18rem .5rem; font-size:.72rem; color:#fff; }
+.comfort-Pleasant, .comfort-舒适 { background:#27ae60;}
+.comfort-Warm, .comfort-温热 { background:#f39c12;}
+.comfort-Hot, .comfort-炎热 { background:#c0392b;}
+.comfort-Rainy, .comfort-多雨 { background:#2980b9;}
+.comfort-Windy, .comfort-风大 { background:#8e44ad;}
+.comfort-Cool, .comfort-凉爽 { background:#16a085;}
+
+/* ===== 概率进度条 ===== */
+.prob-wrap { background:#eef0f5; border-radius:999px; height:10px; overflow:hidden; }
+.prob-bar { height:100%; border-radius:999px; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.prob-bar.high { background: linear-gradient(90deg,#2ecc71,#27ae60); }
+.prob-bar.mid { background: linear-gradient(90deg,#f1c40f,#f39c12); }
+.prob-bar.low { background: linear-gradient(90deg,#e67e22,#e74c3c); }
+
+/* ===== 问答气泡 ===== */
+.chat-body { min-height: 320px; max-height: 560px; overflow-y:auto; background:#f6f9ff; border-radius: 14px; }
+.chat-user { text-align:right; }
+.bubble-user { display:inline-block; max-width:80%; text-align:left; background:var(--brand-gradient); color:#fff; padding:.6rem .95rem; border-radius:16px 16px 4px 16px; box-shadow:var(--shadow-sm); }
+.bubble-bot { display:inline-block; max-width:88%; background:#fff; border:1px solid #e8eefc; padding:.65rem 1rem; border-radius:16px 16px 16px 4px; box-shadow:var(--shadow-sm); line-height:1.6; }
+
+/* LLM 思考指示 */
+.thinking-dots { display:inline-flex; gap:.25rem; align-items:center; }
+.thinking-dots span { width:7px; height:7px; border-radius:50%; background:#4361ee; opacity:.4; animation: blink 1.2s infinite; }
+.thinking-dots span:nth-child(2){ animation-delay:.2s; }
+.thinking-dots span:nth-child(3){ animation-delay:.4s; }
+@keyframes blink { 0%,80%,100%{opacity:.25; transform:translateY(0)} 40%{opacity:1; transform:translateY(-3px)} }
+
+/* ===== 简易气象动图 ===== */
+.anim-stage { position:relative; height:90px; background:linear-gradient(180deg,#cfe8ff 0%,#eaf6ff 100%); border-radius:10px; overflow:hidden; }
+.anim-sun { position:absolute; top:10px; left:14px; width:28px; height:28px; border-radius:50%; background:#f1c40f; box-shadow:0 0 16px #f1c40f; animation: floaty 3s ease-in-out infinite; }
+.anim-cloud { position:absolute; top:16px; right:22px; width:54px; height:20px; background:#bdc3c7; border-radius:20px; opacity:.9; }
+.anim-raindrops::after { content:""; position:absolute; top:44px; left:42%; width:2px; height:34px; background:repeating-linear-gradient(#3498db 0 6px, transparent 6px 12px); animation: rain .6s linear infinite; }
+.anim-rain .anim-cloud { background:#7f8c8d; }
+.anim-storm .anim-cloud { background:#34495e; }
+.anim-wind .anim-cloud { animation: wind 2.5s linear infinite alternate; }
+.anim-fog .anim-stage, .anim-fog { background:linear-gradient(180deg,#dfe6e9,#ecf0f1); }
+.anim-haze .anim-stage, .anim-haze { background:linear-gradient(180deg,#d9b38c,#ead9c0); }
+@keyframes rain { from{transform:translateY(-6px);} to{transform:translateY(10px);} }
+@keyframes wind { from{transform:translateX(-22px);} to{transform:translateX(22px);} }
+@keyframes floaty { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+
+/* ===== 导出瓦片 ===== */
+.export-tile { transition: transform .18s ease, box-shadow .18s ease; cursor:pointer; border-radius:14px; }
+.export-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.export-tile i { transition: transform .2s ease; }
+.export-tile:hover i { transform: scale(1.15); }
+
+/* ===== 科普卡 ===== */
+.science-card { border-left: 4px solid #5b86e5 !important; }
+.bilingual { line-height: 1.6; }
+
+/* ===== 入场动画 ===== */
+.reveal { opacity:0; transform: translateY(14px); }
+.reveal.in { opacity:1; transform: none; transition: opacity .5s ease, transform .5s ease; }
+
+/* ===== 按钮 / 表单 ===== */
+.btn-primary { background: var(--brand-gradient); border:none; box-shadow: 0 6px 16px rgba(67,97,238,.3); }
+.btn-primary:hover { filter: brightness(1.05); box-shadow: 0 8px 22px rgba(67,97,238,.4); }
+.btn-light.fw-semibold { border:1px solid rgba(255,255,255,.4); }
+.form-control, .form-select { border-radius: 12px; }
+.form-control:focus, .form-select:focus { border-color:#4361ee; box-shadow:0 0 0 .2rem rgba(67,97,238,.15); }
+.form-check-input:checked { background-color:#4361ee; border-color:#4361ee; }
+
+/* ===== 功能卡片（首页） ===== */
+.feature-card { color:#fff; border:none; border-radius:18px; overflow:hidden; position:relative; transition: transform .2s ease, box-shadow .2s ease; }
+.feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.feature-card .ic { font-size: 2.2rem; }
+.feature-card::after { content:""; position:absolute; inset:0; background:radial-gradient(circle at 85% 15%, rgba(255,255,255,.22), transparent 45%); pointer-events:none; }
+
+/* 小屏 */
+@media (max-width: 576px) {
+  .display-1 { font-size: 4rem; }
+  .hero-card h1 { font-size: 1.8rem; }
+}
+
+/* ===== 分人群行程：时间线 schedule 样式 ===== */
+.itinerary-schedule { margin: 0; }
+.it-slot {
+  display: flex;
+  padding: .55rem 0 .55rem 0;
+  border-bottom: 1px dashed #e7ecf6;
+  position: relative;
+}
+.it-slot:last-child { border-bottom: none; }
+.it-time {
+  width: 6.2rem;
+  padding-top: 2px;
+}
+.it-time .badge {
+  white-space: nowrap;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.it-content { min-width: 0; }
+.it-content .small {
+  color: #5b6477;
+  line-height: 1.55;
+}
+
+/* 思考点：内联一行式 */
+.thinking-dots-inline { display: inline-flex; align-items: center; gap: 3px; margin-right: .4rem; vertical-align: middle; }
+.thinking-dots-inline > span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: #8fa7d6;
+  border-radius: 50%;
+  opacity: .5;
+  animation: thinkingBlink 1.2s infinite ease-in-out both;
+}
+.thinking-dots-inline > span:nth-child(2) { animation-delay: .18s; }
+.thinking-dots-inline > span:nth-child(3) { animation-delay: .36s; }
+@keyframes thinkingBlink {
+  0%, 80%, 100% { opacity: .25; transform: scale(.85); }
+  40%           { opacity: 1;  transform: scale(1.15); }
+}
+
+/* 骨架屏渐入已用 Bootstrap placeholder-glow，这里让行间距更好看 */
+#itin-skeleton .placeholder { opacity: .35; }
+

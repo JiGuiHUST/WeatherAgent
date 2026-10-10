@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ t('sci.title') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-1"><i class="bi bi-book-half text-success me-2"></i>{{ t('sci.title') }}</h3>
+<p class="text-muted mb-4">{{ t('sci.subtitle') }}</p>
+
+<!-- 伴随式知识点 -->
+<h5 class="fw-bold mb-3"><i class="bi bi-pin-map me-1 text-primary"></i>{{ t('sci.push') }}</h5>
+{% if push %}
+<div class="row g-3 mb-4">
+  {% for it in push %}
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4 h-100 science-card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <h6 class="fw-bold mb-0">{{ it.city }} <span class="text-muted small">· {{ it.date }}</span></h6>
+          <span class="badge bg-light text-secondary">{{ lang=='en' and it.title_en or it.title_zh }}</span>
+        </div>
+        <div class="small text-muted mb-2"><i class="bi bi-info-circle me-1"></i>{{ it.reason }}</div>
+        <div class="bilingual">
+          <div class="small mb-1">{{ it.text_zh }}</div>
+          <div class="small text-secondary fst-italic">{{ it.text_en }}</div>
+        </div>
+        {% if it.tip %}<div class="small text-success mt-2"><i class="bi bi-check2-circle me-1"></i>{{ it.tip }}</div>{% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-light border">{{ lang=='en' and 'Import a route first on the Cross-border page.' or '请先在「行程气象助手」页导入路线。' }}</div>
+{% endif %}
+
+<!-- 示意图 -->
+{% if diagram_url %}
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body text-center p-3">
+    <img src="{{ diagram_url }}" class="img-fluid rounded-3" alt="diagram" style="max-width:560px">
+  </div>
+</div>
+{% endif %}
+
+<!-- 研学素材导出 -->
+<h5 class="fw-bold mb-3"><i class="bi bi-download me-1 text-warning"></i>{{ t('sci.export') }}</h5>
+<div class="row g-3">
+  <div class="col-md-3 col-6">
+    <a class="card border-0 shadow-sm rounded-4 text-decoration-none export-tile h-100" href="/export/handbook">
+      <div class="card-body text-center text-dark">
+        <i class="bi bi-journal-text fs-2 text-primary"></i>
+        <div class="fw-semibold mt-2 small">{{ t('sci.handbook') }}</div>
+      </div></a>
+  </div>
+  <div class="col-md-3 col-6">
+    <a class="card border-0 shadow-sm rounded-4 text-decoration-none export-tile h-100" href="/export/record">
+      <div class="card-body text-center text-dark">
+        <i class="bi bi-clipboard-data fs-2 text-success"></i>
+        <div class="fw-semibold mt-2 small">{{ t('sci.record') }}</div>
+      </div></a>
+  </div>
+  <div class="col-md-3 col-6">
+    <a class="card border-0 shadow-sm rounded-4 text-decoration-none export-tile h-100" href="/export/bank">
+      <div class="card-body text-center text-dark">
+        <i class="bi bi-patch-question fs-2 text-warning"></i>
+        <div class="fw-semibold mt-2 small">{{ t('sci.bank') }}</div>
+      </div></a>
+  </div>
+  <div class="col-md-3 col-6">
+    <a class="card border-0 shadow-sm rounded-4 text-decoration-none export-tile h-100" href="/export/diagram">
+      <div class="card-body text-center text-dark">
+        <i class="bi bi-diagram-3 fs-2 text-danger"></i>
+        <div class="fw-semibold mt-2 small">{{ t('sci.diagram') }}</div>
+      </div></a>
+  </div>
+</div>
+{% endblock %}

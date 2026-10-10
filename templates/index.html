@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ t('home.brand') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9 col-xl-8">
+    <div class="hero-card text-white p-4 p-md-5 rounded-4 mb-4 reveal">
+      <div class="d-inline-flex align-items-center bg-white bg-opacity-25 rounded-pill px-3 py-1 mb-3 small">
+        <span class="ai-pulse"></span>{{ t('home.engine_ready') }}
+      </div>
+      <h1 class="fw-bold mb-2"><i class="bi bi-airplane-engines-fill me-2"></i>{{ t('home.brand') }}</h1>
+      <p class="mb-0 opacity-75">{{ t('home.hero_desc') }}</p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4 reveal">
+      <div class="card-body p-4 p-md-5">
+        <form id="travelForm" action="/strategy" method="post">
+          <div class="mb-4">
+            <label class="form-label fw-semibold"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ t('home.destination') }}</label>
+            <input type="text" class="form-control form-control-lg" name="destination"
+                   placeholder="{{ t('home.destination_placeholder') }}" required>
+            <div class="form-text">{{ t('home.destination_tip') }}</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold"><i class="bi bi-stars text-warning me-1"></i>{{ t('home.preference') }}</label>
+            <select class="form-select form-select-lg" name="preference" required>
+              {% for p in preferences %}
+                <option value="{{ p }}">{{ p }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold"><i class="bi bi-calendar3 text-primary me-1"></i>{{ t('home.time') }}</label>
+            <input type="text" class="form-control form-control-lg" name="time_input"
+                   placeholder="{{ t('home.time_placeholder') }}">
+            <div class="form-text">{{ t('home.time_tip').replace('{{ data_year }}', data_year|string) }}</div>
+          </div>
+
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="submit" class="btn btn-primary btn-lg px-4">
+              <i class="bi bi-search me-1"></i>{{ t('home.start') }}
+            </button>
+            <button type="reset" class="btn btn-outline-secondary btn-lg px-4">
+              <i class="bi bi-arrow-counterclockwise me-1"></i>{{ t('common.reset') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 功能入口 -->
+    <div class="row g-3">
+      <div class="col-md-4 reveal">
+        <a class="card feature-card h-100 text-decoration-none" href="/route" style="background:linear-gradient(120deg,#4361ee,#4895ef)">
+          <div class="card-body p-4">
+            <div class="ic mb-2"><i class="bi bi-signpost-2-fill"></i></div>
+            <h6 class="fw-bold mb-1">{{ t('nav.route') }}</h6>
+            <div class="small opacity-75">{{ t('home.feature_route_desc') }}</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4 reveal">
+        <a class="card feature-card h-100 text-decoration-none" href="/qa" style="background:linear-gradient(120deg,#7209b7,#b5179e)">
+          <div class="card-body p-4">
+            <div class="ic mb-2"><i class="bi bi-chat-dots-fill"></i></div>
+            <h6 class="fw-bold mb-1">{{ t('nav.qa') }}</h6>
+            <div class="small opacity-75">{{ t('home.feature_qa_desc') }}</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4 reveal">
+        <a class="card feature-card h-100 text-decoration-none" href="/science" style="background:linear-gradient(120deg,#f72585,#ff8fab)">
+          <div class="card-body p-4">
+            <div class="ic mb-2"><i class="bi bi-book-half"></i></div>
+            <h6 class="fw-bold mb-1">{{ t('nav.science') }}</h6>
+            <div class="small opacity-75">{{ t('home.feature_science_desc') }}</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,392 @@
+{
+    "会安晚霞": {
+        "city": "岘港",
+        "type": "sunset",
+        "best_window": "17:30‑18:30",
+        "keywords": ["会安", "晚霞", "日落", "sunset"],
+        "principle": {
+            "zh": "晴朗少云的傍晚，低层大气尘埃与水汽对日落阳光产生瑞利散射，短波蓝光被散射殆尽，残留长波红橙光形成晚霞。降水后空气通透、湿度适中时色彩更浓。",
+            "en": "On a clear dusk, dust and moisture scatter sunset light via Rayleigh scattering; blue light scatters away, leaving red‑orange wavelengths. Air is clearest after rain with moderate humidity."
+        }
+    },
+    "芽庄海上日出": {
+        "city": "芽庄",
+        "type": "sunrise",
+        "best_window": "05:30‑06:30",
+        "keywords": ["芽庄", "海上日出", "朝阳", "sunrise"],
+        "principle": {
+            "zh": "海面水汽充沛，清晨低层大气湿度高，太阳光穿过厚大气层发生瑞利散射，蓝紫光被消耗，呈现橘红色朝阳。近岸薄雾会柔化太阳轮廓，提升氛围感。",
+            "en": "Abundant sea‑surface moisture creates high low‑level humidity at dawn. Sunlight passes through thick atmosphere under Rayleigh scattering, blue‑violet light attenuated, producing orange‑red sunrise. Near‑shore thin fog softens solar outline."
+        }
+    },
+    "下龙湾喀斯特海雾": {
+        "city": "下龙湾",
+        "type": "sea_fog",
+        "best_window": "05:00‑08:00",
+        "keywords": ["下龙湾", "海雾", "喀斯特", "峰林雾景", "sea_fog"],
+        "principle": {
+            "zh": "清晨海水温度高于近地面空气，海面水汽冷却凝结形成平流海雾，弥漫于石灰岩峰林之间。温差越大雾越明显，太阳升高后雾受热消散。",
+            "en": "Sea water warmer than near‑surface air at dawn triggers advection sea fog as water vapor condenses, spreading among karst pinnacles. Larger temperature difference yields thicker fog; fog dissipates after solar heating."
+        }
+    },
+    "宁平稻田晨雾": {
+        "city": "宁平",
+        "type": "radiation_fog",
+        "best_window": "05:20‑07:20",
+        "keywords": ["宁平", "三谷", "稻田晨雾", "辐射雾", "radiation_fog"],
+        "principle": {
+            "zh": "晴夜地面快速辐射降温，稻田水汽冷却凝结形成辐射雾，笼罩喀斯特峰丛与水田。日出升温，雾层逐步抬升消散。旱季清晨出现概率最高。",
+            "en": "Clear‑night radiative cooling cools ground; paddy‑field vapor condenses into radiation fog covering karst peaks and paddies. Sunrise heating lifts and dissipates fog, highest probability in dry‑season mornings."
+        }
+    },
+    "大叻山地云海": {
+        "city": "大叻",
+        "type": "mountain_sea_of_cloud",
+        "best_window": "06:00‑08:30",
+        "keywords": ["大叻", "山城云海", "地形云", "sea_of_cloud"],
+        "principle": {
+            "zh": "暖湿气流遇到高原山地地形抬升冷却凝结成云，谷底填充云体形成云海。雨后次日清晨水汽充足，是观赏云海的最佳条件。",
+            "en": "Warm‑moist air forced upward by plateau terrain cools and condenses into clouds filling valleys to form sea‑of‑cloud. Best viewing occurs early morning on day after rainfall with abundant moisture."
+        }
+    },
+    "湄南河落日霞光": {
+        "city": "曼谷",
+        "type": "sunset",
+        "best_window": "18:00‑19:00",
+        "keywords": ["曼谷", "湄南河", "落日", "霞光", "sunset"],
+        "principle": {
+            "zh": "城市气溶胶与河流水汽共同作用，日落阳光经过长路径散射，红橙波段被增强。低碎云反射霞光，河面镜面反射放大色彩效果。",
+            "en": "Urban aerosols plus river moisture drive long‑path scattering of sunset light enhancing red‑orange bands. Broken low clouds reflect glow, river surface mirror reflection amplifies color effect."
+        }
+    },
+    "清迈素贴山山谷云海": {
+        "city": "清迈",
+        "type": "mountain_sea_of_cloud",
+        "best_window": "05:40‑08:00",
+        "keywords": ["清迈", "素贴山", "山谷云海", "地形云", "sea_of_cloud"],
+        "principle": {
+            "zh": "夜间山谷冷空气下沉，盆地水汽凝结堆积形成谷雾，清晨山顶俯瞰即为云海。上午太阳辐射加热，云雾逐步裂解消散。",
+            "en": "Cold air sinks into valley overnight, basin moisture condenses into valley fog appearing as sea‑of‑cloud from mountain top. Morning solar radiation heats atmosphere and breaks cloud layer."
+        }
+    },
+    "普吉岛海上对流云与晚霞": {
+        "city": "普吉岛",
+        "type": "sunset_convection_cloud",
+        "best_window": "18:10‑19:10",
+        "keywords": ["普吉岛", "海上晚霞", "对流云", "sunset", "cumulus"],
+        "principle": {
+            "zh": "午后海洋热对流生成积云，傍晚太阳低角度照射云顶，云体被染成金红。雨季积云发育旺盛，更容易出现壮丽火烧云。",
+            "en": "Afternoon ocean thermal convection generates cumulus clouds. Low‑angle evening sun tints cloud tops golden‑red. Well‑developed cumulus in rainy‑season brings spectacular fire‑cloud sunset."
+        }
+    },
+    "甲米莱利海岸晨昏丁达尔光": {
+        "city": "甲米",
+        "type": "tyndall_effect",
+        "best_window": "06:00‑07:00 / 17:40‑18:40",
+        "keywords": ["甲米", "莱利海滩", "丁达尔光", "光束", "tyndall"],
+        "principle": {
+            "zh": "海岸空气中海盐气溶胶、水汽微粒，在低角度阳光照射下发生丁达尔效应，形成可见光束。薄雾、轻霾环境下现象最明显。",
+            "en": "Sea‑salt aerosols and water‑vapor particles produce Tyndall effect under low‑angle sunlight, forming visible light beams. Phenomenon is most distinct under thin fog or light haze."
+        }
+    },
+    "苏梅岛海湾日落": {
+        "city": "苏梅岛",
+        "type": "sunset",
+        "best_window": "18:00‑19:00",
+        "keywords": ["苏梅岛", "查汶海滩", "海湾日落", "sunset"],
+        "principle": {
+            "zh": "泰国湾开阔海面，水汽稳定，日落光线经海面多次反射，色彩饱和度提升。少量层积云可增强晚霞层次。",
+            "en": "Gulf‑of‑Thailand open sea provides stable moisture. Sunset light multi‑reflected over sea surface raises color saturation. Small amount of stratocumulus improves sunset layers."
+        }
+    },
+    "吴哥寺日出霞光": {
+        "city": "暹粒",
+        "type": "sunrise",
+        "best_window": "05:10‑06:10",
+        "keywords": ["暹粒", "小吴哥", "吴哥日出", "sunrise"],
+        "principle": {
+            "zh": "护城河水面镜面反射，清晨干季大气通透，太阳光斜射穿过近地面气溶胶，红橙光照亮石塔，水面倒影放大景观效果。",
+            "en": "Moat water provides mirror reflection. Dry‑season clean atmosphere allows slanted sunlight through near‑surface aerosols, illuminating stone towers with red‑orange light; water reflection magnifies scene."
+        }
+    },
+    "琅勃拉邦光西瀑布虹霓": {
+        "city": "琅勃拉邦",
+        "type": "waterfall_rainbow",
+        "best_window": "09:30‑11:30",
+        "keywords": ["琅勃拉邦", "光西瀑布", "瀑布彩虹", "rainbow"],
+        "principle": {
+            "zh": "晴天上午阳光斜射，瀑布飞溅的微小水滴对太阳光发生折射、反射、色散，形成瀑布彩虹。雨后水量大，水雾充沛更容易显现。",
+            "en": "On sunny forenoon, slanted sunlight refracts, reflects and disperses through tiny waterfall spray droplets generating waterfall rainbow. Post‑rain high flow produces abundant spray favoring rainbow appearance."
+        }
+    },
+    "槟城海上日落": {
+        "city": "槟城",
+        "type": "sunset",
+        "best_window": "18:10‑19:10",
+        "keywords": ["槟城", "海上日落", "槟城海峡", "sunset"],
+        "principle": {
+            "zh": "海峡海盐气溶胶丰富，日落阳光长路径散射，红橙色调突出。海面上薄层云会强化霞光渲染。",
+            "en": "Strait‑region abundant sea‑salt aerosols enable long‑path sunset scattering emphasizing red‑orange tone. Thin sea‑stratus amplifies glow rendering."
+        }
+    },
+    "吉隆坡山城对流积雨云": {
+        "city": "吉隆坡",
+        "type": "cumulonimbus",
+        "best_window": "14:00‑17:00",
+        "keywords": ["吉隆坡", "热带对流云", "积雨云", "cumulonimbus"],
+        "principle": {
+            "zh": "赤道热带白天太阳强辐射，地表受热空气强烈抬升，快速发展高大积雨云，常伴随午后短时局地阵雨。",
+            "en": "Intense equatorial solar radiation heats ground; air rises violently to develop tall cumulonimbus, frequently accompanied by short‑lived local afternoon showers."
+        }
+    },
+    "新加坡滨海湾薄暮华光": {
+        "city": "新加坡",
+        "type": "twilight_glow",
+        "best_window": "18:20‑19:00",
+        "keywords": ["新加坡", "滨海湾", "薄暮", "暮光", "twilight"],
+        "principle": {
+            "zh": "日落后太阳在地平线下方，高层大气散射阳光形成民用暮光，城市灯光与自然暮色叠加，海湾水面反射增强视觉效果。",
+            "en": "After sunset sun lies below horizon; upper‑atmosphere scattering produces civil twilight. Urban lighting overlays natural dusk; bay‑water reflection enhances visual effect."
+        }
+    },
+    "巴厘岛乌鲁瓦图悬崖日落": {
+        "city": "巴厘岛",
+        "type": "sunset",
+        "best_window": "18:00‑19:00",
+        "keywords": ["巴厘岛", "乌鲁瓦图", "悬崖日落", "印度洋晚霞", "sunset"],
+        "principle": {
+            "zh": "印度洋开阔大洋，空气洁净，日落瑞利散射效应显著。悬崖高地无遮挡，可完整观测太阳沉入海面全过程。",
+            "en": "Clean air over open Indian Ocean produces prominent Rayleigh scattering at sunset. Unobstructed cliff high ground enables full view of sun sinking into ocean surface."
+        }
+    },
+    "长滩岛落日帆船金辉": {
+        "city": "长滩岛",
+        "type": "sunset",
+        "best_window": "17:40‑18:40",
+        "keywords": ["长滩岛", "落日帆船", "海上金辉", "sunset"],
+        "principle": {
+            "zh": "傍晚低角度阳光照射海面，海浪波纹对阳光形成镜面反射，整片海面铺展金色反光。适度海雾可柔化太阳轮廓。",
+            "en": "Low‑angle evening sun illuminates sea surface; wave ripples produce specular reflection spreading golden glitter across ocean. Moderate sea‑fog softens solar disk."
+        }
+    },
+    "宿务墨宝海面蓝调时刻": {
+        "city": "宿务",
+        "type": "blue_hour",
+        "best_window": "05:00‑05:30 / 18:30‑19:00",
+        "keywords": ["宿务", "墨宝", "蓝调时刻", "blue_hour"],
+        "principle": {
+            "zh": "日出前、日落后太阳处于地平线下方，高空蓝光被大气散射抵达地面，环境呈现均匀幽蓝色，适合海上潜水与海面摄影。",
+            "en": "Before sunrise / after sunset sun stays below horizon; upper‑atmosphere scattered blue light reaches ground creating uniform blue ambient light, suitable for sea diving and ocean photography."
+        }
+    },
+    "河内西湖暮色": {
+        "city": "河内",
+        "type": "sunset",
+        "best_window": "17:40‑18:40",
+        "keywords": ["河内", "西湖", "城市湖泊日落", "sunset"],
+        "principle": {
+            "zh": "城市湖泊水汽与城市气溶胶叠加，日落散射形成暖色调霞光，湖面平静时反射效果最佳。",
+            "en": "Combination of lake moisture and urban aerosols generates warm sunset glow; reflection effect peaks when lake surface is calm."
+        }
+    },
+    "胡志明湄公河三角洲水乡暮霭": {
+        "city": "胡志明",
+        "type": "haze_dusk",
+        "best_window": "17:50‑18:50",
+        "keywords": ["胡志明", "湄公河三角洲", "水乡暮霭", "dusk_haze"],
+        "principle": {
+            "zh": "河网湿地水汽充沛，傍晚气温下降，水汽与悬浮颗粒物混合形成浅暮霭，柔和过滤落日光线。",
+            "en": "Wetland river‑network supplies abundant moisture. Evening temperature drop mixes vapor with suspended particles producing light dusk haze softening sunset light."
+        }
+    },
+    "岘港山茶半岛海岸海蚀雾": {
+        "city": "岘港",
+        "type": "coastal_fog",
+        "best_window": "05:30‑07:30",
+        "keywords": ["岘港", "山茶半岛", "海岸海雾", "coastal_fog"],
+        "principle": {
+            "zh": "暖湿气流流过相对冷的近岸海水，水汽冷却凝结形成海岸平流雾，常缠绕海蚀崖海岸。",
+            "en": "Warm‑moist air flows over cooler near‑shore seawater; vapor condenses into coastal advection fog frequently wrapping sea‑erosion cliffs."
+        }
+    },
+    "顺香江江雾": {
+        "city": "顺化",
+        "type": "river_fog",
+        "best_window": "05:10‑07:10",
+        "keywords": ["顺化", "香江", "江河晨雾", "river_fog"],
+        "principle": {
+            "zh": "晴夜辐射降温，江水蒸发水汽遇冷在江面凝结形成江河辐射雾，笼罩香江两岸古迹。日出升温后雾消散。",
+            "en": "Clear‑night radiative cooling; river‑evaporated vapor condenses over water surface forming river radiation fog covering heritage sites along Perfume River, dissipates under sunrise heating."
+        }
+    },
+    "富国岛海湾火烧云": {
+        "city": "富国岛",
+        "type": "fire_cloud",
+        "best_window": "18:00‑19:00",
+        "keywords": ["富国岛", "白沙滩", "火烧云", "fire_cloud", "sunset"],
+        "principle": {
+            "zh": "低角度日落阳光穿过厚大气层，长波红橙光照射高空云底，云体大面积被染红。热带季风云系活跃时火烧云出现概率提升。",
+            "en": "Low‑angle sunset light passes through thick atmosphere; long‑wave red‑orange light illuminates cloud bases dyeing clouds broadly red. Tropical monsoon‑cloud activity raises fire‑cloud probability."
+        }
+    },
+    "芭提雅海湾落日": {
+        "city": "芭提雅",
+        "type": "sunset",
+        "best_window": "17:50‑18:50",
+        "keywords": ["芭提雅", "中天海滩", "海湾落日", "sunset"],
+        "principle": {
+            "zh": "泰国湾近岸，海表水汽充足，日落散射产生暖橙霞光，平静海面放大色彩反射。",
+            "en": "Near‑shore Gulf of Thailand with sufficient sea‑surface moisture. Sunset scattering yields warm‑orange glow; calm sea magnifies color reflection."
+        }
+    },
+    "普吉湾海龙卷（龙吸水）": {
+        "city": "普吉岛",
+        "type": "waterspout",
+        "best_window": "09:00‑15:00",
+        "keywords": ["普吉岛", "海龙卷", "龙吸水", "水龙卷", "waterspout"],
+        "principle": {
+            "zh": "热带暖海海面，积云下局地强涡旋发展，形成从云底伸向海面的漏斗云，属于海面对流涡旋。多发生于雨季上午午后，持续时间短，远观震撼，靠近存在安全风险。",
+            "en": "Over warm tropical sea, local strong vortex develops under cumulus cloud, forming funnel cloud stretching from cloud base toward sea surface. Mostly occurs in rainy‑season forenoon‑afternoon with short duration; spectacular from distance while safety risk exists nearby."
+        }
+    },
+    "大叻山地宝光（佛光）": {
+        "city": "大叻",
+        "type": "brocken_spectre",
+        "best_window": "06:10‑07:30",
+        "keywords": ["大叻", "宝光", "佛光", "布罗肯幽灵", "brocken_spectre"],
+        "principle": {
+            "zh": "站在山顶，低角度朝阳投射人影到下方云雾层，云雾小水滴发生衍射，人影外围出现彩色光环。要求人处于太阳与云雾之间，雨后云海天气出现概率高。",
+            "en": "Standing on mountain top, low‑angle sunrise projects human shadow onto cloud‑fog layer below. Droplets diffract light producing colored halo around shadow. Observer must locate between sun and fog‑cloud; high probability after rainfall with sea‑of‑cloud."
+        }
+    },
+    "甲米虹彩幞状云（七彩祥云）": {
+        "city": "甲米",
+        "type": "cloud_iridescence",
+        "best_window": "11:00‑15:00",
+        "keywords": ["甲米", "虹彩幞状云", "七彩祥云", "云虹彩", "cloud_iridescence"],
+        "principle": {
+            "zh": "积云顶部被上升气流带上一层薄幞状云，云中大量细小过冷水滴对太阳光发生衍射，呈现粉、蓝、绿相间的缤纷色彩，多出现于热带午后对流旺盛时刻。",
+            "en": "Updraft lifts thin pileus cap above cumulus top. Tiny super‑cooled water droplets diffract sunlight producing mixed pink‑blue‑green iridescent patches, common in tropical afternoons with vigorous convection."
+        }
+    },
+    "巴厘岛悬崖海虹": {
+        "city": "巴厘岛",
+        "type": "sea_rainbow",
+        "best_window": "08:30‑11:00",
+        "keywords": ["巴厘岛", "海虹", "海上彩虹", "sea_rainbow"],
+        "principle": {
+            "zh": "海岸巨浪拍打礁石，飞溅大量海盐雾滴，阳光照射水雾发生折射色散，形成海上局部彩虹。浪大、阳光角度合适时更容易观测。",
+            "en": "Coastal huge surf splashes abundant sea‑salt spray droplets. Sunlight refracts and disperses through spray to form localized sea rainbow. Favored by large surf and proper solar elevation angle."
+        }
+    },
+    "苏梅岛热带夜间闪电（云对地闪电）": {
+        "city": "苏梅岛",
+        "type": "tropical_lightning",
+        "best_window": "19:00‑23:00",
+        "keywords": ["苏梅岛", "热带闪电", "夜间雷暴", "lightning"],
+        "principle": {
+            "zh": "热带夜间海上积雨云强烈发展，云内电荷分离产生闪电。雨季夜晚远观海面雷暴，可看到频繁云闪与地闪，请勿靠近海边雷暴区域。",
+            "en": "Nocturnal maritime cumulonimbus develops intensely in tropics; internal charge separation generates lightning. Distant view of sea thunderstorm is impressive in rainy‑season nights; keep away from seashore under thunderstorm."
+        }
+    },
+    "琅勃拉邦普西山环天顶弧": {
+        "city": "琅勃拉邦",
+        "type": "circumzenithal_arc",
+        "best_window": "09:00‑14:00",
+        "keywords": ["琅勃拉邦", "环天顶弧", "倒挂彩虹", "circumzenithal_arc"],
+        "principle": {
+            "zh": "高空薄卷云内板状冰晶对阳光折射，在天空顶端形成向下弯曲的彩色弧带，形似倒挂彩虹。太阳高度需处于22°以内，属于罕见大气光学现象。",
+            "en": "Plate‑shaped ice crystals within high thin cirrus refract sunlight, producing downward‑curved colorful arc near zenith like upside‑down rainbow. Solar elevation must be within 22°, a rare atmospheric‑optics phenomenon."
+        }
+    },
+    "暹粒吴哥护城河海市蜃楼（海滋）": {
+        "city": "暹粒",
+        "type": "mirage",
+        "best_window": "06:00‑07:00",
+        "keywords": ["暹粒", "海市蜃楼", "海滋", "mirage"],
+        "principle": {
+            "zh": "清晨护城河水面冷却，近地面形成逆温层，空气密度分层，光线发生折射，远处树木、塔尖出现变形悬浮虚影。晴静少风的干季清晨概率最高。",
+            "en": "Moat water cools at dawn creating near‑surface temperature‑inversion and layered air density. Light refracts to produce distorted suspended mirage of distant trees and spires. Highest probability on calm clear dry‑season mornings."
+        }
+    },
+    "会安热带局地对流雨（分界线雨幕）": {
+        "city": "岘港",
+        "type": "convective_rain_curtain",
+        "best_window": "14:00‑17:00",
+        "keywords": ["会安", "对流雨幕", "分界线降雨", "convective_rain_curtain"],
+        "principle": {
+            "zh": "热带午后局地热对流发展，积雨云边界清晰，雨幕如同垂落帷幕，常常出现一边大雨一边晴天的景象。雨区范围小、来去迅速。",
+            "en": "Local thermal convection develops in tropical afternoons with sharp cumulonimbus boundary. Precipitation curtain hangs down, often creating scene of heavy rain beside sunny sky. Rain patch is small and short‑lived."
+        }
+    },
+    "富国岛海湾月华": {
+        "city": "富国岛",
+        "type": "moon_corona",
+        "best_window": "21:00‑00:00",
+        "keywords": ["富国岛", "月华", "月晕", "moon_corona"],
+        "principle": {
+            "zh": "夜晚薄高云布满天空，云中细小水滴对月光衍射，月亮外围出现多层彩色光环。满月前后、高空薄云条件适宜观测。",
+            "en": "Thin high‑cloud covers night sky; tiny cloud droplets diffract moonlight forming multi‑layer colored halo around moon. Best observed around full‑moon under thin high‑cloud."
+        }
+    },
+    "宁平喀斯特地形雨": {
+        "city": "宁平",
+        "type": "orographic_rain",
+        "best_window": "13:30‑16:30",
+        "keywords": ["宁平", "地形雨", "喀斯特地形降雨", "orographic_rain"],
+        "principle": {
+            "zh": "暖湿气流遇到喀斯特峰丛山体被迫抬升，水汽冷却凝结形成降雨。山体迎风侧多雨，背风侧相对晴朗，降雨具有明显局地性。",
+            "en": "Warm‑moist airflow is forced upward by karst peak clusters; vapor cools and condenses into orographic rain. Windward slope receives more rainfall while leeward side stays relatively sunny with strong locality of precipitation."
+        }
+    },
+    "清迈蒲屏皇宫日华": {
+        "city": "清迈",
+        "type": "sun_corona",
+        "best_window": "10:00‑14:00",
+        "keywords": ["清迈", "日华", "太阳华", "sun_corona"],
+        "principle": {
+            "zh": "薄的中云覆盖太阳，云中小水滴衍射太阳光，太阳外围生成蓝、红相间彩色圆环。区别于日晕，由水滴而非冰晶产生，圆环半径更小。",
+            "en": "Thin middle‑cloud veils sun; small cloud droplets diffract sunlight generating blue‑red alternating colored rings around sun. Distinct from solar halo produced by ice crystals, corona has smaller radius."
+        }
+    },
+    "槟城海峡夜光海面（生物荧光）": {
+        "city": "槟城",
+        "type": "bioluminescence_sea",
+        "best_window": "22:00‑01:00",
+        "keywords": ["槟城", "生物荧光海", "蓝眼泪", "bioluminescence"],
+        "principle": {
+            "zh": "海水中发光浮游生物受海浪扰动刺激，释放生物荧光，海面泛起蓝绿色微光。光污染弱的暗夜、海温适宜季节更容易遇见，属于生物‑海洋复合景观。",
+            "en": "Marine bioluminescent plankton emit blue‑green fluorescence disturbed by wave turbulence. Visible in dark nights with low light pollution and suitable sea‑temperature; it is combined biological‑marine scenery."
+        }
+    },
+    "河内台风外围滚轴云": {
+        "city": "河内",
+        "type": "roll_cloud",
+        "best_window": "08:00‑12:00",
+        "keywords": ["河内", "滚轴云", "台风外围云带", "roll_cloud"],
+        "principle": {
+            "zh": "台风外围飑线前沿，冷暖空气交汇，形成水平滚筒状长条云带。预示大风强对流即将到来，属于危险天气前兆，仅适合远距离观赏。",
+            "en": "At squall‑line front of typhoon periphery, cold‑warm air convergence generates horizontal roller‑shaped long cloud band. It signals incoming gale and severe convection; only observe from far distance for safety."
+        }
+    },
+    "长滩岛滩虹（浪花彩虹）": {
+        "city": "长滩岛",
+        "type": "spray_rainbow",
+        "best_window": "09:00‑11:30",
+        "keywords": ["长滩岛", "滩虹", "浪花彩虹", "spray_rainbow"],
+        "principle": {
+            "zh": "海浪拍打沙滩激起细密浪花水雾，低角度阳光穿过水雾发生色散，在沙滩上空形成局部短弧彩虹。潮涌大、阳光斜射条件最佳。",
+            "en": "Surf breaking on beach generates fine sea‑spray. Low‑angle sunlight disperses through spray producing short‑arc partial rainbow above beach. Favored by heavy surf and slanted sunlight."
+        }
+    },
+    "宿务巧克力山山巅旗云": {
+        "city": "宿务",
+        "type": "banner_cloud",
+        "best_window": "07:30‑10:00",
+        "keywords": ["宿务", "旗云", "地形旗云", "banner_cloud"],
+        "principle": {
+            "zh": "强风越过巧克力山山顶，气流在背风侧冷却凝结，形成一面旗帜状地形云，云体顺着风向延展。可通过旗云形态判断山顶风力大小。",
+            "en": "Strong wind crosses Chocolate Hills summits; airflow cools and condenses on leeward side to form flag‑shaped terrain cloud stretching downwind. Wind strength on summit can be inferred from banner‑cloud shape."
+        }
+    }
+}

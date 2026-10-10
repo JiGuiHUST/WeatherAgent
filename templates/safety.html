@@ -1,0 +1,875 @@
+{% extends "base.html" %}
+{% block title %}{{ t('safety.title') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+{% set is_en = lang == 'en' %}
+
+{# —— 头部标题与快速操作 —— #}
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+  <div>
+    <h3 class="fw-bold mb-1"><i class="bi bi-shield-exclamation text-danger me-2"></i>{{ t('safety.title') }}</h3>
+    <p class="text-muted mb-0">{{ t('safety.subtitle') }}</p>
+  </div>
+  <div class="d-flex gap-2">
+    <button id="copyEmergencyBtn" class="btn btn-sm btn-outline-danger d-none">
+      <i class="bi bi-clipboard me-1"></i>{{ t('safety.emergency.copy') }}
+    </button>
+  </div>
+</div>
+
+{# —— 快速锚点导航 —— #}
+<nav class="nav nav-pills flex-wrap gap-2 mb-4 bg-light rounded-4 p-2" id="safetyNav">
+  <a class="nav-link small" href="#section-weather"><i class="bi bi-cloud-rain me-1"></i>{{ t('safety.weather') }}</a>
+  <a class="nav-link small" href="#section-transit"><i class="bi bi-car-front me-1"></i>{{ t('safety.transit') }}</a>
+  <a class="nav-link small" href="#section-health"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.health') }}</a>
+  <a class="nav-link small" href="#section-docs"><i class="bi bi-shield-lock me-1"></i>{{ t('safety.docs') }}</a>
+  <a class="nav-link small" href="#section-border"><i class="bi bi-passport me-1"></i>{{ t('safety.border') }}</a>
+  <a class="nav-link small" href="#section-emergency"><i class="bi bi-telephone-fill me-1"></i>{{ t('safety.emergency') }}</a>
+  <a class="nav-link small" href="#section-special"><i class="bi bi-people-fill me-1"></i>{{ t('safety.special') }}</a>
+  <a class="nav-link small" href="#section-activity"><i class="bi bi-exclamation-triangle me-1"></i>{{ t('safety.activity') }}</a>
+  <a class="nav-link small" href="#section-checklist"><i class="bi bi-check2-square me-1"></i>{{ t('safety.checklist') }}</a>
+</nav>
+
+{# —— 东南亚天气安全专题 —— #}
+<div class="card border-0 shadow-sm rounded-4 mb-5 bg-gradient-to-br from-info bg-opacity-10 to-warning bg-opacity-10">
+  <div class="card-body">
+    <h5 class="fw-bold mb-3"><i class="bi bi-cloud-sun text-info me-2"></i>
+      {% if is_en %}Southeast Asia Weather Alert Essentials{% else %}东南亚天气风险专题{% endif %}</h5>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="bg-white rounded-3 p-3 h-100 border">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-cloud-lightning-rain text-warning fs-4 me-2"></i>
+            <h6 class="fw-bold mb-0">{{ t('safety.weather.monsoon') }}</h6>
+          </div>
+          <p class="small text-muted mb-0">{{ t('safety.weather.monsoon.hint') }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="bg-white rounded-3 p-3 h-100 border">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-wind text-secondary fs-4 me-2"></i>
+            <h6 class="fw-bold mb-0">{{ t('safety.weather.haze') }}</h6>
+          </div>
+          <p class="small text-muted mb-0">{{ t('safety.weather.haze.hint') }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="bg-white rounded-3 p-3 h-100 border">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-sun text-danger fs-4 me-2"></i>
+            <h6 class="fw-bold mb-0">{{ t('safety.weather.uv') }}</h6>
+          </div>
+          <p class="small text-muted mb-0">{{ t('safety.weather.uv.hint') }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 六大维度安全要点 —— #}
+<div class="row g-3 mb-5">
+  <div class="col-lg-4 col-md-6" id="section-weather">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
+            <i class="bi bi-cloud-rain-heavy text-primary fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.weather') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Monitor GOWFS 08/20 updates; beyond 7 days, use climate averages</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Avoid island-hopping in heavy rain; respect red-flag beach warnings</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Stay hydrated; avoid 11:00-15:00 sun; carry sunscreen & electrolytes</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Thunderstorms: stay away from trees, coasts, high ground, metal gear</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>关注 08/20 时 GOWFS 预报更新，超 7 天时效用气候均值参考</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>暴雨时避开海岛跳岛、海岸活动，留意红旗警示</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>高温时段避开正午烈日，备防晒、补水、电解质饮料</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>雷暴天气远离大树、海岸、高地与金属装备</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6" id="section-transit">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-success bg-opacity-10 p-2 me-2">
+            <i class="bi bi-car-front text-success fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.transit') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Verify IDP & cross-border insurance before driving abroad</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Helmets mandatory for scooters; check local traffic side</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Prefer ride-hailing over street taxis; share trip with family</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Avoid overnight buses & overloaded vehicles</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>跨境自驾核查保险、驾照国际认证（IDP）有效期</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>摩托车/电瓶车必戴头盔，确认当地行驶方向</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>打车用网约车平台，上车核对车牌并分享行程</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>避开夜间山路、超载车辆与黑车</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6" id="section-health">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-danger bg-opacity-10 p-2 me-2">
+            <i class="bi bi-heart-pulse text-danger fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.health') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Mosquito protection: DEET repellent, long sleeves; dengue endemic</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Bottled/boiled water only; avoid raw food & street ice</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>SPF50+ sunscreen; hat & sunglasses; limit midday sun</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Pack: antidiarrheal, antipyretic, antihistamine, personal meds</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>防蚊：备 DEET 驱蚊液、长袖衣物，东南亚登革热流行</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>饮水安全：瓶装水/煮沸水，避免生冷食物与街边冰块</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>防晒：SPF50+ 防晒霜、墨镜、宽檐帽，避开正午烈日</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>备药：肠胃药、退烧药、抗过敏药及个人慢性病用药</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6" id="section-docs">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-warning bg-opacity-10 p-2 me-2">
+            <i class="bi bi-shield-lock text-warning fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.docs') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>Separate copies from originals; scan & upload to cloud</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>Split cash across pockets; avoid flashy brands & luxury goods</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>Backpack in front in crowds; watch for distractions & groups</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>Use hotel safe; carry cards from 2+ different issuers</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>证件复印件与原件分开存放，电子版上传云盘备份</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>现金分多口袋存放，少带名牌奢侈品，避免露财</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>街边防扒：双肩包前背，警惕搭讪与群聚围观</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-warning me-2 mt-1"></i><span>酒店保险柜存贵重物品，信用卡备两张不同银行的</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6" id="section-border">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-info bg-opacity-10 p-2 me-2">
+            <i class="bi bi-passport text-info fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.border') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>Passport validity ≥ 6 months; ≥ 2 blank pages</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>Match visa type with trip; prepare return ticket & hotel booking</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>Declare cash over USD 10,000 equivalent; check customs rules</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>Stay calm at immigration; answer truthfully without hesitation</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>护照有效期 ≥ 6 个月，空白页 ≥ 2 页</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>签证类型与入境目的相符，落地签备返程机票与酒店订单</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>等值 USD 10000 以上现金需申报；查询目的国违禁品</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-info me-2 mt-1"></i><span>入境被问询保持冷静如实回答，避免东张西望</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6" id="section-emergency">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="rounded-circle bg-secondary bg-opacity-10 p-2 me-2">
+            <i class="bi bi-megaphone text-secondary fs-5"></i>
+          </div>
+          <h6 class="fw-bold mb-0">{{ t('safety.emergency') }}</h6>
+        </div>
+        <ul class="list-unstyled small mb-0">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>12308 China consular hotline (24h); save embassy addresses</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>Buy insurance with medical evacuation & cross-border rescue</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>Daily check-in with family; share itinerary & hotel info</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>Prioritize personal safety; report loss post-incident to embassy</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>中国领事保护热线 12308（24h），留存使领馆地址电话</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>购买含医疗运送、跨境救援的旅行保险并留存保单号</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>与家人约定每日联络时段，留存酒店地址与行程单</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-secondary me-2 mt-1"></i><span>遇险优先保障人身安全，事后联系使领馆报案</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 紧急救援中心 —— #}
+<div class="card border-0 shadow-sm rounded-4 mb-5" id="section-hotline">
+  <div class="card-header bg-danger bg-opacity-10 border-0 py-3">
+    <h6 class="fw-bold mb-0"><i class="bi bi-telephone-fill text-danger me-2"></i>{{ t('safety.emergency.hotline') }}</h6>
+  </div>
+  <div class="card-body pt-0">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="border rounded-3 p-3 h-100 bg-danger bg-opacity-10">
+          <h6 class="fw-bold text-danger mb-2"><i class="bi bi-flag-fill me-1"></i>{{ t('safety.emergency.consular') }}</h6>
+          <div class="small">
+            <div class="mb-2"><strong>12308</strong> <span class="text-muted">({{ '境内拨打 24 小时' if not is_en else 'Mainland China, 24/7' }})</span></div>
+            <div class="mb-2"><strong>+86-10-12308</strong> <span class="text-muted">({{ '境外拨打' if not is_en else 'from overseas' }})</span></div>
+            <div class="mb-2"><strong>+86-10-64629100</strong> <span class="text-muted">({{ '外交部全球领保中心' if not is_en else 'MFA Global Consular Center' }})</span></div>
+            <div class="mb-0">
+              <strong>{{ '中国驻东南亚使领馆列表' if not is_en else "PRC Embassies & Consulates in SE-Asia" }}</strong>：
+              <a href="https://cs.mfa.gov.cn/" target="_blank" class="text-decoration-none">{{ '查询地址' if not is_en else 'Directory' }} ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="border rounded-3 p-3 h-100 bg-warning bg-opacity-10">
+          <h6 class="fw-bold text-warning mb-2"><i class="bi bi-shield-check me-1"></i>{{ t('safety.emergency.insurance') }}</h6>
+          <div class="small">
+            <div class="mb-2"><strong>{{ '选购要点：' if not is_en else 'Key coverage:' }}</strong></div>
+            <ul class="small mb-0">
+              <li>{{ '医疗运送与紧急救援（含直升机转运）' if not is_en else 'Medical evacuation & emergency rescue (incl. helicopter)' }}</li>
+              <li>{{ '高额医疗费用（≥50 万元）' if not is_en else 'High medical coverage (≥500K RMB)' }}</li>
+              <li>{{ '航班延误、行李丢失、旅行变更' if not is_en else 'Flight delay, luggage loss, trip cancellation' }}</li>
+              <li>{{ '冒险运动额外保障（浮潜/漂流/丛林徒步）' if not is_en else 'Adventure sports coverage (snorkeling/rafting/jungle trek)' }}</li>
+              <li>{{ '境外紧急救援电话需 24 小时可达' if not is_en else '24/7 overseas emergency hotline access' }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h6 class="fw-bold mb-3"><i class="bi bi-list-ol text-primary me-2"></i>{{ '各国应急电话号码' if not is_en else 'National Emergency Numbers' }}</h6>
+    <div class="row g-2" id="emergencyTable">
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white hover-shadow">
+          <div class="fw-bold small">🇹🇭 {{ t('safety.country.th') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 191 / Ambulance 1668 / Tourist Police 1155 / Fire 199{% else %}报警 191 / 急救 1668 / 旅游警察 1155 / 火警 199{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇻🇳 {{ t('safety.country.vn') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 113 / Ambulance 115 / Fire 114{% else %}报警 113 / 急救 115 / 火警 114{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇲🇾 {{ t('safety.country.my') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police/Ambulance 999 / Tourist Police 03-2149 6590{% else %}报警/急救 999 / 旅游警察 03-2149 6590{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇸🇬 {{ t('safety.country.sg') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police/Ambulance/Fire 999{% else %}报警/急救/消防 999{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇰🇭 {{ t('safety.country.kh') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 117 / Ambulance 119 / Fire 118{% else %}报警 117 / 急救 119 / 火警 118{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇱🇦 {{ t('safety.country.la') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 191 / Ambulance 195{% else %}报警 191 / 急救 195{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇮🇩 {{ t('safety.country.id') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 110 / Ambulance 118 / Search & Rescue 115{% else %}报警 110 / 急救 118 / 搜救 115{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇵🇭 {{ t('safety.country.ph') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 117 / Ambulance 112 / Fire 113{% else %}报警 117 / 急救 112 / 火警 113{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇲🇲 {{ t('safety.country.mm') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police 199 / Ambulance 192 / Fire 191{% else %}报警 199 / 急救 192 / 火警 191{% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="border rounded-2 p-2 text-center bg-white">
+          <div class="fw-bold small">🇧🇳 {{ t('safety.country.bn') }}</div>
+          <div class="small text-muted">
+            {% if is_en %}Police/Ambulance 991 / Fire 995{% else %}报警/急救 991 / 火警 995{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 特殊人群出行须知 —— #}
+<h4 class="fw-bold mb-1" id="section-special"><i class="bi bi-people-fill text-warning me-2"></i>{{ t('safety.special') }}</h4>
+<p class="text-muted mb-4">{{ t('safety.special.sub') }}</p>
+
+<div class="row g-3 mb-5">
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-header bg-white border-0 fw-bold py-3 text-primary">
+        <i class="bi bi-emoji-smile me-1"></i>{{ t('safety.children') }}
+      </div>
+      <div class="card-body pt-0">
+        <ul class="list-unstyled mb-0 small">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Choose destinations with good hygiene and easy transportation</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Avoid strenuous activities like mountain climbing or trekking</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Strict food safety: no raw food, unpeeled fruit, or street ice</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Sun protection essential; wide-brim hat, sunscreen SPF50+</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>Ensure up-to-date vaccinations before departure</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>选择卫生条件好、交通方便的景点，避开探险类活动</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>不宜进行登山、探险等剧烈户外运动</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>注意饮食卫生，不吃生冷食物与街边冰块</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>备遮阳帽或防晒伞，防晒指数 SPF50+</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-primary me-2 mt-1"></i><span>出发前检查疫苗接种是否完整</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-header bg-white border-0 fw-bold py-3 text-danger">
+        <i class="bi bi-person-heart me-1"></i>{{ t('safety.elderly') }}
+      </div>
+      <div class="card-body pt-0">
+        <ul class="list-unstyled mb-0 small">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Manage blood pressure & chronic conditions; carry sufficient medication</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Avoid extreme temperature changes; pack layers for both hot and cold</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Choose stable, wide-footwear; avoid slippery paths & stairs</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Schedule rest periods; avoid overexertion in heat & humidity</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>Travel insurance with medical evacuation is strongly recommended</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>按时服用慢性病药物，携带充足储备</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>防止温差剧变影响健康，备薄外套</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>选择防滑稳健的鞋子，避开湿滑台阶</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>行程中安排休息时段，避免高温时段过度劳累</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-danger me-2 mt-1"></i><span>强烈建议购买含医疗运送的旅行保险</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-header bg-white border-0 fw-bold py-3 text-success">
+        <i class="bi bi-balloon-heart me-1"></i>{{ t('safety.pregnant') }}
+      </div>
+      <div class="card-body pt-0">
+        <ul class="list-unstyled mb-0 small">
+          {% if is_en %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Obtain prenatal checkup before departure; know your health status</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Wear loose clothes, non-slip shoes; avoid damp/cold seating</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Choose short-haul trips; maintain work-rest balance, avoid fatigue</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Pick transport with restroom; choose aisle seat for easy access</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>Immediate medical care if abdominal pain or bleeding occurs</span></li>
+          {% else %}
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>出发前做孕期检查，掌握胎儿和自身健康状况</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>穿宽松衣、防滑鞋，不坐湿冷地方</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>选择短程旅行，保持劳逸均衡</span></li>
+          <li class="d-flex mb-2"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>选有洗手间的交通工具，靠走道座位</span></li>
+          <li class="d-flex"><i class="bi bi-check2-circle text-success me-2 mt-1"></i><span>出现腹痛、出血立即就医</span></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 东南亚特色活动安全 —— #}
+<h4 class="fw-bold mb-1" id="section-activity"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>{{ t('safety.activity') }}</h4>
+<p class="text-muted mb-4">{{ t('safety.activity.sub') }}</p>
+
+<div class="accordion shadow-sm rounded-4 overflow-hidden mb-5" id="safetyActs">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-island">
+        <i class="bi bi-water text-info me-2"></i>{{ t('safety.act.island') }}
+      </button>
+    </h2>
+    <div id="act-island" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Choose licensed operators with life jackets & insurance; avoid unregulated boatmen</li>
+          <li>Check weather before departure; cancel if red flag or strong wind warning</li>
+          <li>Wear life jacket at all times; children must wear size-appropriate jackets</li>
+          <li>Stay near the boat; don't swim to isolated reefs or rocks</li>
+          <li>Beware of rip currents; if caught, swim parallel to shore, not against</li>
+          <li>Drink bottled water; avoid consuming local water or raw seafood from unknown vendors</li>
+          {% else %}
+          <li>选择有资质的运营商，确认救生衣配备齐全、有保险</li>
+          <li>出发前查看天气和海况；红旗或大风预警时取消行程</li>
+          <li>全程穿救生衣，儿童必须使用合适尺码</li>
+          <li>不要远离船只，不要游向孤立的礁石</li>
+          <li>警惕离岸流；若被卷入，顺流平行游回岸边</li>
+          <li>饮用瓶装水，避免食用不明来源的海鲜</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Drowning: check consciousness, open airway, rescue breathing & chest compression (30:2)</li>
+          <li>Jellyfish sting: rinse with vinegar (not fresh water), remove tentacles, take pain relief</li>
+          <li>Dehydration: move to shade, sip oral rehydration solution, avoid ice water</li>
+          <li>Keep injured person warm and seek medical attention as soon as possible</li>
+          {% else %}
+          <li>溺水：检查意识、开放气道、人工呼吸+胸外按压（30:2）</li>
+          <li>水母蜇伤：用醋冲洗（不用淡水），清除触手，服用止痛药</li>
+          <li>中暑脱水：移至阴凉处，小口补充口服补液盐，忌冰水</li>
+          <li>受伤人员保持保暖，尽快就医</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-snorkel">
+        <i class="bi bi-droplet text-primary me-2"></i>{{ t('safety.act.snorkel') }}
+      </button>
+    </h2>
+    <div id="act-snorkel" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Snorkeling: buddy system; never snorkel alone; check mask seal before entering water</li>
+          <li>Diving: always use certified operator; ensure DAN insurance; do not dive beyond certification depth</li>
+          <li>Follow dive table strictly; do not fly within 24 hours after diving</li>
+          <li>Watch for jellyfish, sea urchins, fire coral; wear protective gear</li>
+          <li>Avoid touching or standing on coral; it's fragile and can cause cuts</li>
+          <li>Surface immediately if you feel disoriented or short of breath</li>
+          {% else %}
+          <li>浮潜：结伴同行，不单独下水；下水前检查面罩密封性</li>
+          <li>潜水：选择 PADI/SSI 认证机构，确保 DAN 保险，不超执照深度</li>
+          <li>严格遵守潜水表，潜水后 24 小时内不乘坐飞机</li>
+          <li>注意水母、海胆、火珊瑚，穿戴防护装备</li>
+          <li>不触摸珊瑚，不踩踏珊瑚，珊瑚易断且会刺伤</li>
+          <li>出现头晕、呼吸困难立即上浮</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Cuts from coral: clean with fresh water, apply antiseptic, monitor for infection</li>
+          <li>Decompression sickness: immediate hyperbaric chamber treatment; do NOT delay</li>
+          <li>Panic in water: signal buddy, float on back, breathe slowly; do NOT swim aimlessly</li>
+          <li>Seasickness: take medication 1 hour before departure, stay hydrated</li>
+          {% else %}
+          <li>珊瑚划伤：淡水清洁伤口，涂消毒剂，注意感染</li>
+          <li>减压病：立即送高压氧舱治疗，不可延误</li>
+          <li>水中惊慌：示意同伴，仰面漂浮，缓慢呼吸</li>
+          <li>晕船：出发前 1 小时服药，注意补水</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-jungle">
+        <i class="bi bi-tree text-success me-2"></i>{{ t('safety.act.jungle') }}
+      </button>
+    </h2>
+    <div id="act-jungle" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Always go with a local guide; never trek alone in unfamiliar jungle</li>
+          <li>Wear long pants and long sleeves to protect against leeches and thorns</li>
+          <li>Use insect repellent (DEET); check body for ticks/leeches every hour</li>
+          <li>Stay on marked trails; if lost, stay put and signal for help</li>
+          <li>Carry: sufficient water, energy food, first aid kit, whistle, compass</li>
+          <li>Beware of wildlife: do not feed or approach monkeys, snakes, or other animals</li>
+          {% else %}
+          <li>必须跟随当地向导，不单独进入陌生丛林</li>
+          <li>穿长裤长袖，防水蛭、荆棘和蚊虫叮咬</li>
+          <li>使用 DEET 驱蚊液，每小时检查身体有无寄生虫</li>
+          <li>走标记路线，迷路时原地不动，发出求救信号</li>
+          <li>必备：充足饮水、能量食物、急救包、口哨、指南针</li>
+          <li>不投喂野生动物，远离猴子、蛇等动物</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Leech bite: do not pull off; apply salt or alcohol to make it drop; clean wound</li>
+          <li>Snake bite: keep calm, immobilize limb, do NOT try to suck venom; seek medical help immediately</li>
+          <li>Heat exhaustion: rest in shade, sip electrolyte solution, fan and cool with damp cloth</li>
+          <li>Deep cut: apply direct pressure with clean cloth; elevate limb; seek medical attention</li>
+          {% else %}
+          <li>水蛭叮咬：不要硬拉，用盐或酒精刺激使其脱落，清洁伤口</li>
+          <li>蛇咬伤：保持冷静，固定伤肢，不要吸毒液，立即就医</li>
+          <li>中暑：阴凉处休息，补充电解质溶液，用湿布降温</li>
+          <li>深切割伤：干净布块直接加压止血，抬高患肢，就医</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-boat">
+        <i class="bi bi-water text-warning me-2"></i>{{ t('safety.act.boat') }}
+      </button>
+    </h2>
+    <div id="act-boat" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Check boat condition; avoid overloaded or unseaworthy vessels</li>
+          <li>Life jackets must be available and worn; know their location on board</li>
+          <li>Listen to safety briefing; identify emergency exits & muster points</li>
+          <li>Mind the gap when boarding/alighting; watch your step on wet decks</li>
+          <li>River rafting: wear helmet and life jacket; follow guide instructions</li>
+          <li>Do not stand up or lean over railings while boat is moving</li>
+          {% else %}
+          <li>检查船只状况，不乘坐超载或破损的船只</li>
+          <li>确认救生衣可用，了解存放位置并全程穿戴</li>
+          <li>听取安全讲解，了解紧急出口和集合点</li>
+          <li>上下船注意缝隙，湿滑甲板小心行走</li>
+          <li>漂流时戴头盔穿救生衣，听从向导指挥</li>
+          <li>船只行驶中不站立、不倚靠栏杆</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Man overboard: shout "MAN OVERBOARD", throw life ring, do NOT jump in; inform captain</li>
+          <li>Hypothermia: move to warm area, remove wet clothes, wrap in blankets; do NOT rub skin</li>
+          <li>Burns from hot drinks/engine: cool with running water for 10+ minutes; do NOT apply ointment</li>
+          <li>Seasickness: lie down, close eyes, breathe deeply; antiemetics available</li>
+          {% else %}
+          <li>落水：呼喊"有人落水"，投掷救生圈，不要跳水，通知船长</li>
+          <li>失温：移至温暖处，脱湿衣，毛毯包裹，不要揉搓皮肤</li>
+          <li>烫伤：流动冷水冲洗 10 分钟以上，不涂药膏</li>
+          <li>晕船：躺下闭眼深呼吸，可用止吐药</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-temple">
+        <i class="bi bi-building text-primary me-2"></i>{{ t('safety.act.temple') }}
+      </button>
+    </h2>
+    <div id="act-temple" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Dress modestly: shoulders and knees covered; carry a sarong for shoulder covering</li>
+          <li>Remove shoes before entering temple; do not step on door threshold with feet</li>
+          <li>Keep voice low; no loud talking or flash photography inside sanctuaries</li>
+          <li>Do not touch Buddha images or sacred objects; do not sit with feet pointing to Buddha</li>
+          <li>Be cautious of scammers offering "free" blessings or requiring donations</li>
+          <li>Respect local customs; do not show affection in public near temples</li>
+          {% else %}
+          <li>着装端庄：遮肩盖膝，随身带纱丽披肩</li>
+          <li>进寺脱鞋，不踩门槛</li>
+          <li>保持安静，殿内不大声喧哗、不用闪光灯拍照</li>
+          <li>不触摸佛像，不脚对佛像坐姿</li>
+          <li>警惕"免费"祈福或强制捐款的骗局</li>
+          <li>尊重当地习俗，寺庙附近不公开亲密行为</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Heat stroke in temple: move to shade, fan, sip water; temple is often hot and crowded</li>
+          <li>Cuts from sharp stairs/statues: clean and bandage; watch for tetanus risk</li>
+          <li>Fainting due to heat/dehydration: lay down, elevate legs, sponge with cool water</li>
+          {% else %}
+          <li>寺庙内中暑：移至阴凉处，扇风补水，寺庙通常闷热拥挤</li>
+          <li>锋利台阶/雕像划伤：清洁包扎，注意破伤风风险</li>
+          <li>高温脱水昏厥：躺下抬腿，凉水擦拭降温</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#act-market">
+        <i class="bi bi-cart text-success me-2"></i>{{ t('safety.act.market') }}
+      </button>
+    </h2>
+    <div id="act-market" class="accordion-collapse collapse" data-bs-parent="#safetyActs">
+      <div class="accordion-body">
+        <h6 class="fw-bold text-danger"><i class="bi bi-clipboard-check me-1"></i>{{ t('safety.notes') }}</h6>
+        <ul class="small mb-3">
+          {% if is_en %}
+          <li>Carry small change; use a secure money belt; avoid displaying large sums</li>
+          <li>Bargain respectfully; never show anger; walk away if price is too high</li>
+          <li>Watch belongings in crowds; use a cross-body bag or wear backpack in front</li>
+          <li>Drink only sealed bottled water; avoid raw juices from street vendors</li>
+          <li>Check fruit/dessert is fresh; avoid food left at room temperature for long</li>
+          <li>Be aware of tourist scams: "gem special", "tailor discount", etc.</li>
+          {% else %}
+          <li>带零钱，用安全腰包，不露财</li>
+          <li>礼貌砍价，不生气，价格不合适就走</li>
+          <li>人多的地方看好随身物品，用斜挎包或前背双肩包</li>
+          <li>只喝密封瓶装水，不喝街头鲜榨果汁</li>
+          <li>注意水果/甜品新鲜度，不吃长时间室温放置的食物</li>
+          <li>警惕旅游陷阱："宝石特价"、"裁缝折扣"等</li>
+          {% endif %}
+        </ul>
+        <h6 class="fw-bold text-danger"><i class="bi bi-heart-pulse me-1"></i>{{ t('safety.firstaid') }}</h6>
+        <ul class="small mb-0">
+          {% if is_en %}
+          <li>Food poisoning: drink rehydration solution; seek medical care if severe</li>
+          <li>Cut from broken glass/spice: clean with water; apply pressure bandage</li>
+          <li>Lost in crowd: find designated meeting point; do NOT panic; ask vendor/stall owner for help</li>
+          {% else %}
+          <li>食物中毒：喝补液盐，严重时就医</li>
+          <li>玻璃/香料割伤：清水清洁，加压包扎</li>
+          <li>人群中走散：找约定集合点，不慌张，找摊主求助</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 出行准备清单 —— #}
+<h4 class="fw-bold mb-1" id="section-checklist"><i class="bi bi-check2-square text-success me-2"></i>{{ t('safety.checklist') }}</h4>
+<p class="text-muted mb-4">{{ t('safety.checklist.sub') }}</p>
+
+<div class="row g-3 mb-5">
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-file-earmark-text me-1"></i>{{ t('safety.checklist.doc') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '护照（有效期≥6个月，空白页≥2页）' if not is_en else 'Passport (validity ≥6mo, 2+ blank pages)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '签证/电子签确认页' if not is_en else 'Visa / e-Visa confirmation' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '往返机票订单、酒店预订单' if not is_en else 'Round-trip flight & hotel bookings' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '护照/签证复印件与电子版云盘备份' if not is_en else 'Passport/visa copies + cloud backup' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '驾照 + IDP 国际驾照认证件' if not is_en else 'Driver license + IDP (if driving)' }}</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-danger mb-3"><i class="bi bi-capsule-pill me-1"></i>{{ t('safety.checklist.med') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '肠胃药（蒙脱石散、胃药）' if not is_en else 'GI medicine (smectite, antacid)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '退烧药（布洛芬/对乙酰氨基酚）' if not is_en else 'Fever reducer (ibuprofen/paracetamol)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '抗过敏药（氯雷他定）' if not is_en else 'Antihistamine (loratadine)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '驱蚊液（DEET 30%+）、创可贴' if not is_en else 'Insect repellent (DEET 30%+), band-aids' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '个人慢性病处方药（附英文处方）' if not is_en else 'Chronic meds + English prescription' }}</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-warning mb-3"><i class="bi bi-cash-stack me-1"></i>{{ t('safety.checklist.finance') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '少量美元现金（应急）+ 当地货币' if not is_en else 'USD cash (emergency) + local currency' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '2 张不同银行的双币信用卡' if not is_en else '2 multi-currency cards from different banks' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '旅行保险保单号（含医疗运送）' if not is_en else 'Insurance policy number (incl. med-evac)' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '应急现金分多口袋存放' if not is_en else 'Emergency cash split across pockets' }}</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-info mb-3"><i class="bi bi-wifi me-1"></i>{{ t('safety.checklist.comms') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '境外电话卡/随身 WiFi + 充电宝' if not is_en else 'Local SIM / portable WiFi + power bank' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '中国驻当地使领馆电话、地址' if not is_en else 'Local PRC embassy/consulate contact' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '12308 领保热线存手机' if not is_en else 'Save 12308 consular hotline' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '与家人约定每日联络时段' if not is_en else 'Agree daily check-in time with family' }}</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-success mb-3"><i class="bi bi-umbrella me-1"></i>{{ t('safety.checklist.safety') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ 'SPF50+ PA++++ 防晒霜（每 2h 补涂）' if not is_en else 'SPF50+ PA++++ sunscreen (reapply q2h)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '宽檐遮阳帽、UV400 墨镜' if not is_en else 'Wide-brim hat, UV400 sunglasses' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '轻便雨衣/折叠伞（雨季必备）' if not is_en else 'Lightweight raincoat/foldable umbrella' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '防滑拖鞋/沙滩鞋、潜水鞋' if not is_en else 'Non-slip sandals, water shoes' }}</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm rounded-4 h-100">
+      <div class="card-body">
+        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-briefcase-medical me-1"></i>{{ t('safety.checklist.emergency') }}</h6>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '个人急救包（创可贴/碘伏/止血带）' if not is_en else 'Personal first-aid kit (bandage, antiseptic, tourniquet)' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '口哨、手电筒（+电池）、反光背心' if not is_en else 'Whistle, flashlight (+batteries), reflective vest' }}</label></div>
+        <div class="form-check small mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '湿巾、消毒凝胶、电解质饮料' if not is_en else 'Wet wipes, sanitizer, electrolyte drinks' }}</label></div>
+        <div class="form-check small"><input class="form-check-input" type="checkbox"><label class="form-check-label">{{ '紧急联系人名片（中英文）' if not is_en else 'Emergency contact card (CN/EN)' }}</label></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# —— 免责声明 —— #}
+<div class="text-center text-muted small py-3">
+  <i class="bi bi-info-circle me-1"></i>{{ t('safety.disclaimer') }}
+</div>
+
+<script>
+  const emergencyInfoZh = `【中国领事保护热线（24小时）】
+12308（境内） / +86-10-12308（境外）
+外交部全球领保中心：+86-10-64629100
+
+【各国应急电话】
+🇹🇭 泰国：报警 191 / 急救 1668 / 旅游警察 1155
+🇻🇳 越南：报警 113 / 急救 115 / 火警 114
+🇲🇾 马来西亚：报警/急救 999 / 旅游警察 03-2149 6590
+🇸🇬 新加坡：报警/急救/消防 999
+🇰🇭 柬埔寨：报警 117 / 急救 119
+🇱🇦 老挝：报警 191 / 急救 195
+🇮🇩 印尼：报警 110 / 急救 118 / 搜救 115
+🇵🇭 菲律宾：报警 117 / 急救 112 / 火警 113
+🇲🇲 缅甸：报警 199 / 急救 192
+🇧🇳 文莱：报警/急救 991 / 火警 995
+
+【出行准备清单】
+1. 护照（有效期≥6个月）、签证复印件、云盘备份
+2. 旅行保险（含医疗运送）保单号
+3. 常用药品（肠胃药、退烧药、抗过敏药）
+4. 驱蚊液（DEET）、防晒霜（SPF50+）
+5. 少量现金（美元/当地货币）、双币信用卡
+6. 与家人每日联络时段约定
+7. 中国驻当地使领馆地址与电话
+8. 急救包、口哨、手电筒`;
+
+  const emergencyInfoEn = `【China Consular Protection (24/7)】
+12308 (from China) / +86-10-12308 (from overseas)
+MFA Global Consular Center: +86-10-64629100
+
+【National Emergency Numbers】
+🇹🇭 Thailand: Police 191 / Ambulance 1668 / Tourist Police 1155
+🇻🇳 Vietnam: Police 113 / Ambulance 115 / Fire 114
+🇲🇾 Malaysia: Police/Ambulance 999 / Tourist Police 03-2149 6590
+🇸🇬 Singapore: Police/Ambulance/Fire 999
+🇰🇭 Cambodia: Police 117 / Ambulance 119
+🇱🇦 Laos: Police 191 / Ambulance 195
+🇮🇩 Indonesia: Police 110 / Ambulance 118 / SAR 115
+🇵🇭 Philippines: Police 117 / Ambulance 112 / Fire 113
+🇲🇲 Myanmar: Police 199 / Ambulance 192
+🇧🇳 Brunei: Police/Ambulance 991 / Fire 995
+
+【Pre-Trip Checklist】
+1. Passport (≥6mo validity), visa copies, cloud backup
+2. Travel insurance policy (incl. medical evacuation)
+3. Common meds (GI, fever, antihistamine)
+4. Insect repellent (DEET), sunscreen (SPF50+)
+5. Small cash (USD/local), multi-currency cards
+6. Daily check-in time agreed with family
+7. Local PRC embassy/consulate address & phone
+8. First-aid kit, whistle, flashlight`;
+
+  const copyBtn = document.getElementById('copyEmergencyBtn');
+  if (copyBtn) {
+    copyBtn.classList.remove('d-none');
+    copyBtn.addEventListener('click', () => {
+      const lang = document.documentElement.lang || 'zh';
+      const text = lang === 'en' ? emergencyInfoEn : emergencyInfoZh;
+      const doneMsg = lang === 'en' ? 'Copied to clipboard!' : '已复制到剪贴板！';
+      navigator.clipboard.writeText(text).then(() => {
+        const original = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>' + doneMsg;
+        setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        copyBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>' + doneMsg;
+        setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+      });
+    });
+  }
+
+  // Smooth scroll for anchor nav
+  document.querySelectorAll('#safetyNav a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+{% endblock %}

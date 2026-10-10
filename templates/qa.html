@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ t('qa.title') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-1"><i class="bi bi-chat-dots-fill text-primary me-2"></i>{{ t('qa.title') }}</h3>
+<p class="text-muted mb-4">{{ t('qa.subtitle') }}</p>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm rounded-4 chat-card">
+      <div class="card-body chat-body p-4">
+        {% if not history %}
+        <div class="text-center text-muted py-4">
+          <i class="bi bi-robot fs-1"></i>
+          <p class="mt-2">{{ lang=='en' and 'Ask me anything about SE-Asia weather.' or '关于东南亚气象，随便问～' }}</p>
+        </div>
+        {% endif %}
+        {% for turn in history %}
+        <div class="chat-user mb-3">
+          <div class="bubble-user">{{ turn.q }}</div>
+        </div>
+        <div class="chat-bot mb-3">
+          <div class="bubble-bot">
+            {% if turn.anim %}
+            <div class="anim-stage mb-2 {{ turn.anim }}">
+              <div class="anim-sun"></div>
+              <div class="anim-cloud"></div>
+              <div class="anim-raindrops"></div>
+            </div>
+            {% endif %}
+            {{ turn.a }}
+            <div class="text-end mt-1">
+              {% if turn.source == 'llm' %}<span class="badge bg-success">LLM</span>
+              {% else %}<span class="badge bg-secondary">{{ lang=='en' and 'keyword' or '关键词' }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="card-footer bg-white border-0 p-3">
+        <form method="post" action="/qa">
+          <div class="input-group">
+            <input type="text" name="question" class="form-control" placeholder="{{ t('qa.placeholder') }}" required>
+            <button class="btn btn-primary" type="submit"><i class="bi bi-send me-1"></i>{{ t('qa.ask') }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    {% if live_case %}
+    <div class="card border-0 shadow-sm rounded-4 mb-3">
+      <div class="card-body">
+        <h6 class="fw-bold"><i class="bi bi-thermometer-half text-danger me-1"></i>{{ t('qa.live_case') }}
+          {% if llm_enabled %}<span class="badge bg-success float-end">LLM {{ lang=='en' and 'on' or '已启用' }}</span>
+          {% else %}<span class="badge bg-secondary float-end">LLM {{ lang=='en' and 'off' or '未启用' }}</span>{% endif %}
+        </h6>
+        <ul class="list-unstyled mb-0 small">
+          <li>{{ lang=='en' and 'City' or '城市' }}: <b>{{ live_case.city }}</b></li>
+          <li>{{ t('route.tmp') }}: <b>{{ live_case.tmp }}℃</b></li>
+          <li>{{ t('route.pre') }}: <b>{{ live_case.pre }}mm</b></li>
+          <li>{{ t('route.wind') }}: <b>{{ live_case.wind }}</b> · {{ t('route.vis') }}: <b>{{ live_case.vis }}km</b></li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body">
+        <h6 class="fw-bold mb-2"><i class="bi bi-lightbulb text-warning me-1"></i>{{ t('qa.example') }}</h6>
+        <div class="d-grid gap-2">
+          {% for ex in examples %}
+          <form method="post" action="/qa">
+            <button type="submit" name="question" value="{{ ex }}" class="btn btn-outline-secondary text-start btn-sm">{{ ex }}</button>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

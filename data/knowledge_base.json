@@ -1,0 +1,56 @@
+{
+  "convective_rain": {
+    "trigger": {"condition": "rain", "min_pre": 5},
+    "title": {"zh": "对流雨成因", "en": "Convective rain formation"},
+    "text": {
+      "zh": "东南亚热带地区午后地表被强太阳辐射加热，近地层空气急剧升温膨胀上升，水汽在强烈对流中凝结成积雨云，常在傍晚前后骤降短时强降水，即“对流雨”，来得快去得也快。",
+      "en": "In tropical SE Asia, afternoon solar heating warms the surface; warm moist air rises rapidly, condenses into cumulonimbus in strong convection, and often dumps brief intense rain toward evening — convective rain that comes and goes quickly."
+    },
+    "tip": {"zh": "建议将户外活动安排在上午，午后备伞；对流雨通常持续30-60分钟。", "en": "Schedule outdoor activities in the morning, carry an umbrella after noon; convective rain usually lasts 30–60 min."}
+  },
+  "mountain_inversion": {
+    "trigger": {"condition": "fog", "geography": "mountain"},
+    "title": {"zh": "山地逆温与晨雾", "en": "Mountain inversion & morning fog"},
+    "text": {
+      "zh": "夜间山谷冷空气下沉聚集，形成“冷湖”并出现气温随高度增加的逆温层，水汽在谷底饱和凝结成雾。日出后地面受热、逆温破坏，雾逐渐抬升消散。",
+      "en": "At night cold air drains into valleys forming a 'cold lake' with a temperature inversion (warmer aloft); moisture saturates into fog. After sunrise heating breaks the inversion and fog lifts."
+    },
+    "tip": {"zh": "晨雾时段能见度低，山路湿滑注意行车；雾散后通透度极佳适合拍摄。", "en": "Low visibility on slippery mountain roads in fog; after it lifts, clarity is excellent for photography."}
+  },
+  "monsoon": {
+    "trigger": {"condition": "hot", "min_tmp": 28},
+    "title": {"zh": "热带季风", "en": "Tropical monsoon"},
+    "text": {
+      "zh": "中南半岛受海陆热力差异驱动，形成干湿季分明的季风气候：5-10月西南季风带来丰沛降水（雨季），11-4月东北季风干凉少雨（旱季）。",
+      "en": "The Indochina Peninsula is driven by land–sea thermal contrast into a monsoon climate with distinct wet/dry seasons: SW monsoon brings heavy rain May–Oct (wet), NE monsoon is dry and cool Nov–Apr (dry)."
+    },
+    "tip": {"zh": "雨季出行关注台风与强对流；旱季阳光强注意防晒补水。", "en": "In wet season watch typhoons and convection; in dry season the sun is strong—use sun protection and hydrate."}
+  },
+  "typhoon": {
+    "trigger": {"condition": "storm"},
+    "title": {"zh": "南海台风", "en": "South China Sea typhoon"},
+    "text": {
+      "zh": "台风是发生在热带洋面的强烈气旋，需较高海温(≥26.5℃)与较小垂直风切变。南海台风多见于6-11月，可带来狂风暴雨与风暴增水，影响越南中北部及泰国湾沿岸。",
+      "en": "Typhoons are intense tropical cyclones over warm oceans (SST≥26.5°C) with low vertical wind shear. South China Sea typhoons peak Jun–Nov, bringing destructive wind, rain and storm surge to central-northern Vietnam and the Gulf of Thailand."
+    },
+    "tip": {"zh": "台风影响期避免出海与跳岛，关注港口停航与航班变动。", "en": "Avoid sea trips and island hopping during typhoon influence; watch port and flight disruptions."}
+  },
+  "haze_burning": {
+    "trigger": {"condition": "haze"},
+    "title": {"zh": "跨境烧山雾霾", "en": "Cross-border burning haze"},
+    "text": {
+      "zh": "旱季中南半岛部分地区存在刀耕火种与秸秆焚烧，细颗粒物(PM2.5)在稳定大气下积聚形成跨境雾霾，能见度下降、呼吸道刺激增强，常随风向扩散至邻国。",
+      "en": "In the dry season, slash-and-burn and crop-residue burning in parts of Indochina releases PM2.5 that accumulates under stable air into cross-border haze, reducing visibility and irritating airways, drifting with the wind."
+    },
+    "tip": {"zh": "雾霾严重时减少户外剧烈运动，佩戴N95口罩，关注空气质量指数。", "en": "Reduce strenuous outdoor activity in heavy haze, wear an N95 mask, and monitor the air quality index."}
+  },
+  "sea_breeze": {
+    "trigger": {"condition": "coast"},
+    "title": {"zh": "海陆风", "en": "Sea-land breeze"},
+    "text": {
+      "zh": "白天陆地升温快于海面，陆面空气上升、海上较凉空气流向陆地形成海风；夜间相反形成陆风。海岸城市傍晚海风带来凉爽，是户外活动黄金时段。",
+      "en": "By day land heats faster than the sea; warm air rises over land and cool sea air flows in (sea breeze). At night the reverse (land breeze). Coastal evenings cooled by the sea breeze are prime outdoor time."
+    },
+    "tip": {"zh": "傍晚海边体感最佳，但近岸浪与离岸流需留意安全。", "en": "Evenings by the sea feel best, but watch nearshore waves and rip currents for safety."}
+  }
+}

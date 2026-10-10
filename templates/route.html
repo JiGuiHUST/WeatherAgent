@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+{% block title %}{{ t('route.title') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-1"><i class="bi bi-signpost-2-fill text-primary me-2"></i>{{ t('route.title') }}</h3>
+<p class="text-muted mb-4">{{ t('route.subtitle') }}</p>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <form method="post" action="/route" id="routeForm">
+      <div class="mb-3">
+        <label class="form-label fw-semibold">{{ t('route.cities') }}</label>
+        <div class="d-flex flex-wrap gap-2 align-items-center" id="cityCheckboxes">
+          {% for c in cities %}
+          <div class="city-checkbox-pill d-inline-flex align-items-center border rounded-pill px-3 py-1"
+               data-city="{{ c }}">
+            <input class="form-check-input me-2" type="checkbox" name="cities" value="{{ c }}" id="c_{{ loop.index }}"
+                   {% if c in selected %}checked{% endif %}>
+            <label class="form-check-label" for="c_{{ loop.index }}">{{ c }}</label>
+            <button type="button" class="btn btn-sm btn-link py-0 px-1 ms-1 select-spots-btn"
+                    data-city="{{ c }}" title="{{ t('route.spots.btn_tip') }}">
+              <i class="bi bi-pin-map"></i><span class="badge bg-secondary ms-1 spot-count" data-city="{{ c }}">0</span>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-text small">{{ t('route.spots.tip') }}</div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">{{ t('route.start_date') }}</label>
+          <input type="text" class="form-control" name="start" placeholder="YYYYMMDD / 春季"
+                 value="{{ start or '' }}">
+          <div class="form-text small">{{ lang=='en' and 'Data year' or '数据年份' }}: {{ data_year }}</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">{{ t('route.days_each') }}</label>
+          <input type="number" class="form-control" name="days" min="1" max="5" value="{{ days or 2 }}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">{{ t('route.crowd') }}</label>
+          <select class="form-select" name="crowd">
+            {% for v, lb in crowds %}
+            <option value="{{ v }}" {% if v == crowd %}selected{% endif %}>{{ lb }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <!-- 已选景点列表（JSON 字符串），由 main.js 维护 -->
+      <input type="hidden" name="selected_spots" id="selectedSpotsInput" value="{{ selected_spots_json or '[]' }}">
+      <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-magic me-1"></i>{{ t('common.submit') }}</button>
+        <button type="reset" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise me-1"></i>{{ t('common.reset') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 景点选择对话框 -->
+<div class="modal fade" id="spotModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-pin-map me-1 text-primary"></i>
+          <span id="spotModalCity">{{ t('route.spots.modal_title') }}</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="spotModalLoading" class="text-center py-4 text-muted">
+          <div class="spinner-border spinner-border-sm me-1" role="status"></div>{{ t('route.spots.loading') }}
+        </div>
+        <div id="spotModalEmpty" class="text-center py-4 text-muted d-none">{{ t('route.spots.empty') }}</div>
+        <div id="spotModalList" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="text-muted">{{ t('route.spots.modal_tip') }}</small>
+            <div class="btn-group btn-group-sm">
+              <button type="button" class="btn btn-outline-secondary" id="spotSelectAll"><i class="bi bi-check2-all me-1"></i>{{ t('route.spots.select_all') }}</button>
+              <button type="button" class="btn btn-outline-secondary" id="spotSelectNone"><i class="bi bi-x-circle me-1"></i>{{ t('route.spots.select_none') }}</button>
+            </div>
+          </div>
+          <div id="spotCheckboxes" class="row g-2"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span class="text-muted small me-auto"><i class="bi bi-info-circle me-1"></i>{{ t('route.spots.selected_count') }}: <b id="spotModalCount">0</b></span>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ t('common.back') }}</button>
+        <button type="button" class="btn btn-primary" id="confirmSpots"><i class="bi bi-check2 me-1"></i>{{ t('common.submit') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if result %}
+<hr class="my-4">
+
+<!-- 总览图 -->
+{% if result.plot_url %}
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-3 text-center">
+    <img src="{{ result.plot_url }}" class="img-fluid rounded-3" alt="timeline">
+  </div>
+</div>
+{% endif %}
+
+<!-- 总计 -->
+<div class="d-flex flex-wrap gap-2 mb-4 reveal">
+  <span class="stat-chip"><i class="bi bi-emoji-smile"></i>{{ result.totals.pleasant_hours }} {{ lang=='en' and 'pleasant hrs' or '舒适小时' }}</span>
+  <span class="stat-chip"><i class="bi bi-umbrella"></i>{{ result.totals.rainy_hours }} {{ lang=='en' and 'rainy hrs' or '多雨小时' }}</span>
+  <span class="stat-chip"><i class="bi bi-thermometer-sun"></i>{{ result.totals.hot_hours }} {{ lang=='en' and 'hot hrs' or '炎热小时' }}</span>
+  <span class="stat-chip"><i class="bi bi-calendar-range"></i>{{ result.start_date }} · {{ result.days_each }}{{ lang=='en' and 'd/city' or '天/城' }}</span>
+  <span class="stat-chip"><i class="bi bi-database-check"></i>
+    {% if lang=='en' %}
+      {{ result.totals.days_in_range }}/{{ result.totals.total_days }} within {{ result.totals.max_forecast_days }}d
+    {% else %}
+      时效内 {{ result.totals.days_in_range }}/{{ result.totals.total_days }} 天（上限 {{ result.totals.max_forecast_days }} 天）
+    {% endif %}
+  </span>
+</div>
+
+<!-- 数据时效警告 -->
+{% if result.warnings %}
+<div class="alert alert-warning border-warning shadow-sm rounded-4 mb-4 reveal">
+  <h6 class="fw-bold mb-2 text-warning-emphasis">
+    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+    {{ lang=='en' and 'Data Coverage Notice' or '数据覆盖说明' }}
+  </h6>
+  <ul class="mb-0 small">
+    {% for w in result.warnings %}
+    <li>{{ w }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- 逐时气象总览 -->
+<h5 class="fw-bold mb-3"><i class="bi bi-table me-1 text-primary"></i>{{ t('route.forecast') }}</h5>
+{% for seg in result.segments %}
+<div class="card border-0 shadow-sm rounded-4 mb-3 reveal">
+  <div class="card-header bg-white border-0 fw-bold py-3">
+    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ seg.city }} <span class="text-muted small">({{ seg.country }})</span>
+  </div>
+  <div class="card-body p-0">
+    {% for d in seg.days %}
+    <div class="px-3 pt-3 d-flex flex-wrap align-items-center gap-2">
+      <div class="fw-semibold text-primary small me-2">{{ d.date }} · {{ d.weekday }}</div>
+      <i class="bi {{ weather_icon(d.tag) }} fs-5 text-warning me-1"></i>
+      <span class="badge bg-light text-secondary">{{ d.tag }}</span>
+      <span class="text-muted small ms-2">{{ t('common.source') }}:
+        {% if d.used_climate %}
+          <span class="badge rounded-pill bg-warning text-dark ms-1">
+            <i class="bi bi-cloud-slash me-1"></i>{{ d.source }}
+          </span>
+        {% else %}
+          <b>{{ d.source }}</b>
+        {% endif %}
+      </span>
+      {% if d.out_of_range %}
+      <span class="badge rounded-pill bg-danger text-white small ms-auto" title="{{ lang=='en' and 'Exceeds GOWFS 168h forecast range' or '已超出 GOWFS 168h 预报时效' }}">
+        <i class="bi bi-exclamation-octagon me-1"></i>
+        {{ lang=='en' and 'Forecast out of range +' ~ d.days_over ~ 'd' or '超出预报时效 +' ~ d.days_over ~ '天' }}
+      </span>
+      {% endif %}
+    </div>
+    <div class="table-responsive px-2 pb-2">
+      <table class="table table-sm table-bordered align-middle mb-0 forecast-table">
+        <thead class="table-light">
+          <tr>
+            <th>{{ t('route.hour') }}</th><th>{{ t('route.tmp') }}</th><th>{{ t('route.pre') }}</th>
+            <th>{{ t('route.wind') }}</th><th>{{ t('route.vis') }}</th><th>{{ t('route.comfort') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in d.rows %}
+          {% if r.hour is not none %}
+          <tr>
+            <td>{{ r.time }}</td>
+            <td class="tmp-{{ r.tmp|temp_cls }}">{{ r.tmp }}</td>
+            <td class="{{ r.pre and r.pre>=5 and 'text-primary fw-semibold' or '' }}">{{ r.pre }}</td>
+            <td>{{ r.wind }}</td>
+            <td>{{ r.vis }}</td>
+            <td><span class="comfort-badge comfort-{{ r.comfort }}"><i class="bi {{ comfort_icon(r.comfort) }} me-1"></i>{{ r.comfort }}</span></td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+<!-- 已选景点精确预报（异步加载）-->
+{% if result.has_selected_spots %}
+<h5 class="fw-bold mb-3 mt-4"><i class="bi bi-pin-map-fill me-1 text-info"></i>{{ t('route.spots.forecast_title') }}</h5>
+<div id="spots-container">
+  <div class="card border-0 shadow-sm rounded-4 mb-3" style="border:1px dashed #b6e0fa;">
+    <div class="card-body py-4">
+      <div class="d-flex align-items-start gap-3">
+        <div class="spinner-grow text-info flex-shrink-0" role="status"><span class="visually-hidden">Loading</span></div>
+        <div class="flex-grow-1">
+          <div class="fw-semibold text-info">{{ t('route.spots.loading_forecast') }}</div>
+          <div class="small text-muted mt-1">
+            <span class="thinking-dots-inline"><span></span><span></span><span></span></span>
+            {{ t('route.spots.loading_forecast_tip') }}
+          </div>
+        </div>
+        <button id="spots-retry-btn" type="button" class="btn btn-sm btn-outline-secondary d-none">
+          <i class="bi bi-arrow-repeat me-1"></i>{{ t('route.itin.retry') }}
+        </button>
+      </div>
+      <div id="spots-error-msg" class="alert alert-warning d-none mt-3 small mb-0"></div>
+    </div>
+  </div>
+  <div id="spots-skeleton" class="row g-3">
+    {% for _ in range(2) %}
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-header bg-white border-0 py-3 placeholder-glow">
+          <span class="placeholder col-4 fw-bold"></span>
+          <span class="placeholder col-3 small ms-2"></span>
+          <span class="placeholder col-2 float-end rounded-pill"></span>
+        </div>
+        <div class="card-body">
+          {% for _ in range(3) %}
+          <div class="mb-2 placeholder-glow">
+            <div class="d-flex gap-2 mb-1">
+              <span class="placeholder col-2 small rounded"></span>
+              <span class="placeholder col-2 small rounded"></span>
+              <span class="placeholder col-2 small rounded"></span>
+              <span class="placeholder col-2 small rounded"></span>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="placeholder col-10 small rounded mt-2"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- 特色景观概率 -->
+{% if result.landscapes %}
+<h5 class="fw-bold mb-3 mt-4"><i class="bi bi-image me-1 text-warning"></i>{{ t('route.landscape') }}</h5>
+<div class="row g-3">
+  {% for l in result.landscapes %}
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4 h-100 reveal">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <h6 class="fw-bold mb-1">{{ l.name }} <span class="text-muted small">· {{ l.city }}</span></h6>
+          <span class="fw-bold" :style="{ color: prob_color(l.prob) }">{{ l.prob }}% · {{ prob_level(l.prob) }}</span>
+        </div>
+        <div class="prob-wrap my-2">
+          <div class="prob-bar":style="{width: `${l.prob}%`,background: l.prob >=75 ? 'high' : (l.prob >=50 ? 'mid' : 'low')}"></div>
+        </div>
+        <div class="small text-muted mb-2"><i class="bi bi-clock me-1"></i>{{ t('land.window') }}: {{ l.window }}{% if l.vis_km %} · {{ t('route.vis') }} {{ l.vis_km }}km{% endif %}</div>
+        <div class="small"><i class="bi bi-shield-exclamation me-1 text-danger"></i>{{ t('land.risk') }}: {{ l.risk_label }}</div>
+        <hr class="my-2">
+        <div class="small text-secondary"><b>{{ t('land.principle') }}:</b> {{ lang=='en' and l.principle_en or l.principle }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-light border">{{ t('land.none') }}</div>
+{% endif %}
+
+<!-- 分人群行程 -->
+<h5 class="fw-bold mb-3 mt-4">
+  <i class="bi bi-calendar-check me-1 text-success"></i>{{ t('route.itinerary') }}
+  <!-- crowd + source 徽章：异步加载后由 JS 替换内容 -->
+  <span id="itin-crowd-badge" class="badge bg-secondary">{{ crowd }}</span>
+  <span id="itin-source-badge" class="badge d-none"></span>
+  <!-- 重新生成按钮：结果到达后显示 -->
+  <button id="itin-refresh-btn" type="button"
+          class="btn btn-sm btn-outline-primary float-end d-none"
+          style="display:none;">
+    <i class="bi bi-arrow-clockwise me-1"></i>{{ t('route.itin.refresh') }}
+  </button>
+</h5>
+
+<!-- 道路风险：由 JS 回填；异步失败时规则回退也会给 -->
+<div id="itin-road-risk" class="alert alert-warning d-none"></div>
+
+<!-- 行程卡片容器：包含骨架屏 + 最终卡片 -->
+<div id="itin-container">
+{% if result.itinerary and result.itinerary.days %}
+  {# 同步模式（极少发生，目前 POST /route 不传 itinerary，但保留兼容渲染 #}
+  {% include "_itin_cards.html" %}
+{% else %}
+  {# —— 骨架屏 & 加载提示 —— #}
+  <div class="card border-0 shadow-sm rounded-4 mb-3" style="border:1px dashed #cfe2ff;">
+    <div class="card-body py-4">
+      <div class="d-flex align-items-start gap-3">
+        <div class="spinner-grow text-primary flex-shrink-0" role="status"><span class="visually-hidden">Loading</span></div>
+        <div class="flex-grow-1">
+          <div class="fw-semibold text-primary">{{ t('route.itin.loading') }}</div>
+          <div class="small text-muted mt-1">
+            <span class="thinking-dots-inline"><span></span><span></span><span></span></span>
+            {{ t('route.itin.loading.fallback') }}
+          </div>
+        </div>
+        <button id="itin-retry-btn" type="button" class="btn btn-sm btn-outline-secondary d-none">
+          <i class="bi bi-arrow-repeat me-1"></i>{{ t('route.itin.retry') }}
+        </button>
+      </div>
+      <div id="itin-error-msg" class="alert alert-warning d-none mt-3 small mb-0"></div>
+    </div>
+  </div>
+  <div id="itin-skeleton" class="row g-3">
+    {% for _ in range(4) %}
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-header bg-white border-0 py-3 placeholder-glow">
+          <span class="placeholder col-3 fw-bold"></span>
+          <span class="placeholder col-4 small ms-2"></span>
+          <span class="placeholder col-2 float-end rounded-pill"></span>
+        </div>
+        <div class="card-body">
+          {% for _ in range(4) %}
+          <div class="mb-2 placeholder-glow">
+            <div class="d-flex gap-2 mb-1">
+              <span class="placeholder col-2 small rounded"></span>
+              <span class="placeholder col-6 fw-semibold rounded"></span>
+            </div>
+            <div class="placeholder col-12 small rounded"></div>
+            <div class="placeholder col-11 small rounded ms-1"></div>
+          </div>
+          {% endfor %}
+          <div class="placeholder col-10 small rounded mt-2"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}
+</div>
+{# 后端传回 token，供前端异步拉取 #}
+{% if result.itin_token %}
+<input type="hidden" id="itin-token" value="{{ result.itin_token }}">
+{% endif %}
+{% endif %}
+{% endblock %}
