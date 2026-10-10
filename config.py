@@ -4,12 +4,31 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# ===================== 加载 .env（LLM 凭据等）=====================
+# ===================== 加载 .env（LLM 凭据、气象 Token 等）=====================
+_ENV_FILE = os.path.join(BASE_DIR, ".env")
+
+
+def _load_env_file(path):
+    """无 python-dotenv 时的兜底解析：把 KEY=VALUE 写入 os.environ（不覆盖已有变量）"""
+    try:
+        with open(path, "r", encoding="utf-8") as fp:
+            for raw in fp:
+                line = raw.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                key, value = key.strip(), value.strip().strip('"').strip("'")
+                if key:
+                    os.environ.setdefault(key, value)
+    except OSError:
+        pass
+
+
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(BASE_DIR, ".env"))
+    load_dotenv(_ENV_FILE)
 except Exception:
-    pass  # 未安装 python-dotenv 时退回使用系统环境变量
+    _load_env_file(_ENV_FILE)  # 未安装 python-dotenv 时兜底
 
 # ===================== 气象接口配置 =====================
 BASE_URL = "http://180.149.156.4:8001"
