@@ -1,0 +1,1642 @@
+{
+  "meta": {
+    "version": "0.1",
+    "updated": "2026-10-19",
+    "region": "武汉市",
+    "crs": "WGS84",
+    "coord_note": "坐标一律为 WGS84（OpenStreetMap / GPS）。高德、百度地图坐标为 GCJ-02/BD-09，不可直接填入。",
+    "open_hours_note": "开放时间来自公开报道/票务平台，变化频繁；每条记录注明来源、核对日期和可信度，出行前以官方渠道为准。",
+    "templates_file": "spot_type_templates.json",
+    "districts_file": "districts.json"
+  },
+  "spots": [
+    {
+      "id": "hubei_museum",
+      "name": "湖北省博物馆",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.56401,
+      "lon": 114.35998,
+      "coord_source": "OSM Nominatim（museum 要素），2026-10-19",
+      "type": "indoor",
+      "exposure": "室内",
+      "features": {
+        "shade": "全遮蔽",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "周二至周日 09:00–17:00，16:00 停止入馆；周一闭馆（法定节假日除外），除夕闭馆；需提前预约",
+        "periods": [
+          {
+            "days": "Tue-Sun",
+            "open": "09:00",
+            "close": "17:00",
+            "last_entry": "16:00"
+          }
+        ],
+        "closed": [
+          "周一（法定节假日除外）",
+          "除夕"
+        ],
+        "reservation": "需预约：官方微信公众号或官网，最多提前 5 天，每日 17:18 放票",
+        "source": "https://news.qq.com/rain/a/20260424A04GPX00",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "携程页面写 08:30–18:00 且未提周一闭馆，与报道不符，采用报道口径"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [],
+      "notes": "雨天、酷暑（体感≥33℃）、大风天的首选室内备选"
+    },
+    {
+      "id": "huanghelou",
+      "name": "黄鹤楼",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.54708,
+      "lon": 114.29705,
+      "coord_source": "OSM Nominatim（attraction 要素），2026-10-19",
+      "type": "elevated_view",
+      "exposure": "室外为主",
+      "features": {
+        "shade": "少",
+        "waterside_open": false,
+        "elevated_view": true,
+        "walk_intensity": "中",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "日场 08:30–18:00（17:00 停止售票，17:20 停止入园）；夜场 19:30 起，结束时间各来源为 22:00 或 22:30；日夜场门票不通用",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "08:30",
+            "close": "18:00",
+            "last_entry": "17:20",
+            "label": "日场"
+          },
+          {
+            "days": "Mon-Sun",
+            "open": "19:30",
+            "close": "22:00",
+            "last_entry": "21:30",
+            "label": "夜场"
+          }
+        ],
+        "closed": [],
+        "reservation": "需购票（日夜场分开）",
+        "source": "https://you.ctrip.com/sight/wuhan145/8979.html",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "夜场结束时间有 22:00 / 22:30 两种说法，暂取较早的 22:00；未查到分夏季/冬季的时间"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "晚霞/火烧云",
+          "window": "日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        },
+        {
+          "scene": "长江与长江大桥远眺",
+          "window": "能见度≥15 km 的白天",
+          "direction_deg": null
+        },
+        {
+          "scene": "城市夜景",
+          "window": "夜场 19:30 后",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum",
+        "hubei_museum"
+      ],
+      "notes": "远眺效果主要取决于能见度和空气质量，晴天霾重时同样看不远；楼顶开阔，雷暴时应停止登楼"
+    },
+    {
+      "id": "hankou_riverbank",
+      "name": "汉口江滩",
+      "district": "江岸区",
+      "zone": null,
+      "lat": 30.59265,
+      "lon": 114.30113,
+      "coord_source": "OSM Nominatim（汉口江滩绿道），2026-10-19；江滩为带状区域，取中段代表点",
+      "type": "waterside_open",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "全年全天开放；灯光秀约 19:00–22:00（2022 年资料，待核实）",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "00:00",
+            "close": "24:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "免费，无需预约",
+        "source": "https://you.ctrip.com/sight/wuhan145/119534.html",
+        "checked": "2026-10-19",
+        "confidence": "高（开放时间）/ 低（灯光秀时段）"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "朝霞/日出",
+          "window": "日出前后 30 分钟",
+          "direction_deg": null,
+          "note": "隔江朝武昌方向，方位由几何模块计算"
+        },
+        {
+          "scene": "江景夜景/灯光秀",
+          "window": "19:00 后",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "wuhan_sci_museum",
+        "wuhan_museum"
+      ],
+      "notes": "临江开阔、风大，春秋傍晚舒适；夏季正午暴晒；汛期部分区域可能因水位上涨封闭（暂不建模）"
+    },
+    {
+      "id": "moshan",
+      "name": "东湖磨山景区",
+      "district": "武昌区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.55306,
+      "lon": 114.41158,
+      "coord_source": "OSM Nominatim（磨山 peak 要素），2026-10-19；行政区按 OSM 反向地理编码为武昌区（东湖风景区跨武昌、洪山两区，待核实）",
+      "type": "mountain_forest",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": true,
+        "elevated_view": true,
+        "walk_intensity": "高",
+        "typical_duration_h": 4
+      },
+      "open_hours": {
+        "text": "东湖风景区全天开放；磨山索道 09:30–17:00，高温橙色预警时约 12:00–14:30 暂停；磨山景区自身营业时间未查到 2026 年官方口径",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "09:30",
+            "close": "17:00",
+            "label": "磨山索道"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/0/8974.html",
+        "checked": "2026-10-19",
+        "confidence": "低",
+        "conflict": "旧游记写 08:00–17:30（夏季延长），可能已过时；需向景区官方确认"
+      },
+      "sensitivity_overrides": {
+        "visibility": {
+          "weight": 2,
+          "good": ">=10",
+          "bad": "<3",
+          "note": "山顶可俯瞰东湖，远眺要求高于一般山地"
+        }
+      },
+      "photo_opportunities": [
+        {
+          "scene": "东湖湖面晚霞",
+          "window": "日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块计算"
+        },
+        {
+          "scene": "樱花/梅花",
+          "window": "见 东湖樱花园、东湖梅园 条目",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "雨后山路湿滑；夏季高温时索道午间可能暂停"
+    },
+    {
+      "id": "whu",
+      "name": "武汉大学",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.53738,
+      "lon": 114.36154,
+      "coord_source": "OSM Nominatim（university 要素），2026-10-19；校园面积大，取校区中心点，樱园坐标待单独补充",
+      "type": "flower",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "2026-05-13 起取消社会公众进校预约，凭有效身份证经珞珈门、弘毅门步行入校，工作日和节假日均可进入；每日开放时段未见公布",
+        "periods": [],
+        "closed": [],
+        "reservation": "无需预约，凭身份证入校",
+        "source": "https://m.thepaper.cn/detail/33193259",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "未找到学校官网通知原文；樱花季历年另有管理措施，届时需单独核实"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "樱花（樱园、樱花大道）",
+          "window": "始花期至盛花期，约 3 月中下旬，由樱花模型预测",
+          "direction_deg": null
+        },
+        {
+          "scene": "老斋舍等民国建筑",
+          "window": "全年",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "樱花模型的基线数据即武大樱园始花期（舒斯等 2018）"
+    },
+    {
+      "id": "wuhan_museum",
+      "name": "武汉博物馆",
+      "district": "江汉区",
+      "zone": null,
+      "lat": 30.61377,
+      "lon": 114.25098,
+      "coord_source": "OSM Nominatim，2026-10-19（museum 要素）",
+      "type": "indoor",
+      "exposure": "室内",
+      "features": {
+        "shade": "全遮蔽",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "09:00–17:00，16:30 停止入馆；凭有效证件入馆，无需网上预约（2026 年国庆公告）",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "09:00",
+            "close": "17:00",
+            "last_entry": "16:30"
+          }
+        ],
+        "closed": [],
+        "reservation": "无需预约，凭有效证件",
+        "source": "https://i.ifeng.com/c/8wqnCpgXWxk",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "公告未说明周一是否闭馆，待核实"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [],
+      "notes": "汉口片区的雨天、酷暑备选"
+    },
+    {
+      "id": "xinhai_museum",
+      "name": "辛亥革命博物院",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.53916,
+      "lon": 114.30024,
+      "coord_source": "OSM Nominatim，2026-10-19（辛亥革命博物院南区，即原辛亥革命博物馆）",
+      "type": "indoor",
+      "exposure": "室内",
+      "features": {
+        "shade": "全遮蔽",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "09:00–17:00，16:00 停止入园；较早资料称周一闭馆",
+        "periods": [
+          {
+            "days": "Tue-Sun",
+            "open": "09:00",
+            "close": "17:00",
+            "last_entry": "16:00"
+          }
+        ],
+        "closed": [
+          "周一（较早资料，待核实）"
+        ],
+        "reservation": "待核实",
+        "source": "https://gs.ctrip.com/html5/you/sight/wuhan145/9102.html",
+        "checked": "2026-10-19",
+        "confidence": "低",
+        "conflict": "未找到 2026 年官方开放与预约规定"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [],
+      "notes": "由原辛亥革命武昌起义纪念馆、辛亥革命博物馆组建；紧邻黄鹤楼，是武昌老城片区的雨天备选"
+    },
+    {
+      "id": "wuhan_sci_museum",
+      "name": "武汉科学技术馆",
+      "district": "江岸区",
+      "zone": null,
+      "lat": 30.58172,
+      "lon": 114.29454,
+      "coord_source": "OSM Nominatim，2026-10-19（武汉科学技术馆（新馆），沿江大道 91 号）",
+      "type": "indoor",
+      "exposure": "室内",
+      "features": {
+        "shade": "全遮蔽",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "周三至周日 09:00–16:30，15:30 停止入馆；周一、周二闭馆（法定节假日除外）",
+        "periods": [
+          {
+            "days": "Wed-Sun",
+            "open": "09:00",
+            "close": "16:30",
+            "last_entry": "15:30"
+          }
+        ],
+        "closed": [
+          "周一",
+          "周二（法定节假日除外）"
+        ],
+        "reservation": "待核实",
+        "source": "https://news.qq.com/rain/a/20260424A04GPX00",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "另一资料站写“周一闭馆”，未提周二；预约方式未查到"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [],
+      "notes": "适合亲子；首次地理编码误匹配到建设大道旧址，已改为新馆"
+    },
+    {
+      "id": "guishan_park",
+      "name": "龟山公园",
+      "district": "汉阳区",
+      "zone": null,
+      "lat": 30.55746,
+      "lon": 114.26961,
+      "coord_source": "OSM Nominatim，2026-10-19（龟山公园 park 要素）",
+      "type": "elevated_view",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": false,
+        "elevated_view": true,
+        "walk_intensity": "中",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "龟山风景区 07:00–19:00；携程另列 周一至周三、周五至周日 09:00–16:30，周四 09:00–15:00（可能为电视塔/铁门关等收费点）",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "07:00",
+            "close": "19:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/8980.html",
+        "checked": "2026-10-19",
+        "confidence": "低",
+        "conflict": "两个来源指的范围可能不同，periods 暂取风景区口径"
+      },
+      "sensitivity_overrides": {
+        "precip": {
+          "weight": 2,
+          "note": "山体步道雨后湿滑"
+        }
+      },
+      "photo_opportunities": [
+        {
+          "scene": "长江、汉江交汇与长江大桥远眺",
+          "window": "能见度≥15 km 的白天",
+          "direction_deg": null
+        },
+        {
+          "scene": "晚霞",
+          "window": "日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "与黄鹤楼隔江相对"
+    },
+    {
+      "id": "yangtze_bridge",
+      "name": "武汉长江大桥",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.55179,
+      "lon": 114.28345,
+      "coord_source": "OSM Nominatim，2026-10-19（bridge 要素中点；大桥跨汉阳、武昌两区）；中点位于江面，反向地理编码为武昌区，且现开放步行入口为武昌桥头堡，故归武昌区",
+      "type": "elevated_view",
+      "exposure": "室外",
+      "features": {
+        "shade": "无",
+        "waterside_open": true,
+        "elevated_view": true,
+        "walk_intensity": "中",
+        "typical_duration_h": 1.5
+      },
+      "open_hours": {
+        "text": "2026-10-02 起武昌桥头堡人行梯道试运行，每日 08:00–18:00；桥面人行道是否全天开放未见官方说明",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "08:00",
+            "close": "18:00",
+            "label": "武昌桥头堡人行梯道（试运行）"
+          }
+        ],
+        "closed": [],
+        "reservation": "无需预约",
+        "source": "https://www.ctdsb.net/c1476_202610/2871706.html",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "旅游网站有“全天开放”“电梯 9:00–17:00”等旧说法，与官方报道不一致"
+      },
+      "sensitivity_overrides": {
+        "wind10_speed": {
+          "weight": 3,
+          "good": "<5.5",
+          "bad": ">=8.0",
+          "basis": "wind",
+          "note": "桥面无遮挡、江风大"
+        },
+        "uv_index": {
+          "weight": 2,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        }
+      },
+      "photo_opportunities": [
+        {
+          "scene": "晚霞/火烧云与江景",
+          "window": "日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        },
+        {
+          "scene": "黄鹤楼、龟山对望",
+          "window": "能见度≥15 km 的白天",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "步行全程约 30–50 分钟（攻略估计）"
+    },
+    {
+      "id": "qingchuange",
+      "name": "晴川阁",
+      "district": "汉阳区",
+      "zone": null,
+      "lat": 30.55865,
+      "lon": 114.27988,
+      "coord_source": "OSM Nominatim，2026-10-19（attraction 要素）",
+      "type": "elevated_view",
+      "exposure": "室外为主",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": true,
+        "walk_intensity": "低",
+        "typical_duration_h": 1
+      },
+      "open_hours": {
+        "text": "周二至周日 09:00–17:00，17:00 停止入场；免费",
+        "periods": [
+          {
+            "days": "Tue-Sun",
+            "open": "09:00",
+            "close": "17:00"
+          }
+        ],
+        "closed": [
+          "周一（一份资料所述，待核实）"
+        ],
+        "reservation": "免费",
+        "source": "https://you.ctrip.com/sight/wuhan145/89908.html",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "另一份攻略写 09:00–17:00 未提周一闭馆"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "临江远眺长江大桥",
+          "window": "能见度≥15 km 的白天",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "临江亭阁，与黄鹤楼隔江相望"
+    },
+    {
+      "id": "wuchang_riverbank",
+      "name": "武昌江滩",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.55008,
+      "lon": 114.28799,
+      "coord_source": "OSM Nominatim，2026-10-19（viewpoint 要素，近长江大桥武昌端；江滩为带状区域，代表点待细化）",
+      "type": "waterside_open",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "全天开放，免费",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "00:00",
+            "close": "24:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "免费，无需预约",
+        "source": "https://you.ctrip.com/sight/wuhan145/1472366.html",
+        "checked": "2026-10-19",
+        "confidence": "中"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "隔江晚霞/火烧云",
+          "window": "日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        },
+        {
+          "scene": "长江大桥与江景夜景",
+          "window": "日落后",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "火烧云候选机位；汛期部分区域可能因水位上涨封闭（暂不建模）"
+    },
+    {
+      "id": "donghu_tingtao",
+      "name": "东湖听涛景区",
+      "district": "武昌区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.56513,
+      "lon": 114.36891,
+      "coord_source": "OSM Nominatim，2026-10-19（park 要素）",
+      "type": "waterside_open",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "东湖风景区全年全天开放；听涛景区单独时间未查到",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "00:00",
+            "close": "24:00",
+            "label": "东湖风景区"
+          }
+        ],
+        "closed": [],
+        "reservation": "免费",
+        "source": "https://you.ctrip.com/sight/0/8974.html",
+        "checked": "2026-10-19",
+        "confidence": "中",
+        "conflict": "景区内游船等设施另有营业时间"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "湖面日出",
+          "window": "日出前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "东湖西北岸，面湖为向东，适合拍湖面日出；晚霞时太阳在身后城区方向，不作晚霞机位"
+    },
+    {
+      "id": "donghu_greenway",
+      "name": "东湖绿道",
+      "district": "武昌区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.59019,
+      "lon": 114.38824,
+      "coord_source": "OSM Nominatim，2026-10-19（东湖绿道 道路要素中的一点；绿道为长线路，代表点待细化）；该点在绿道北端、近欢乐谷，不代表主湖面，代表点待换到湖中段",
+      "type": "waterside_open",
+      "exposure": "室外",
+      "features": {
+        "shade": "少",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "高",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "全年全天开放；全长约 105 km，三期于 2024-06-25 全线建成开放",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "00:00",
+            "close": "24:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "免费",
+        "source": "https://you.ctrip.com/sight/wuhan145/2024807.html",
+        "checked": "2026-10-19",
+        "confidence": "高",
+        "conflict": "“全长约 105 km、三期 2024-06-25 全线建成”来自携程页面，另有约 102 km、2017 年前后贯通的说法，待核实"
+      },
+      "sensitivity_overrides": {
+        "uv_index": {
+          "weight": 3,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv",
+          "note": "骑行路段遮阴少"
+        },
+        "apparent_temp": {
+          "weight": 3,
+          "good": "12-26",
+          "bad": ">=32",
+          "basis": "heat",
+          "note": "骑行、徒步运动量大（经验值）"
+        }
+      },
+      "photo_opportunities": [
+        {
+          "scene": "湖面日出/晚霞",
+          "window": "日出、日落前后 30 分钟",
+          "direction_deg": null,
+          "note": "方位由几何模块按日期计算"
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "骑行、徒步为主，对风和日晒最敏感"
+    },
+    {
+      "id": "yuehu_qintai",
+      "name": "月湖·古琴台",
+      "district": "汉阳区",
+      "zone": null,
+      "lat": 30.55956,
+      "lon": 114.25554,
+      "coord_source": "OSM Nominatim，2026-10-19（月湖风景区 park 要素；古琴台在其东侧约 0.6 km）",
+      "type": "waterside_open",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "环月湖绿道开放时间未查到；古琴台 08:00–17:00（攻略资料），周二至周日有古琴演出需小程序预约",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "08:00",
+            "close": "17:00",
+            "label": "古琴台"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/89980.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "环月湖绿道“约 12 km”可能含延伸段口径，待核实；串联琴台大剧院、古琴台"
+    },
+    {
+      "id": "mulanshan",
+      "name": "木兰山",
+      "district": "黄陂区",
+      "zone": null,
+      "lat": 31.09781,
+      "lon": 114.39188,
+      "coord_source": "OSM Nominatim，2026-10-19（木兰山 peak 要素）",
+      "type": "mountain_forest",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": false,
+        "elevated_view": true,
+        "walk_intensity": "高",
+        "typical_duration_h": 5
+      },
+      "open_hours": {
+        "text": "未查到可靠的开放时间，待向景区官方核实",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/9204.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "山顶日出/云海",
+          "window": "日出前后",
+          "direction_deg": null,
+          "note": "云海不进复赛，仅记录"
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [],
+      "notes": "国家 5A 级景区，远郊，附近无收录的室内备选"
+    },
+    {
+      "id": "mulan_grassland",
+      "name": "木兰草原",
+      "district": "黄陂区",
+      "zone": null,
+      "lat": 30.97,
+      "lon": 114.46,
+      "coord_source": "低精度估计点，2026-10-19：多家资料称景区位于黄陂区王家河街道（聂家岗/张家榨村一带），在木兰山东面、胜天农庄南面；取 OSM 张家榨村(约30.961N,114.464E)、胜天村(约31.022N,114.439E)之间区域。另有网站给出约 30.96N,114.32E，其经度与“木兰山东面”矛盾，未采用。待人工在地图上点出停车场或游客中心后回填",
+      "type": "city_park",
+      "exposure": "室外",
+      "features": {
+        "shade": "无",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 4
+      },
+      "open_hours": {
+        "text": "未查到可靠的开放时间，待向景区官方核实",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://www.maigoo.com/citiao/3527.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {
+        "uv_index": {
+          "weight": 3,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv",
+          "note": "草原开阔几乎无遮阴"
+        },
+        "wind10_speed": {
+          "weight": 2,
+          "good": "<5.5",
+          "bad": ">=10.8",
+          "basis": "wind"
+        },
+        "thunder": {
+          "weight": 3,
+          "bad": "true",
+          "basis": "thunder",
+          "note": "开阔草原无遮蔽，人是最高突出物，雷击风险高于城市公园"
+        }
+      },
+      "photo_opportunities": [],
+      "best_months": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "rainy_alternative": [],
+      "notes": "原清单归入山地森林，实际为开阔草原，改用城市公园模板并加重紫外线和风"
+    },
+    {
+      "id": "donghu_sakura_garden",
+      "name": "东湖樱花园",
+      "district": "武昌区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.54832,
+      "lon": 114.40456,
+      "coord_source": "OSM Nominatim，2026-10-19（garden 要素）",
+      "type": "flower",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "樱花季 07:00–18:00（2025 年报道）；携程页面显示“暂停营业、恢复时间待定”，可能为非花季状态",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "07:00",
+            "close": "18:00",
+            "label": "樱花季（2025 年口径）"
+          }
+        ],
+        "closed": [],
+        "reservation": "花季需购票",
+        "source": "https://you.ctrip.com/sight/wuhan145/1488661.html",
+        "checked": "2026-10-19",
+        "confidence": "低",
+        "conflict": "2026 年春季有游客点评，说明花季有开放"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "樱花",
+          "window": "约 3 月中下旬至 4 月初，由樱花模型预测",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "位于磨山景区内，可接樱花模型"
+    },
+    {
+      "id": "donghu_plum_garden",
+      "name": "东湖梅园",
+      "district": "武昌区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.54478,
+      "lon": 114.39668,
+      "coord_source": "OSM Nominatim，2026-10-19（garden 要素）",
+      "type": "flower",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "未查到可靠的开放时间，待向景区官方核实",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/0/8974.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "梅花",
+          "window": "约 1–3 月，花期模型暂未覆盖",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        1,
+        2,
+        3
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "冬末春初赏梅"
+    },
+    {
+      "id": "wuhan_botanical_garden",
+      "name": "中国科学院武汉植物园",
+      "district": "洪山区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.5466,
+      "lon": 114.41722,
+      "coord_source": "OSM Nominatim（garden 要素），2026-10-19；地址要素为洪山区，OSM 反向地理编码在不同查询级别下于武昌区/洪山区间不一致，以洪山区为准",
+      "type": "flower",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 3
+      },
+      "open_hours": {
+        "text": "未查到可靠的开放时间，待向景区官方核实",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://wbg.cas.cn/",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "四季花卉",
+          "window": "全年，以春季为主",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "国家 4A 级景区；樱花季人流大"
+    },
+    {
+      "id": "jiefang_park",
+      "name": "解放公园",
+      "district": "江岸区",
+      "zone": null,
+      "lat": 30.61061,
+      "lon": 114.29383,
+      "coord_source": "OSM Nominatim，2026-10-19（park 要素）",
+      "type": "city_park",
+      "exposure": "室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 1.5
+      },
+      "open_hours": {
+        "text": "06:00–22:00，免费",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "06:00",
+            "close": "22:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "免费",
+        "source": "https://gs.ctrip.com/html5/you/sight/wuhan145/51351.html",
+        "checked": "2026-10-19",
+        "confidence": "中"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "wuhan_museum"
+      ],
+      "notes": "地铁解放公园站直达"
+    },
+    {
+      "id": "wuhan_garden_expo",
+      "name": "武汉园博园",
+      "district": "硚口区",
+      "zone": null,
+      "lat": 30.62455,
+      "lon": 114.21635,
+      "coord_source": "OSM Nominatim，2026-10-19（park 要素；园区跨硚口、东西湖，待核实）",
+      "type": "city_park",
+      "exposure": "室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 4
+      },
+      "open_hours": {
+        "text": "全年 08:30–17:30；园内长江文明馆（武汉自然博物馆）周一闭馆，16:30 停止入馆",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "08:30",
+            "close": "17:30"
+          }
+        ],
+        "closed": [
+          "长江文明馆 周一"
+        ],
+        "reservation": "待核实",
+        "source": "https://www.dahepiao.com/lvyounews1/20250409508795.html",
+        "checked": "2026-10-19",
+        "confidence": "中"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "wuhan_museum"
+      ],
+      "notes": "园内长江文明馆可作雨天室内去处"
+    },
+    {
+      "id": "chuhe_hanjie",
+      "name": "楚河汉街",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.559,
+      "lon": 114.33602,
+      "coord_source": "OSM Nominatim，2026-10-19（retail 要素）",
+      "type": "street_semi_outdoor",
+      "exposure": "半室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "开放式街区，街区本身未查到统一开放时间；店铺营业时间各异",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/50966.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [
+        "hubei_museum"
+      ],
+      "notes": "商业街区，雨天体验受影响较小"
+    },
+    {
+      "id": "tanhualin",
+      "name": "昙华林",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.55518,
+      "lon": 114.30191,
+      "coord_source": "OSM Nominatim，2026-10-19（pedestrian 要素）",
+      "type": "street_semi_outdoor",
+      "exposure": "半室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "中",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "开放式历史街区，未查到统一开放时间；店铺营业时间各异",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/50966.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "老建筑与街巷人文",
+          "window": "全年",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "石板路雨天湿滑"
+    },
+    {
+      "id": "hubuxiang",
+      "name": "户部巷",
+      "district": "武昌区",
+      "zone": null,
+      "lat": 30.54976,
+      "lon": 114.29264,
+      "coord_source": "OSM Nominatim，2026-10-19（pedestrian 要素）",
+      "type": "street_semi_outdoor",
+      "exposure": "半室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 1
+      },
+      "open_hours": {
+        "text": "开放式美食街区，未查到统一开放时间；店铺营业时间各异",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/50966.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": "紧邻黄鹤楼、武昌江滩"
+    },
+    {
+      "id": "jianghan_road",
+      "name": "江汉路步行街",
+      "district": "江汉区",
+      "zone": null,
+      "lat": 30.58524,
+      "lon": 114.28362,
+      "coord_source": "OSM Nominatim，2026-10-19（pedestrian 要素）",
+      "type": "street_semi_outdoor",
+      "exposure": "半室外",
+      "features": {
+        "shade": "中",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 2
+      },
+      "open_hours": {
+        "text": "全年全天开放；店铺营业时间各异",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "00:00",
+            "close": "24:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/50966.html",
+        "checked": "2026-10-19",
+        "confidence": "中"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [
+        "wuhan_museum"
+      ],
+      "notes": "南起江汉关大楼，北至解放大道"
+    },
+    {
+      "id": "lihuangpi_road",
+      "name": "黎黄陂路",
+      "district": "江岸区",
+      "zone": null,
+      "lat": 30.5893,
+      "lon": 114.29523,
+      "coord_source": "OSM Nominatim，2026-10-19（pedestrian 要素）",
+      "type": "street_semi_outdoor",
+      "exposure": "半室外",
+      "features": {
+        "shade": "多",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 1.5
+      },
+      "open_hours": {
+        "text": "开放式历史街区，未查到统一开放时间",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/sight/wuhan145/50966.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "近代建筑街景",
+          "window": "全年",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "rainy_alternative": [
+        "wuhan_sci_museum"
+      ],
+      "notes": "近代建筑密集，被称为“街头博物馆”"
+    },
+    {
+      "id": "guiyuan_temple",
+      "name": "归元寺",
+      "district": "汉阳区",
+      "zone": null,
+      "lat": 30.54784,
+      "lon": 114.25369,
+      "coord_source": "OSM Nominatim，2026-10-19（place_of_worship 要素）",
+      "type": "temple",
+      "exposure": "室外为主",
+      "features": {
+        "shade": "中",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 1.5
+      },
+      "open_hours": {
+        "text": "08:00–17:00（Lonely Planet 法文版，未标注更新日期）",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "08:00",
+            "close": "17:00"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://www.lonelyplanet.fr/poi/temple-guiyuan",
+        "checked": "2026-10-19",
+        "confidence": "低",
+        "conflict": "未找到 2026 年官方开放安排"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [
+        "xinhai_museum"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "gude_temple",
+      "name": "古德寺",
+      "district": "江岸区",
+      "zone": null,
+      "lat": 30.62115,
+      "lon": 114.30191,
+      "coord_source": "OSM Nominatim，2026-10-19（place_of_worship 要素）",
+      "type": "temple",
+      "exposure": "室外为主",
+      "features": {
+        "shade": "少",
+        "waterside_open": false,
+        "elevated_view": false,
+        "walk_intensity": "低",
+        "typical_duration_h": 1
+      },
+      "open_hours": {
+        "text": "未查到可靠的开放时间，待向景区官方核实",
+        "periods": [],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://you.ctrip.com/travels/Wuhan145/3937581.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [
+        {
+          "scene": "异域风格寺庙建筑",
+          "window": "全年；资料称禁止商业摄影",
+          "direction_deg": null
+        }
+      ],
+      "best_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "rainy_alternative": [
+        "wuhan_sci_museum"
+      ],
+      "notes": "建筑摄影热门地"
+    },
+    {
+      "id": "happy_valley",
+      "name": "武汉欢乐谷",
+      "district": "洪山区",
+      "zone": "东湖生态旅游风景区",
+      "lat": 30.59369,
+      "lon": 114.38738,
+      "coord_source": "OSM Nominatim（theme_park 要素），2026-10-19；官方地址为洪山区欢乐大道 196 号",
+      "type": "theme_park",
+      "exposure": "室外",
+      "features": {
+        "shade": "少",
+        "waterside_open": true,
+        "elevated_view": false,
+        "walk_intensity": "高",
+        "typical_duration_h": 7
+      },
+      "open_hours": {
+        "text": "日场 09:00–18:00，夜场 18:00–22:00（旧资料，未标注日期）；2026 年需查官方渠道",
+        "periods": [
+          {
+            "days": "Mon-Sun",
+            "open": "09:00",
+            "close": "18:00",
+            "label": "日场"
+          },
+          {
+            "days": "Mon-Sun",
+            "open": "18:00",
+            "close": "22:00",
+            "label": "夜场"
+          }
+        ],
+        "closed": [],
+        "reservation": "待核实",
+        "source": "https://m.bendibao.com/show684163.html",
+        "checked": "2026-10-19",
+        "confidence": "低"
+      },
+      "sensitivity_overrides": {},
+      "photo_opportunities": [],
+      "best_months": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "rainy_alternative": [
+        "wuhan_sci_museum"
+      ],
+      "notes": "雷雨、大风时户外设施可能停运"
+    }
+  ]
+}

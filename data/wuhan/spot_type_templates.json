@@ -1,0 +1,420 @@
+{
+  "meta": {
+    "version": "0.1",
+    "updated": "2026-10-19",
+    "description": "景点类型的气象敏感性模板。每个景点通过 type 字段继承一个模板，再用 sensitivity_overrides 做单点修正。",
+    "weight_scale": "0=不影响 1=低 2=中 3=高",
+    "threshold_semantics": "good=适宜上限/区间；bad=不宜阈值；介于两者之间为'可接受'。数值单位见 factors。",
+    "status": "v0：阈值来自国家/行业标准或经验值，经验值均标注'待校准'，后续用历史数据回测修正",
+    "review": "2026-10-19 经独立复核：修正 AQI 口径、降水概率依据、雾/霾标准拆分、风速单位，补低温阈值与阵风因子"
+  },
+  "factors": {
+    "precip": {
+      "name": "逐时降水量",
+      "unit": "mm/h",
+      "source_var": "precipitation"
+    },
+    "precip_prob": {
+      "name": "逐时降水概率",
+      "unit": "%",
+      "source_var": "precipitation_probability"
+    },
+    "apparent_temp": {
+      "name": "体感温度",
+      "unit": "℃",
+      "source_var": "apparent_temperature"
+    },
+    "wind10_speed": {
+      "name": "10米风速",
+      "unit": "m/s",
+      "source_var": "wind_speed_10m（Open-Meteo 默认 km/h，请求时须带 wind_speed_unit=ms）"
+    },
+    "visibility": {
+      "name": "能见度",
+      "unit": "km",
+      "source_var": "visibility（Open-Meteo 单位为米，数据层换算成 km；为模式诊断量，非观测值）"
+    },
+    "uv_index": {
+      "name": "紫外线指数",
+      "unit": "",
+      "source_var": "uv_index"
+    },
+    "thunder": {
+      "name": "雷暴",
+      "unit": "bool",
+      "source_var": "weather_code ∈ {95,96,99}（Open-Meteo 采用 WMO 4677 码，预报中为模式诊断量，命中率需回测）"
+    },
+    "aqi": {
+      "name": "空气质量指数",
+      "unit": "",
+      "source_var": "国标 AQI：用 Open-Meteo 的 pm2_5、pm10、o3 等浓度按 HJ 633-2012 断点自算；不可直接用 us_aqi（断点不同）"
+    },
+    "wind_gusts": {
+      "name": "10米阵风",
+      "unit": "m/s",
+      "source_var": "wind_gusts_10m（同上，须带 wind_speed_unit=ms）"
+    }
+  },
+  "basis": {
+    "wind": "GB/T 28591-2012《风力等级》：5级 8.0–10.7 m/s，6级 10.8–13.8 m/s",
+    "precip_daily": "GB/T 28592-2012《降水量等级》（日/12h 分级）；逐时阈值无对应国标，为经验值待校准",
+    "heat": "中国气象局高温以日最高气温≥35℃为界；体感温度阈值为经验值待校准。GB/T 27963-2011《人居环境气候舒适度评价》使用温湿指数、风效指数等指标，与 apparent_temperature 不是同一量，仅作参考",
+    "visibility": "雾 <1 km、轻雾 1–10 km：《地面气象观测规范》、GB/T 27964-2011《雾的预报等级》（待核对原文）；霾：GB/T 36542-2018《霾的观测识别》（能见度 <10 km 并排除降水等，湿度条件待核对原文）；远眺 <5 km 为经验值待校准",
+    "uv": "WHO 紫外线指数分级：6–7 高，8–10 很高，≥11 极高；国标 GB/T 36744-2018《紫外线指数预报方法》附录 B 有等级划分（待核对原文）",
+    "aqi": "HJ 633-2012：AQI 101–150 轻度污染，151–200 中度污染",
+    "thunder": "Open-Meteo 采用 WMO 4677 码，95/96/99 为雷暴；雷暴时户外开阔/高处有雷击风险",
+    "empirical": "经验值，无对应国家/行业标准，待用历史数据回测校准",
+    "cold": "低温不宜阈值为经验值待校准（武汉冬季体感温度常低于 0℃）"
+  },
+  "templates": {
+    "indoor": {
+      "name": "室内场馆",
+      "role": "雨天、酷暑、大风时的备选推荐",
+      "sensitivity": {
+        "precip": {
+          "weight": 0
+        },
+        "apparent_temp": {
+          "weight": 0
+        },
+        "wind10_speed": {
+          "weight": 0
+        },
+        "visibility": {
+          "weight": 0
+        },
+        "thunder": {
+          "weight": 0
+        }
+      }
+    },
+    "elevated_view": {
+      "name": "登高远眺",
+      "sensitivity": {
+        "visibility": {
+          "weight": 3,
+          "good": ">=15",
+          "bad": "<5",
+          "basis": "visibility"
+        },
+        "aqi": {
+          "weight": 2,
+          "good": "<=100",
+          "bad": ">150",
+          "basis": "aqi"
+        },
+        "precip": {
+          "weight": 2,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily"
+        },
+        "precip_prob": {
+          "weight": 2,
+          "good": "<30",
+          "bad": ">=60",
+          "basis": "empirical"
+        },
+        "thunder": {
+          "weight": 3,
+          "bad": "true",
+          "basis": "thunder"
+        },
+        "apparent_temp": {
+          "weight": 1,
+          "good": "15-28",
+          "bad": "<=0 或 >=33",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "wind10_speed": {
+          "weight": 1,
+          "good": "<5.5",
+          "bad": ">=10.8",
+          "basis": "wind"
+        }
+      }
+    },
+    "waterside_open": {
+      "name": "临水开阔",
+      "sensitivity": {
+        "wind10_speed": {
+          "weight": 3,
+          "good": "<5.5",
+          "bad": ">=8.0",
+          "basis": "wind"
+        },
+        "precip": {
+          "weight": 3,
+          "good": "0",
+          "bad": ">=0.5",
+          "basis": "precip_daily"
+        },
+        "precip_prob": {
+          "weight": 2,
+          "good": "<30",
+          "bad": ">=60",
+          "basis": "empirical"
+        },
+        "apparent_temp": {
+          "weight": 2,
+          "good": "12-28",
+          "bad": "<=3 或 >=33",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "uv_index": {
+          "weight": 2,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        },
+        "thunder": {
+          "weight": 3,
+          "bad": "true",
+          "basis": "thunder"
+        },
+        "wind_gusts": {
+          "weight": 2,
+          "good": "<10.8",
+          "bad": ">=13.9",
+          "basis": "wind"
+        }
+      }
+    },
+    "mountain_forest": {
+      "name": "山地森林",
+      "sensitivity": {
+        "precip": {
+          "weight": 3,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily",
+          "note": "山路湿滑"
+        },
+        "precip_prob": {
+          "weight": 2,
+          "good": "<30",
+          "bad": ">=60",
+          "basis": "empirical"
+        },
+        "thunder": {
+          "weight": 3,
+          "bad": "true",
+          "basis": "thunder"
+        },
+        "apparent_temp": {
+          "weight": 2,
+          "good": "12-27",
+          "bad": "<=0 或 >=32",
+          "basis": "heat",
+          "note": "登山体力消耗大，高温阈值比平地低（经验值）",
+          "basis_cold": "cold"
+        },
+        "visibility": {
+          "weight": 1,
+          "good": ">=10",
+          "bad": "<2",
+          "basis": "visibility"
+        },
+        "wind10_speed": {
+          "weight": 1,
+          "good": "<8.0",
+          "bad": ">=10.8",
+          "basis": "wind"
+        }
+      }
+    },
+    "flower": {
+      "name": "赏花园林",
+      "sensitivity": {
+        "bloom_stage": {
+          "weight": 3,
+          "note": "由花期模型给出，非气象直读变量"
+        },
+        "precip": {
+          "weight": 3,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily",
+          "note": "降雨打落花瓣、影响观赏"
+        },
+        "wind10_speed": {
+          "weight": 2,
+          "good": "<5.5",
+          "bad": ">=8.0",
+          "basis": "wind",
+          "note": "大风致落花（经验值）"
+        },
+        "apparent_temp": {
+          "weight": 1,
+          "good": "12-26",
+          "bad": "<=2 或 >=32",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "uv_index": {
+          "weight": 1,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        },
+        "wind_gusts": {
+          "weight": 2,
+          "good": "<8.0",
+          "bad": ">=13.9",
+          "basis": "wind",
+          "note": "大风致落花主要看阵风（经验值）"
+        }
+      }
+    },
+    "city_park": {
+      "name": "城市公园",
+      "sensitivity": {
+        "precip": {
+          "weight": 2,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily"
+        },
+        "precip_prob": {
+          "weight": 2,
+          "good": "<30",
+          "bad": ">=60",
+          "basis": "empirical"
+        },
+        "apparent_temp": {
+          "weight": 2,
+          "good": "12-28",
+          "bad": "<=0 或 >=33",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "uv_index": {
+          "weight": 2,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        },
+        "thunder": {
+          "weight": 2,
+          "bad": "true",
+          "basis": "thunder"
+        },
+        "wind10_speed": {
+          "weight": 1,
+          "good": "<8.0",
+          "bad": ">=10.8",
+          "basis": "wind"
+        }
+      }
+    },
+    "street_semi_outdoor": {
+      "name": "人文街区（半室外）",
+      "sensitivity": {
+        "precip": {
+          "weight": 2,
+          "good": "0",
+          "bad": ">=2",
+          "basis": "precip_daily",
+          "note": "有骑楼/店铺可避雨，阈值放宽（经验值）"
+        },
+        "apparent_temp": {
+          "weight": 2,
+          "good": "10-30",
+          "bad": "<=-2 或 >=35",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "thunder": {
+          "weight": 1,
+          "bad": "true",
+          "basis": "thunder"
+        },
+        "wind10_speed": {
+          "weight": 0
+        }
+      }
+    },
+    "temple": {
+      "name": "寺庙建筑",
+      "sensitivity": {
+        "precip": {
+          "weight": 2,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily"
+        },
+        "apparent_temp": {
+          "weight": 2,
+          "good": "12-28",
+          "bad": "<=0 或 >=33",
+          "basis": "heat",
+          "basis_cold": "cold"
+        },
+        "uv_index": {
+          "weight": 1,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        },
+        "thunder": {
+          "weight": 1,
+          "bad": "true",
+          "basis": "thunder"
+        }
+      }
+    },
+    "theme_park": {
+      "name": "户外游乐",
+      "sensitivity": {
+        "thunder": {
+          "weight": 3,
+          "bad": "true",
+          "basis": "thunder",
+          "note": "雷雨时户外设施通常停运"
+        },
+        "precip": {
+          "weight": 3,
+          "good": "0",
+          "bad": ">=1",
+          "basis": "precip_daily"
+        },
+        "precip_prob": {
+          "weight": 2,
+          "good": "<30",
+          "bad": ">=60",
+          "basis": "empirical"
+        },
+        "wind10_speed": {
+          "weight": 2,
+          "good": "<8.0",
+          "bad": ">=10.8",
+          "basis": "wind",
+          "note": "大风时高空设施可能停运"
+        },
+        "apparent_temp": {
+          "weight": 3,
+          "good": "12-28",
+          "bad": "<=2 或 >=33",
+          "basis": "heat",
+          "note": "排队暴晒",
+          "basis_cold": "cold"
+        },
+        "uv_index": {
+          "weight": 2,
+          "good": "<6",
+          "bad": ">=8",
+          "basis": "uv"
+        },
+        "wind_gusts": {
+          "weight": 2,
+          "good": "<10.8",
+          "bad": ">=13.9",
+          "basis": "wind",
+          "note": "高空设施停运多按阵风判断（经验值）"
+        }
+      }
+    }
+  }
+}

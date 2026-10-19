@@ -1,0 +1,530 @@
+{
+  "_meta": {
+    "version": "0.1",
+    "updated": "2026-10-19",
+    "crs": "WGS84",
+    "schema_note": "字段与 data/city_bbox.json 兼容（country/bbox/intro/fit_tags/recommend_days/best_season/climate），另增 center、area_type、bbox_source、climate_source、spots。",
+    "bbox_format": "min_lon,min_lat,max_lon,max_lat（与旧 city_bbox.json 相同）",
+    "bbox_source": "OpenStreetMap 行政边界外包框（Nominatim，2026-10-19）。OSM 边界与官方行政区划可能有出入，仅用于取数范围，不作区划依据。",
+    "climate_format": "climate.<季节> = [季节平均气温 ℃, 季节内月平均降水量 mm]；季节按 3–5/6–8/9–11/12–2 月划分",
+    "climate_source": "ERA5 再分析（经 Open-Meteo archive 接口，models=era5，0.25°），1991–2020 年日值统计，取各区参考点所在格点",
+    "climate_caveats": [
+      "ERA5 分辨率 0.25°（约 25 km）：武昌、江汉、硚口、汉阳、洪山、东西湖、江夏 7 个区的参考点落在同一格点(30.5N,114.25E)，降水完全相同；江岸、青山、汉南、蔡甸、黄陂、新洲各在相邻格点。区县间差异不可信",
+      "同一格点内气温相差约 0.1℃，是 Open-Meteo 按请求点海拔做的订正；黄陂区参考点海拔约 197 m，气温偏低部分来自这一订正",
+      "ERA5 降水通常比站点观测偏多（季节值推算年降水约 1470 mm，武汉站常年值约 1300 mm 量级），用于训练或展示前需用站点数据订正；拿到气象局站点资料后替换",
+      "这是真实再分析数据的统计值，不是模拟值；但不能替代逐日预报"
+    ],
+    "functional_zones": {
+      "东湖生态旅游风景区": "功能区，跨武昌区、洪山区；景点 district 填行政区，zone 填功能区",
+      "东湖新技术开发区（光谷）": "功能区，暂无收录景点",
+      "武汉经济技术开发区": "功能区，暂无收录景点"
+    }
+  },
+  "江岸区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.63561,
+      "lon": 114.27766
+    },
+    "bbox": "114.2519,30.5760,114.3966,30.7008",
+    "bbox_source": "OSM relation/3077255",
+    "intro": "汉口沿江老城区，近代租界建筑集中，沿长江有汉口江滩。",
+    "fit_tags": [
+      "江滩漫步",
+      "近代建筑",
+      "城市夜景"
+    ],
+    "recommend_days": 1,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.5,
+        145.0
+      ],
+      "summer": [
+        28.0,
+        212.0
+      ],
+      "autumn": [
+        18.5,
+        70.0
+      ],
+      "winter": [
+        6.0,
+        48.0
+      ]
+    },
+    "spots": [
+      "hankou_riverbank",
+      "wuhan_sci_museum",
+      "jiefang_park",
+      "lihuangpi_road",
+      "gude_temple"
+    ]
+  },
+  "江汉区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.60404,
+      "lon": 114.26538
+    },
+    "bbox": "114.2197,30.5661,114.2994,30.6441",
+    "bbox_source": "OSM relation/3077256",
+    "intro": "汉口传统商业中心，江汉路步行街一带商业与近代建筑密集。",
+    "fit_tags": [
+      "购物街区",
+      "近代建筑",
+      "美食"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.8,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.4,
+        52.0
+      ]
+    },
+    "spots": [
+      "wuhan_museum",
+      "jianghan_road"
+    ]
+  },
+  "硚口区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.58481,
+      "lon": 114.20937
+    },
+    "bbox": "114.1449,30.5631,114.2796,30.6368",
+    "bbox_source": "OSM relation/3077257",
+    "intro": "汉口西部城区，位于汉江北岸，老工业与居住区。",
+    "fit_tags": [
+      "城市公园"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.3,
+        52.0
+      ]
+    },
+    "spots": [
+      "wuhan_garden_expo"
+    ]
+  },
+  "汉阳区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.55667,
+      "lon": 114.21317
+    },
+    "bbox": "113.9726,30.4896,114.2923,30.6421",
+    "bbox_source": "OSM relation/3076295",
+    "intro": "位于长江西岸、汉江南岸，龟山、晴川阁、古琴台、月湖、归元寺所在。",
+    "fit_tags": [
+      "登高远眺",
+      "历史人文",
+      "寺庙"
+    ],
+    "recommend_days": 1,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.4,
+        52.0
+      ]
+    },
+    "spots": [
+      "guishan_park",
+      "qingchuange",
+      "yuehu_qintai",
+      "guiyuan_temple"
+    ]
+  },
+  "武昌区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.5567,
+      "lon": 114.31098
+    },
+    "bbox": "114.2591,30.3345,114.4256,30.6293",
+    "bbox_source": "OSM relation/3076297",
+    "intro": "长江东岸老城区，黄鹤楼、户部巷、昙华林、湖北省博物馆、武汉大学及东湖西岸所在。",
+    "fit_tags": [
+      "登高远眺",
+      "历史人文",
+      "博物馆",
+      "赏花",
+      "湖景"
+    ],
+    "recommend_days": 2,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.4,
+        52.0
+      ]
+    },
+    "spots": [
+      "hubei_museum",
+      "huanghelou",
+      "moshan",
+      "whu",
+      "xinhai_museum",
+      "yangtze_bridge",
+      "wuchang_riverbank",
+      "donghu_tingtao",
+      "donghu_greenway",
+      "donghu_sakura_garden",
+      "donghu_plum_garden",
+      "chuhe_hanjie",
+      "tanhualin",
+      "hubuxiang"
+    ]
+  },
+  "青山区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.64212,
+      "lon": 114.37978
+    },
+    "bbox": "114.3381,30.5710,114.5787,30.6863",
+    "bbox_source": "OSM relation/3079613",
+    "intro": "长江东岸东北部的工业城区，沿江有江滩绿地。",
+    "fit_tags": [
+      "江滩漫步"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.4,
+        154.0
+      ],
+      "summer": [
+        27.9,
+        225.0
+      ],
+      "autumn": [
+        18.4,
+        72.0
+      ],
+      "winter": [
+        6.0,
+        52.0
+      ]
+    },
+    "spots": []
+  },
+  "洪山区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "中心城区",
+    "center": {
+      "lat": 30.50257,
+      "lon": 114.33826
+    },
+    "bbox": "114.1670,30.3806,114.6359,30.6957",
+    "bbox_source": "OSM relation/3080399",
+    "intro": "高校与科研院所密集的城区，地域面积大，包含东湖南岸部分区域。",
+    "fit_tags": [
+      "湖景",
+      "高校校园"
+    ],
+    "recommend_days": 1,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.3,
+        52.0
+      ]
+    },
+    "spots": [
+      "wuhan_botanical_garden",
+      "happy_valley"
+    ]
+  },
+  "东西湖区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 30.62083,
+      "lon": 114.13076
+    },
+    "bbox": "113.8889,30.5857,114.2941,30.7891",
+    "bbox_source": "OSM relation/3076293",
+    "intro": "武汉西北郊，湖泊、湿地较多。",
+    "fit_tags": [
+      "郊野湿地"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.4,
+        52.0
+      ]
+    },
+    "spots": []
+  },
+  "汉南区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 30.31066,
+      "lon": 114.0801
+    },
+    "bbox": "113.7510,30.1825,114.2369,30.5453",
+    "bbox_source": "OSM relation/3076294",
+    "intro": "武汉西南郊，沿长江分布。",
+    "fit_tags": [
+      "郊野"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.7,
+        162.0
+      ],
+      "summer": [
+        28.2,
+        213.0
+      ],
+      "autumn": [
+        18.7,
+        73.0
+      ],
+      "winter": [
+        6.4,
+        56.0
+      ]
+    },
+    "spots": []
+  },
+  "蔡甸区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 30.53749,
+      "lon": 114.08091
+    },
+    "bbox": "113.6967,30.2526,114.2222,30.6947",
+    "bbox_source": "OSM relation/3076292",
+    "intro": "武汉西郊，湖泊与低山较多。",
+    "fit_tags": [
+      "湖泊",
+      "郊野登山"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.5,
+        159.0
+      ],
+      "summer": [
+        28.0,
+        220.0
+      ],
+      "autumn": [
+        18.6,
+        76.0
+      ],
+      "winter": [
+        6.2,
+        53.0
+      ]
+    },
+    "spots": []
+  },
+  "江夏区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 30.37805,
+      "lon": 114.31617
+    },
+    "bbox": "114.0295,29.9729,114.5982,30.5379",
+    "bbox_source": "OSM relation/3080417",
+    "intro": "武汉南郊，湖泊众多。",
+    "fit_tags": [
+      "湖泊",
+      "郊野"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.8,
+        154.0
+      ],
+      "summer": [
+        28.3,
+        213.0
+      ],
+      "autumn": [
+        18.8,
+        72.0
+      ],
+      "winter": [
+        6.4,
+        52.0
+      ]
+    },
+    "spots": []
+  },
+  "黄陂区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 31.05675,
+      "lon": 114.38202
+    },
+    "bbox": "114.1520,30.6674,114.6158,31.3622",
+    "bbox_source": "OSM relation/3076296",
+    "intro": "武汉北部低山丘陵区，木兰山、木兰草原等木兰文化景区所在。",
+    "fit_tags": [
+      "山地登山",
+      "草原",
+      "郊野"
+    ],
+    "recommend_days": 1,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        16.1,
+        143.0
+      ],
+      "summer": [
+        26.6,
+        227.0
+      ],
+      "autumn": [
+        17.1,
+        70.0
+      ],
+      "winter": [
+        4.7,
+        46.0
+      ]
+    },
+    "spots": [
+      "mulanshan",
+      "mulan_grassland"
+    ]
+  },
+  "新洲区": {
+    "country": "中国·湖北省武汉市",
+    "area_type": "新城区",
+    "center": {
+      "lat": 30.84377,
+      "lon": 114.796
+    },
+    "bbox": "114.4703,30.5568,115.0769,31.0394",
+    "bbox_source": "OSM relation/3076298",
+    "intro": "武汉东北郊，丘陵与平原交错。",
+    "fit_tags": [
+      "郊野"
+    ],
+    "recommend_days": 0.5,
+    "best_season": "3–5月、9月下旬–11月（春秋温和；6月中旬至7月中旬多为梅雨期，7–8月湿热高温，9月上中旬常有“秋老虎”）",
+    "climate": {
+      "spring": [
+        17.4,
+        147.0
+      ],
+      "summer": [
+        27.9,
+        222.0
+      ],
+      "autumn": [
+        18.5,
+        69.0
+      ],
+      "winter": [
+        6.1,
+        50.0
+      ]
+    },
+    "spots": []
+  }
+}
