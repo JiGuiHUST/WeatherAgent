@@ -43,10 +43,13 @@ _COUNTRY_CITY_MAP = {
     "越南": "河内", "泰国": "曼谷", "柬埔寨": "暹粒", "老挝": "琅勃拉邦",
     "马来西亚": "吉隆坡", "新加坡": "新加坡", "印度尼西亚": "巴厘岛",
     "菲律宾": "长滩岛", "缅甸": "仰光", "文莱": "斯里巴加湾",
+    # 国内
+    "中国": "武汉", "湖北省": "武汉", "湖北": "武汉",
     # 英文国家名
     "vietnam": "河内", "thailand": "曼谷", "cambodia": "暹粒", "laos": "琅勃拉邦",
     "malaysia": "吉隆坡", "singapore": "新加坡", "indonesia": "巴厘岛",
     "philippines": "长滩岛", "myanmar": "仰光", "brunei": "斯里巴加湾",
+    "china": "武汉", "wuhan": "武汉",
 }
 
 
@@ -274,7 +277,8 @@ def filter_spots(spots_data, city, preference, weather_tag, total_pre):
             "icon": icon_map.get(std_cat, "📍"),
             "spots": items,
         })
-    return result
+    # 国内城市（如武汉）没有"海岛活动"这类分区，空卡片不展示
+    return [c for c in result if c["spots"]]
 
 
 def generate_strategy(destination, preference, time_input):

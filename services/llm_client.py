@@ -90,6 +90,100 @@ def ask(question, weather, lang="zh"):
         return None
 
 
+# ===================== 工具调用（trip_tool 接入智能体）=====================
+def _trip_tools():
+    """延迟导入 trip_tool 的工具定义；缺失时返回 None（主站仍可用）。"""
+    try:
+        from trip_tool import TOOLS
+        return TOOLS
+    except Exception as e:  # pragma: no cover - 取决于部署环境
+        logger.warning("trip_tool 工具定义不可用，问答退化为纯文本: %s", e)
+        return None
+
+
+def _dispatch_tool(name, arguments):
+    try:
+        from trip_tool import dispatch
+    except Exception as e:
+        return {"ok": False, "error": "trip_tool 不可用: %s" % e}
+    try:
+        return dispatch(name, arguments)
+    except Exception as e:
+        logger.warning("工具 %s 执行失败: %s", name, e)
+        return {"ok": False, "error": "工具执行失败: %s" % e}
+
+
+def ask_with_tools(question, weather, lang="zh", max_rounds=3):
+    """带 function-calling 的问答：模型可调用 trip_tool 的 plan_trip / list_spots。
+
+    返回 (text, used_tools)；未配置 / 调用失败返回 (None, False)。
+    """
+    tools = _trip_tools()
+    if not LLM_ENABLED or not tools:
+        return None, False
+    try:
+        context = _build_context(weather, lang)
+        system = _SYSTEM_PROMPT
+        if lang != "en":
+            system += ("你可以调用 plan_trip 工具，按日期排武汉景点顺序（天气→约束→求解）。"
+                       "用户要求「规划行程/路线/一天怎么玩」且涉及武汉时，先调用工具再基于工具结果回答；"
+                       "不要编造景点顺序与时间。")
+        else:
+            system += (" You can call the plan_trip tool to order Wuhan sights by date "
+                       "(weather -> constraints -> solver). When the user asks for an itinerary "
+                       "in Wuhan, call the tool first and answer from its result; never invent times.")
+        messages = [
+            {"role": "system", "content": system},
+            {"role": "user", "content": f"{context}\n\n{'用户问题' if lang != 'en' else 'Question'}: {question}"},
+        ]
+        used = False
+        for _ in range(max_rounds):
+            resp = requests.post(
+                f"{LLM_BASE_URL}/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {LLM_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": LLM_MODEL,
+                    "messages": messages,
+                    "tools": tools,
+                    "tool_choice": "auto",
+                    "temperature": 0.4,
+                    "max_tokens": LLM_MAX_TOKENS,
+                    "stream": False,
+                },
+                timeout=LLM_TIMEOUT,
+            )
+            resp.raise_for_status()
+            choices = (resp.json().get("choices") or [])
+            if not choices:
+                return None, used
+            msg = choices[0].get("message") or {}
+            calls = msg.get("tool_calls") or []
+            if not calls:
+                text = _clean(msg.get("content"))
+                return (text or None), used
+            used = True
+            messages.append({
+                "role": "assistant",
+                "content": msg.get("content"),
+                "tool_calls": calls,
+            })
+            for call in calls:
+                fn = (call.get("function") or {})
+                result = _dispatch_tool(fn.get("name"), fn.get("arguments"))
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": call.get("id"),
+                    "content": json.dumps(result, ensure_ascii=False)[:6000],
+                })
+        return None, used
+    except Exception as e:
+        logger.warning("LLM 工具调用失败，将回退: %s", e)
+        return None, False
+
+
 # ===================== 行程规划专用 =====================
 _CROWD_LABEL = {
     "free":   ("自由行",   "Independent"),

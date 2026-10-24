@@ -10,17 +10,29 @@
     <form method="post" action="/route" id="routeForm">
       <div class="mb-3">
         <label class="form-label fw-semibold">{{ t('route.cities') }}</label>
-        <div class="d-flex flex-wrap gap-2 align-items-center" id="cityCheckboxes">
-          {% for c in cities %}
-          <div class="city-checkbox-pill d-inline-flex align-items-center border rounded-pill px-3 py-1"
-               data-city="{{ c }}">
-            <input class="form-check-input me-2" type="checkbox" name="cities" value="{{ c }}" id="c_{{ loop.index }}"
-                   {% if c in selected %}checked{% endif %}>
-            <label class="form-check-label" for="c_{{ loop.index }}">{{ c }}</label>
-            <button type="button" class="btn btn-sm btn-link py-0 px-1 ms-1 select-spots-btn"
-                    data-city="{{ c }}" title="{{ t('route.spots.btn_tip') }}">
-              <i class="bi bi-pin-map"></i><span class="badge bg-secondary ms-1 spot-count" data-city="{{ c }}">0</span>
-            </button>
+        {% set ns = namespace(i=0) %}
+        <div id="cityCheckboxes">
+          {% for grp in city_groups %}
+          <div class="mb-2 city-group" data-scope="{{ grp.scope }}">
+            <div class="city-group-label">
+              <i class="bi {{ 'bi-house-door-fill' if grp.scope == 'domestic' else 'bi-globe2' }} me-1"></i>{{ grp.label }}
+              <span class="badge bg-light text-secondary border">{{ grp.cities|length }}</span>
+            </div>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              {% for c in grp.cities %}
+              {% set ns.i = ns.i + 1 %}
+              <div class="city-checkbox-pill d-inline-flex align-items-center border rounded-pill px-3 py-1"
+                   data-city="{{ c }}">
+                <input class="form-check-input me-2" type="checkbox" name="cities" value="{{ c }}" id="c_{{ ns.i }}"
+                       {% if c in selected %}checked{% endif %}>
+                <label class="form-check-label" for="c_{{ ns.i }}">{{ c }}</label>
+                <button type="button" class="btn btn-sm btn-link py-0 px-1 ms-1 select-spots-btn"
+                        data-city="{{ c }}" title="{{ t('route.spots.btn_tip') }}">
+                  <i class="bi bi-pin-map"></i><span class="badge bg-secondary ms-1 spot-count" data-city="{{ c }}">0</span>
+                </button>
+              </div>
+              {% endfor %}
+            </div>
           </div>
           {% endfor %}
         </div>

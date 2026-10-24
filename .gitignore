@@ -11,6 +11,9 @@ env/
 logs/
 *.log
 
+# 行程工具（trip_tool）的天气/距离缓存
+data/wuhan/.cache/
+
 # ===== 凭据与本地环境（切勿提交）=====
 .env
 .env.local

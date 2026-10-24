@@ -31,6 +31,7 @@
             {{ turn.a }}
             <div class="text-end mt-1">
               {% if turn.source == 'llm' %}<span class="badge bg-success">LLM</span>
+              {% elif turn.source == 'tool' %}<span class="badge bg-primary"><i class="bi bi-tools me-1"></i>{{ t('qa.source.tool') }}</span>
               {% else %}<span class="badge bg-secondary">{{ lang=='en' and 'keyword' or '关键词' }}</span>{% endif %}
             </div>
           </div>

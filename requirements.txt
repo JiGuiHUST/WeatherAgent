@@ -3,3 +3,5 @@ requests>=2.28
 numpy>=1.24
 matplotlib>=3.7
 python-dotenv>=1.0
+# 行程规划工具（trip_tool）的 TSPTW 求解器；未安装时自动退化为贪心排序
+ortools>=9.8

@@ -23,6 +23,7 @@ from utils.i18n import translate, normalize
 from utils.visual import weather_icon, comfort_icon, prob_color, prob_level
 from services.travel_engine import generate_strategy, _load_json
 from services import weather_api
+from services import destinations
 from services.forecast_service import build_route_forecast
 from services.landscape_engine import predict_for_route
 from services.itinerary_planner import plan as plan_itinerary
@@ -72,6 +73,14 @@ def create_app():
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["MAX_CONTENT_LENGTH"] = 4 * 1024 * 1024
 
+    # ---- 行程规划工具（trip_tool）：以蓝本挂载 /api/trip/* ----
+    # 工具本身只新增文件，不改既有路由；行程序列由 OR-Tools 求解，缺依赖时自动退化为贪心
+    try:
+        from trip_tool.server import bp as trip_bp
+        app.register_blueprint(trip_bp)
+    except Exception as e:  # 缺 ortools / 缺数据都不应影响主站启动
+        logger.warning("trip_tool 蓝本挂载失败，/api/trip/* 不可用: %s", e)
+
     # ---- Jinja 全局 / 过滤器 ----
     app.jinja_env.globals["t"] = lambda key: translate(key, getattr(g, "lang", "zh"))
     app.jinja_env.globals["weather_icon"] = weather_icon
@@ -95,7 +104,8 @@ def create_app():
     # ---------- 目的地气候规划 ----------
     @app.route("/")
     def index():
-        return render_template("index.html", preferences=PREFERENCES)
+        return render_template("index.html", preferences=PREFERENCES,
+                               dest_menu=destinations.menu(g.lang))
 
     # ---------- 单城攻略 ----------
     @app.route("/strategy", methods=["GET", "POST"])
@@ -160,10 +170,12 @@ def create_app():
     @app.route("/route", methods=["GET", "POST"])
     def route():
         import json as _json
-        cities_all = list(_load_json(CITY_BBOX_FILE).keys())
+        cities_all = destinations.all_cities()
+        city_groups = destinations.city_groups(g.lang)
         lang = g.lang
         if request.method == "GET":
-            return render_template("route.html", cities=cities_all, crowds=_crowd_labels(lang),
+            return render_template("route.html", cities=cities_all, city_groups=city_groups,
+                                   crowds=_crowd_labels(lang),
                                    selected=[], start="", days=2, crowd="free",
                                    selected_spots_json="[]")
 
@@ -217,7 +229,8 @@ def create_app():
                   "itin_token": token,
                   "selected_spots_json": _json.dumps(selected_spots, ensure_ascii=False)}
 
-        return render_template("route.html", cities=cities_all, crowds=_crowd_labels(lang),
+        return render_template("route.html", cities=cities_all, city_groups=city_groups,
+                               crowds=_crowd_labels(lang),
                                selected=cities, start=start, days=days, crowd=crowd, result=result,
                                llm_enabled=LLM_ENABLED,
                                selected_spots_json=_json.dumps(selected_spots, ensure_ascii=False))
@@ -310,6 +323,14 @@ def create_app():
         rd["itin_pending"] = False
         session["route"] = rd
         return jsonify({"ok": True, **payload})
+
+    # ---------- 行程规划工具（武汉 · 按日期排景点顺序）----------
+    @app.route("/trip")
+    def trip():
+        """trip_tool 的站点页面：输入日期，输出当天景点时间线（调用 /api/trip/plan_trip）"""
+        import datetime as _dt
+        default_date = (_dt.date.today() + _dt.timedelta(days=1)).isoformat()
+        return render_template("trip.html", default_date=default_date, llm_enabled=LLM_ENABLED)
 
     # ---------- 双语气象问答 ----------
     @app.route("/qa", methods=["GET", "POST"])

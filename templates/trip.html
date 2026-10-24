@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ t('trip.title') }} · {{ t('nav.brand') }}{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-1"><i class="bi bi-calendar2-week-fill text-primary me-2"></i>{{ t('trip.title') }}</h3>
+<p class="text-muted mb-4">{{ t('trip.subtitle') }}</p>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <form id="tripForm" class="row g-3" autocomplete="off">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold" for="tripDate">{{ t('trip.date') }}</label>
+        <input type="date" class="form-control" id="tripDate" value="{{ default_date }}" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold" for="tripSpots">{{ t('trip.max_spots') }}</label>
+        <select class="form-select" id="tripSpots">
+          {% for n in range(2, 7) %}
+          <option value="{{ n }}" {% if n == 4 %}selected{% endif %}>{{ n }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold" for="tripTransport">{{ t('trip.transport') }}</label>
+        <select class="form-select" id="tripTransport">
+          <option value="mixed">{{ t('trip.transport.mixed') }}</option>
+          <option value="walk">{{ t('trip.transport.walk') }}</option>
+          <option value="drive">{{ t('trip.transport.drive') }}</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100" id="tripSubmit">
+          <i class="bi bi-magic me-1"></i>{{ t('trip.submit') }}
+        </button>
+      </div>
+    </form>
+    <div class="form-text mt-2">
+      <i class="bi bi-info-circle me-1"></i>{{ t('trip.tip') }}
+    </div>
+  </div>
+</div>
+
+<div id="tripError" class="alert alert-warning d-none"></div>
+<div id="tripResult"></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="application/json" id="tripI18n">{{ {
+  'planning': t('trip.planning'),
+  'failed': t('trip.failed'),
+  'solver': t('trip.solver'),
+  'stops': t('trip.stops'),
+  'dropped': t('trip.dropped'),
+  'no_rain': t('trip.no_rain'),
+  'rain': t('trip.rain'),
+  'feels': t('trip.feels'),
+  'total': t('trip.total'),
+  'navigate': t('trip.navigate'),
+  'warn': t('trip.warn'),
+  'err_empty': t('trip.err_empty')
+}|tojson }}</script>
+<script src="/static/js/trip.js"></script>
+{% endblock %}

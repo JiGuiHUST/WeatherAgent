@@ -16,10 +16,35 @@
       <div class="card-body p-4 p-md-5">
         <form id="travelForm" action="/strategy" method="post">
           <div class="mb-4">
-            <label class="form-label fw-semibold"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ t('home.destination') }}</label>
-            <input type="text" class="form-control form-control-lg" name="destination"
-                   placeholder="{{ t('home.destination_placeholder') }}" required>
+            <label class="form-label fw-semibold">
+              <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ t('home.destination') }}
+              <span class="badge bg-light text-secondary border fw-normal ms-1">{{ t('dest.two_level') }}</span>
+            </label>
+
+            <!-- 二级菜单：一级「国内 / 国外 + 国家」，二级「城市」 -->
+            <div class="dropdown dest-picker">
+              <button class="btn btn-outline-secondary btn-lg w-100 d-flex justify-content-between align-items-center gap-2"
+                      type="button" id="destToggle" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                      aria-expanded="false">
+                <span id="destLabel" class="text-truncate">{{ t('dest.pick') }}</span>
+                <i class="bi bi-chevron-down small flex-shrink-0"></i>
+              </button>
+              <div class="dropdown-menu dest-menu w-100 p-0" aria-labelledby="destToggle">
+                <div class="row g-0">
+                  <div class="col-12 col-sm-5 col-md-4 dest-col-countries">
+                    <div class="dest-col-title">{{ t('dest.level1') }}</div>
+                    <div id="destCountries"></div>
+                  </div>
+                  <div class="col-12 col-sm-7 col-md-8 dest-col-cities">
+                    <div class="dest-col-title" id="destCityTitle">{{ t('dest.level2') }}</div>
+                    <div id="destCities" class="dest-city-grid"></div>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="destination" id="destInput">
+            </div>
             <div class="form-text">{{ t('home.destination_tip') }}</div>
+            <div class="text-danger small mt-1 d-none" id="destError">{{ t('dest.required') }}</div>
           </div>
 
           <div class="mb-4">
@@ -82,4 +107,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="application/json" id="destData">{{ dest_menu|tojson }}</script>
+<script src="/static/js/dest_picker.js"></script>
 {% endblock %}
