@@ -114,13 +114,18 @@ class TemplateScorer:
         if not active:
             # 对天气不敏感（室内等）：好天气 70 分、极端天气 100 分。
             # 下限不能低于 SUIT_MIN（60），否则数据里缺模板时所有景点都会因"无适宜时段"被丢弃。
-            return int(round(70 + 30 * severity(hour))), []
+            if not template:
+                return 0, [{"factor": "template", "label": "类型模板", "verdict": "unknown", "value": None}]
+            return int(round(78 + 15 * severity(hour))), []
 
         score, hits = 100.0, []
         for f in active:
             cfg = sens[f]
             v = hour.get(f)
             if v is None:
+                score -= 8 * (cfg.get("weight") or 0)
+                hits.append({"factor": f, "label": FACTOR_LABEL.get(f, f),
+                             "value": None, "verdict": "unknown", "bad_threshold": cfg.get("bad")})
                 continue
             w = cfg.get("weight") or 0
             vd = verdict(v, cfg.get("good"), cfg.get("bad"))

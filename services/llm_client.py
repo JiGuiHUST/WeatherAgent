@@ -26,7 +26,9 @@ def _clean(text):
     return text.strip()
 
 _SYSTEM_PROMPT = (
-    "你是面向东南亚跨境旅行的气象科普与出行助手。"
+    "你是面向武汉及跨境文旅的气象科普与出行助手。"
+    "严格区分实时预报、历史回放、人工模拟；无数据不能编造。不能承诺景点预约成功。"
+    "工具报错必须如实说明，不得用自己编写的时间线替代失败的工具结果。"
     "请基于提供的『路线当日实况数据』回答用户问题，回答需准确、简洁、实用，"
     "尽量包含成因解释与一句话出行建议。"
     "务必使用与用户提问相同的语言回复（中文提问用中文，英文提问用英文）。"
@@ -36,8 +38,14 @@ _SYSTEM_PROMPT = (
 
 def _build_context(weather, lang):
     w = weather or {}
-    label = "路线当日实况" if lang != "en" else "Route live weather"
+    from services.live_weather import today
+    label = str(w.get("source") or "天气来源未确认")
     parts = [f"{label}: {w.get('city', '—')}"]
+    parts += ["今天（北京时间）="+today().isoformat(), "目标日期="+str(w.get("date", "未指定"))]
+    if w.get("itinerary"):
+        parts.append("已验证行程："+w["itinerary"])
+    if w.get("evidence"):
+        parts.append("数据依据："+json.dumps(w["evidence"],ensure_ascii=False))
     if w.get("tmp") is not None:
         parts.append(f"温度/Temperature {w['tmp']}℃")
     if w.get("pre") is not None:
@@ -75,6 +83,7 @@ def ask(question, weather, lang="zh"):
                 "temperature": 0.6,
                 "max_tokens": LLM_MAX_TOKENS,
                 "stream": False,
+                **({"thinking": {"type": "disabled"}} if "deepseek.com" in LLM_BASE_URL else {}),
             },
             timeout=LLM_TIMEOUT,
         )
@@ -107,7 +116,10 @@ def _dispatch_tool(name, arguments):
     except Exception as e:
         return {"ok": False, "error": "trip_tool 不可用: %s" % e}
     try:
-        return dispatch(name, arguments)
+        args = json.loads(arguments) if isinstance(arguments, str) else dict(arguments or {})
+        args.pop("data_dir", None)
+        args.pop("weather", None)
+        return dispatch(name, args)
     except Exception as e:
         logger.warning("工具 %s 执行失败: %s", name, e)
         return {"ok": False, "error": "工具执行失败: %s" % e}
@@ -152,6 +164,7 @@ def ask_with_tools(question, weather, lang="zh", max_rounds=3):
                     "temperature": 0.4,
                     "max_tokens": LLM_MAX_TOKENS,
                     "stream": False,
+                **({"thinking": {"type": "disabled"}} if "deepseek.com" in LLM_BASE_URL else {}),
                 },
                 timeout=LLM_TIMEOUT,
             )
@@ -349,6 +362,7 @@ def generate_itinerary(city, days_data, crowd, lang="zh"):
                 "temperature": 0.75,
                 "max_tokens": max(LLM_MAX_TOKENS, tok_per_day * len(days_data)),
                 "stream": False,
+                **({"thinking": {"type": "disabled"}} if "deepseek.com" in LLM_BASE_URL else {}),
             },
             timeout=LLM_TIMEOUT,
         )
@@ -370,7 +384,9 @@ def generate_itinerary(city, days_data, crowd, lang="zh"):
 
 # ===================== 气象研学课堂专用 =====================
 _SCIENCE_SYSTEM_ZH = (
-    "你是面向东南亚跨境旅行的气象科普作家。"
+    "你是面向文旅出行的气象科普作家。"
+    "以给定日期、地点与数据来源为准。预报不能称为实况；不能从凉爽等体感标签推断季节，不得凭温度臆测春季。"
+    "缺失要素不能编造，也不能仅由温湿度断言已经出现雾、台风或其他现象；只能解释相关原理及观察条件。"
     "基于提供的『城市 + 当日实况数据』，挑选最贴切的气象主题（如热带季风、海陆风、对流雨、山地逆温/晨雾、"
     "跨境烧山雾霾、南海台风、城市热岛、厄尔尼诺等），撰写一段 80-120 字的成因讲解，并附一句出行建议。"
     "讲解必须：①引用给定的温度/降水/能见度等数值；②科学准确；③通俗易懂。"
@@ -380,7 +396,9 @@ _SCIENCE_SYSTEM_ZH = (
 )
 
 _SCIENCE_SYSTEM_EN = (
-    "You are a weather-science writer for Southeast Asia cross-border travel. "
+    "You are a weather-science writer for tourism. Use the supplied date, location and source. "
+    "Forecast is not observation. Never infer season from temperature or a comfort label. "
+    "Do not invent missing values or assert fog or other unobserved phenomena from temperature and humidity alone. "
     "Based on the given city and live weather, pick the most relevant meteorological topic "
     "(e.g. tropical monsoon, sea-land breeze, convective rain, mountain inversion/fog, "
     "cross-border burning haze, South China Sea typhoon, urban heat island, El Nino) "
@@ -397,7 +415,7 @@ def _build_science_user(city, weather, lang):
     """构造科普请求的用户消息：城市 + 当日实况数值"""
     w = weather or {}
     if lang != "en":
-        parts = [f"城市: {city}"]
+        parts = [f"城市: {city}",f"日期: {w.get('date') or '未指定'}",f"数据来源: {w.get('source') or '未确认'}",f"资料类型: {w.get('mode') or '天气资料，非已证实的现场观测'}"]
         if w.get("tmp") is not None:
             parts.append(f"平均温度 {w['tmp']}℃")
         if w.get("pre") is not None:
@@ -410,8 +428,8 @@ def _build_science_user(city, weather, lang):
             parts.append(f"能见度 {w['vis']}km")
         if w.get("season"):
             parts.append(f"季节 {w['season']}")
-        return "当日实况：\n" + "；".join(parts) + "\n\n请生成中英双语科普 JSON。"
-    parts = [f"City: {city}"]
+        return "所选日期天气资料：\n" + "；".join(parts) + "\n\n请生成中英双语科普 JSON。"
+    parts = [f"City: {city}",f"Date: {w.get('date') or 'unspecified'}",f"Source: {w.get('source') or 'unconfirmed'}",f"Data type: {w.get('mode') or 'weather data, not verified onsite observations'}"]
     if w.get("tmp") is not None:
         parts.append(f"Avg temp {w['tmp']}C")
     if w.get("pre") is not None:
@@ -424,7 +442,7 @@ def _build_science_user(city, weather, lang):
         parts.append(f"Visibility {w['vis']}km")
     if w.get("season"):
         parts.append(f"Season {w['season']}")
-    return "Live weather:\n" + " | ".join(parts) + "\n\nGenerate bilingual science JSON."
+    return "Weather for the selected date:\n" + " | ".join(parts) + "\n\nGenerate bilingual science JSON."
 
 
 def _parse_science_json(text):
@@ -492,6 +510,7 @@ def generate_science_topic(city, weather, lang="zh"):
                 "temperature": 0.7,
                 "max_tokens": LLM_MAX_TOKENS,
                 "stream": False,
+                **({"thinking": {"type": "disabled"}} if "deepseek.com" in LLM_BASE_URL else {}),
             },
             timeout=LLM_TIMEOUT,
         )

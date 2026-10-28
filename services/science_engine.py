@@ -36,6 +36,8 @@ def _load_kb():
 
 def _pick_knowledge(kb, tmp, pre, rh, wind, vis, city):
     """根据当日气象挑选最贴切的科普知识点 key"""
+    if city == "武汉":
+        return "urban_weather"
     if pre and pre >= 25 and (wind or 0) >= 5:
         return "typhoon"
     if vis and vis <= 6 and (rh or 0) < 75 and pre and pre < 3:
@@ -57,7 +59,6 @@ def companion_push(route_forecast, lang="zh"):
     优先调用 LLM 基于当日实况动态生成；LLM 未配置或失败时，
     回退到 knowledge_base.json 模板（按气象要素挑选主题）。
     """
-    from services.forecast_service import _derive_wind, _derive_visibility
     from services.llm_client import generate_science_topic
     kb = _load_kb()
     items = []
@@ -69,8 +70,8 @@ def companion_push(route_forecast, lang="zh"):
             # 取该日首行派生湿度/风/能见度
             row = (d.get("rows") or [{}])[0]
             rh = row.get("rh")
-            wind = row.get("wind") or _derive_wind(pre, 12)
-            vis = row.get("vis") or _derive_visibility(pre, rh or 78, 12)
+            wind = row.get("wind")
+            vis = row.get("vis")
 
             # 1) 优先 LLM 动态生成（缓存键：城市+日期+关键气象值，避免页面刷新重复调用）
             cache_key = (city, d["date"], tmp, pre, vis, lang)
@@ -78,8 +79,8 @@ def companion_push(route_forecast, lang="zh"):
             if cached is None:
                 weather = {
                     "tmp": tmp, "pre": pre, "rh": rh,
-                    "wind": wind, "vis": vis, "season": d.get("tag"),
-                    "date": d["date"],
+                    "wind": wind, "vis": vis, "weather_tag": d.get("tag"),
+                    "date": d["date"],"source":d.get('source'),"mode":(d.get('provenance') or {}).get('mode'),
                 }
                 try:
                     cached = generate_science_topic(city, weather, lang)
@@ -140,7 +141,7 @@ def _reason(key, tmp, pre, vis, lang):
         "typhoon": "强风强雨，触发台风讲解",
         "haze_burning": f"能见度低约{vis}km且偏干，触发烧山雾霾讲解",
         "sea_breeze": "沿海点位，触发海陆风讲解",
-        "llm_generated": f"AI 基于当日实况({tmp}℃·{pre}mm·{vis}km)动态生成",
+        "llm_generated": f"AI 基于所选日期天气资料({tmp}℃·{pre}mm·{vis if vis is not None else '未知'}km)生成",
     }
     ens = {
         "convective_rain": f"~{pre}mm rain triggers convective-rain explain",
@@ -169,9 +170,9 @@ def build_handbook(route_forecast, landscapes, lang="zh"):
                          f"{'降水' if L!='en' else 'precip'} {d['total_pre']}mm ({d['source']})")
 
     if landscapes:
-        lines.append(f"\n## {'二、特色景观观赏概率' if L != 'en' else '2. Featured landscape probability'}")
+        lines.append(f"\n## {'二、景观适宜指数（规则评分，非概率）' if L != 'en' else '2. Landscape suitability (rule score, not probability)'}")
         for l in landscapes:
-            lines.append(f"- **{l['name']}** ({l['city']}): {'概率' if L!='en' else 'prob'} {l['prob']}% "
+            lines.append(f"- **{l['name']}** ({l['city']}): {'适宜指数' if L!='en' else 'index'} {l['prob']}/100 "
                          f"({l['prob_label']}) · {'窗口' if L!='en' else 'window'} {l['window']}")
             lines.append(f"  - {l['principle'] if L!='en' else l['principle_en']}")
 
@@ -270,7 +271,7 @@ def build_diagram(lang="zh"):
         ax.text(0.4, 9.6, ("太阳加热" if lang != "en" else "Solar heating"), fontsize=9, color="#c0392b")
         ax.set_title(("对流雨形成示意图" if lang != "en" else "Convective Rain Formation"), fontsize=12)
         fig.tight_layout()
-        key = hashlib.md5(b"convective").hexdigest()[:6]
+        key = hashlib.md5(("convective-"+lang).encode()).hexdigest()[:6]
         path = os.path.join(WEATHER_IMG_DIR, f"diagram_{key}.png")
         fig.savefig(path, bbox_inches="tight")
         plt.close(fig)

@@ -1,0 +1,13 @@
+{
+  "provider": "weathercn",
+  "date": "2026-10-29",
+  "topic": {
+    "title_zh": "秋末弱降水与城市热岛",
+    "text_zh": "武汉10月29日预报平均气温17.5℃、降水量0.8mm，属弱降水。秋末冷空气南下时，城市建筑与路面白天储热、夜间释放，形成热岛，使近地面空气抬升；同时南方暖湿气流带来水汽，抬升凝结成低云，产生零星小雨。0.8mm量级说明雨强小、持续时间短。",
+    "tip_zh": "雨量小但路面湿滑，通勤备折叠伞，早晚温差注意添衣。",
+    "title_en": "Late-Autumn Light Rain and Urban Heat Island",
+    "text_en": "Wuhan's forecast for Oct 29 shows a mean temperature of 17.5°C and 0.8 mm of precipitation, indicating light rain. As late-autumn cold air moves south, buildings and roads store daytime heat and release it at night, forming an urban heat island that lifts near-surface air; warm, moist southerly flow adds water vapor, which condenses into low clouds and scattered drizzle. The 0.8 mm amount means low intensity and short duration.",
+    "tip_en": "Rain is light but roads get slippery; carry a folding umbrella and dress for cool mornings and evenings."
+  },
+  "passed": true
+}

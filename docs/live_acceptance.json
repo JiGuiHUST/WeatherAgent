@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-28",
+  "results": [
+    {
+      "name": "GET /",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /destinations",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /route",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /trip",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /safety",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /qa",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /science",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "GET /api/travel/health",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "real hourly weather",
+      "passed": true,
+      "detail": "华风爱科"
+    },
+    {
+      "name": "real plan",
+      "passed": true,
+      "detail": {
+        "error": null,
+        "routing": [
+          "OSRM 路网估时"
+        ]
+      }
+    },
+    {
+      "name": "saved plan ",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "saved plan /export",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "saved plan /export?format=json",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "refresh real weather and replan",
+      "passed": true,
+      "detail": "comparison available"
+    },
+    {
+      "name": "explicit rain scenario",
+      "passed": true,
+      "detail": {
+        "after_rain_min": 0,
+        "before_rain_min": 20,
+        "changes": [
+          {
+            "kind": "moved",
+            "name": "江汉路步行街",
+            "text": "16:40 → 17:00；停留全程最大降水 0 mm/h，体感 17.6–18.3°C；完整停留时段通过户外天气约束"
+          }
+        ],
+        "label": "原行程与新行程均按同一份更新天气评估；仅计景点停留，不含交通"
+      }
+    },
+    {
+      "name": "real model explanation",
+      "passed": true,
+      "detail": "deepseek-flash"
+    },
+    {
+      "name": "science from saved workspace plan",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "destination strategy real weather",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "legacy route real weather",
+      "passed": true,
+      "detail": "200"
+    },
+    {
+      "name": "async itinerary",
+      "passed": true,
+      "detail": "tool"
+    },
+    {
+      "name": "export handbook",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "bytes": 723
+      }
+    },
+    {
+      "name": "handbook includes actual route and weather",
+      "passed": true,
+      "detail": "# 跨境气象研学手册\n\n> 生成时间: 2026-10-28 20:59\n\n## 一、行程连贯气象总览\n\n### 武汉 (中国)\n- 2026-10-29 (四): 均温 17.5℃ / 降水 1.4mm (实时预报 · 华风爱科)\n\n## 三、沿线实景知识点\n\n### 武汉 · 2026-10-29 — 秋末弱降水与低能见度\n武汉10月29日预报平均温度1"
+    },
+    {
+      "name": "export record",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "bytes": 518
+      }
+    },
+    {
+      "name": "export bank",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "bytes": 713
+      }
+    },
+    {
+      "name": "export diagram",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "bytes": 29650
+      }
+    },
+    {
+      "name": "DeepSeek actual function calling",
+      "passed": true,
+      "detail": {
+        "used_tools": true,
+        "answer": "武汉的两个室内景点：\n\n1. **湖北省博物馆**（武昌区，室内，建议停留约 3 小时）——周二至周日 09:00–17:00，16:00 停止入馆，周一闭馆。\n2. **武汉博物馆**（江汉区，室内，建议停留约 2 小时）——周三至周一 09:00–17:00，16:30 停止入馆，周二闭馆。\n\n一句话建议：10 月 29 日是周四，两家都开放；若想避开闭馆风险，优先选湖北省博物馆，但需在 16:00 前入馆。"
+      }
+    },
+    {
+      "name": "legacy bilingual QA",
+      "passed": true,
+      "detail": "200"
+    }
+  ]
+}

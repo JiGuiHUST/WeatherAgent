@@ -14,11 +14,16 @@ import hashlib
 import json
 import logging
 import os
+import time
+import threading
 import urllib.request
 
 logger = logging.getLogger("trip_tool.routing")
 
 OSRM_BASE = "https://routing.openstreetmap.de"
+_REMOTE_LOCK = threading.Lock()
+_LAST_REQUEST = 0.0
+_COOLDOWN = {}
 WALK_KMH = 4.5
 DRIVE_KMH = 22.0
 DRIVE_OVERHEAD_MIN = 8   # 叫车/停车/找入口
@@ -40,7 +45,7 @@ class MatrixProvider:
 
 
 class OsrmMatrix(MatrixProvider):
-    def __init__(self, cache_dir=None, timeout=20):
+    def __init__(self, cache_dir=None, timeout=7):
         here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.cache_dir = cache_dir or os.path.join(here, "data", "wuhan", ".cache")
         self.timeout = timeout
@@ -52,20 +57,44 @@ class OsrmMatrix(MatrixProvider):
     def _table(self, pts, profile):
         cached = self._cache_path(profile, pts)
         try:
+            if time.time()-os.path.getmtime(cached)>86400:
+                raise OSError("路网缓存已到期")
             with open(cached, "r", encoding="utf-8") as f:
                 d = json.load(f)
             return d["km"], d["min"]
-        except (OSError, KeyError):
+        except (OSError, KeyError, ValueError):
             pass
 
         path = "foot" if profile == "foot" else "driving"
         coords = ";".join("%.6f,%.6f" % (p["lon"], p["lat"]) for p in pts)
         url = "%s/routed-%s/table/v1/%s/%s?annotations=duration,distance" % (
             OSRM_BASE, profile, path, coords)
-        req = urllib.request.Request(url, headers={"User-Agent": "weathertrip/0.1"})
-        with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-            d = json.load(resp)
+        urls = [url]
+        if profile == "car":
+            urls.append("https://router.project-osrm.org/table/v1/driving/"+coords+"?annotations=duration,distance")
+        d, failure = None, None
+        global _LAST_REQUEST
+        for candidate in urls:
+            host = candidate.split('/')[2]
+            if time.monotonic() < _COOLDOWN.get(host,0):
+                continue
+            try:
+                req = urllib.request.Request(candidate, headers={"User-Agent":"Weatherwise/2.0 (local travel planner)","Referer":"http://127.0.0.1:5000/"})
+                with _REMOTE_LOCK:
+                    delay = 1.05-(time.monotonic()-_LAST_REQUEST)
+                    if delay>0: time.sleep(delay)
+                    _LAST_REQUEST = time.monotonic()
+                    with urllib.request.urlopen(req,timeout=self.timeout) as resp:
+                        d=json.load(resp)
+                break
+            except Exception as e:
+                failure=e
+                _COOLDOWN[host]=time.monotonic()+90
+        if d is None:
+            raise ValueError("路网服务暂不可用，稍后自动重试") from failure
         n = len(pts)
+        if d.get("code") != "Ok" or any(v is None for row in d.get("durations",[]) for v in row):
+            raise ValueError("路网中存在不可达节点，不能用零耗时替代")
         km = [[(d["distances"][i][j] or 0) / 1000.0 for j in range(n)] for i in range(n)]
         mins = [[int(round((d["durations"][i][j] or 0) / 60.0)) for j in range(n)] for i in range(n)]
         try:
@@ -83,10 +112,16 @@ class OsrmMatrix(MatrixProvider):
             return mins, km, [["walk"] * n for _ in range(n)]
         if transport == "drive":
             km, mins = self._table(points, "car")
+            mins = [[v+(DRIVE_OVERHEAD_MIN if i!=j else 0) for j,v in enumerate(row)] for i,row in enumerate(mins)]
             return mins, km, [["drive"] * n for _ in range(n)]
 
-        km_w, min_w = self._table(points, "foot")
         km_d, min_d = self._table(points, "car")
+        try:
+            km_w, min_w = self._table(points, "foot")
+        except Exception:
+            # A real driving matrix remains usable without inventing walking paths.
+            mins = [[v+(DRIVE_OVERHEAD_MIN if i!=j else 0) for j,v in enumerate(row)] for i,row in enumerate(min_d)]
+            return mins, km_d, [["drive"] * n for _ in range(n)]
         km = [[0.0] * n for _ in range(n)]
         mins = [[0] * n for _ in range(n)]
         modes = [["walk"] * n for _ in range(n)]
@@ -117,7 +152,7 @@ class StraightLineMatrix(MatrixProvider):
                 d = haversine_km(points[i]["lat"], points[i]["lon"],
                                  points[j]["lat"], points[j]["lon"]) * DETOUR_FACTOR
                 km[i][j] = round(d, 2)
-                mins[i][j] = int(round(d / kmh * 60))
+                mins[i][j] = int(round(d / kmh * 60)) + (DRIVE_OVERHEAD_MIN if transport != "walk" else 0)
         mode = "walk" if transport == "walk" else "drive"
         return mins, km, [[mode] * n for _ in range(n)]
 

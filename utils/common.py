@@ -3,30 +3,17 @@
 import re
 from datetime import datetime, timedelta
 
-# 气象接口仅提供该年的实况 / 预报数据；任何用于获取与展示气象数据的日期
-# 都会被映射到这一年（保留月、日、时、分）。
-DATA_YEAR = 2024
+# Compatibility display constant; dates are never rewritten.
+DATA_YEAR = datetime.now().year
 
 
 def to_data_year(dt):
-    """把任意 datetime 的年份强制替换为 DATA_YEAR（保留月日时分）。
-
-    用于把"当前时间"或用户输入的日期映射到接口实际拥有数据的年份。
-    2 月 29 日在非闰年会回退到 2 月 28 日，避免非法日期。
-    """
-    if dt is None:
-        return None
-    try:
-        return dt.replace(year=DATA_YEAR)
-    except ValueError:
-        # 处理闰日 -> 非闰年的 2/29
-        if dt.month == 2 and dt.day == 29:
-            return dt.replace(year=DATA_YEAR, day=28)
-        raise
+    """Compatibility helper: preserve the original year and date."""
+    return dt  # Compatibility name: preserve the user's actual date.
 
 
 def data_today():
-    """返回映射到 DATA_YEAR 的"今天"（保留当前月日时分）。"""
+    """返回本地今天，保留真实年月日。"""
     return to_data_year(datetime.now())
 
 
@@ -41,10 +28,13 @@ def parse_time_input(raw, seasons_map):
       - 12位 YYYYMMDDHHMM  -> 直接使用
       - 8位  YYYYMMDD      -> 补 0200
       - 季节(春/夏/秋/冬)   -> 当年对应月份中旬日期 0200
-    所有结果都会被映射到 DATA_YEAR（接口实际年份），保证气象数据可获取。
+    原样保留年月日；接口可用性由天气服务检查。
     返回 (dt对象, season_label)
     """
     raw = (raw or "").strip()
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2})?", raw):
+        dt = datetime.fromisoformat(raw)
+        return dt, _month_to_season(dt.month)
     if not raw:
         today = datetime.now()
         dt = today.replace(hour=2, minute=0, second=0, microsecond=0)
@@ -68,10 +58,7 @@ def parse_time_input(raw, seasons_map):
             dt = datetime(DATA_YEAR, month, 15, 2, 0)
             return dt, season
 
-    # 兜底
-    today = datetime.now()
-    dt = today.replace(hour=2, minute=0, second=0, microsecond=0)
-    return to_data_year(dt), _month_to_season(today.month)
+    raise ValueError("日期格式无效，请使用 YYYY-MM-DD、YYYYMMDD 或季节名称")
 
 
 def _month_to_season(month):
@@ -116,6 +103,9 @@ def validate_form(destination, preference, time_input, allowed_prefs):
         return False, "请输入目的地"
     if preference not in allowed_prefs:
         return False, "请选择有效的旅行偏好"
-    if time_input and not re.fullmatch(r"[\u4e00-\u9fa5\d]+", time_input.strip()):
-        return False, "时间/季节输入仅支持数字或季节文字"
+    if time_input:
+        try:
+            parse_time_input(time_input, {"春季":4,"夏季":7,"秋季":10,"冬季":1})
+        except ValueError:
+            return False, "请输入有效日期（YYYY-MM-DD / YYYYMMDD）或季节名称"
     return True, ""

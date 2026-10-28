@@ -1,0 +1,105 @@
+{
+  "note": "人工模拟，非实测效果；同一景点库、起点、时间、直线矩阵与停留时长。基线为距离优先且满足开放时间，忽略天气；用于评估，不作为出行建议。",
+  "cases": [
+    {
+      "case": "晴天",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "上午雨",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "午后雨",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 210,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "全天雨",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 2,
+      "baseline_rain_min": 360,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "傍晚雨",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 139,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "小雨",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 180,
+      "optimized_rain_min": 30,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "高温",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "大风",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 4,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": 0,
+      "status": "feasible",
+      "error": ""
+    },
+    {
+      "case": "雷暴",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 0,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": "",
+      "status": "no_safe_plan",
+      "error": "转场时段存在雷暴、极强降水或关键风险数据缺失，建议暂缓出发或调整出发时间。"
+    },
+    {
+      "case": "雷暴缺失",
+      "mode": "synthetic_simulation",
+      "baseline_stops": 3,
+      "optimized_stops": 0,
+      "baseline_rain_min": 0,
+      "optimized_rain_min": "",
+      "status": "no_safe_plan",
+      "error": "转场时段存在雷暴、极强降水或关键风险数据缺失，建议暂缓出发或调整出发时间。"
+    }
+  ]
+}

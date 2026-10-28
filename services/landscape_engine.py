@@ -34,8 +34,9 @@ def _clamp(v, lo=0, hi=100):
 
 def _wind(s):
     """派生风力（与 forecast_service 估算口径一致）"""
-    pre = s.get("total_pre") or 0
-    return min(8, 2 + pre / 5.0 + 1)
+    from services.forecast_service import wind_beaufort
+    values = [v for v in s.get("wind_series",[]) if v is not None]
+    return wind_beaufort(max(values)) if values else 0
 
 
 # ============================= 基础评分函数 =============================
@@ -555,8 +556,8 @@ def _risk_label(s, ltype, lang):
         return "滚轴云预示台风/强飑线将至，立即终止户外行程，转移至坚固建筑内" if lang != "en" \
             else "Roll cloud signals incoming typhoon/squall. Cancel outdoor activities immediately and shelter in sturdy buildings."
     if ltype == "tropical_lightning":
-        return "夜间雷暴存在云对地闪电致命风险，请勿在开阔户外、海边逗留，关闭手机避免引雷" if lang != "en" \
-            else "Nocturnal thunderstorm carries fatal CG-lightning risk. Do NOT stay in open areas / seashore. Turn off phones."
+        return "雷暴期间进入坚固建筑内避险，远离开阔地、水边和孤立树木，暂停户外拍摄" if lang != "en" \
+            else "Shelter inside a sturdy building during thunderstorms; stay away from water, open ground and isolated trees."
 
     if pre >= 15 or wind >= 6:
         if ltype in ("cumulonimbus", "orographic_rain", "convective_rain_curtain"):
@@ -618,7 +619,7 @@ _TYPE_SCORERS = {
 }
 
 
-def predict_for_route(route_cities, start_dt, lang="zh"):
+def predict_for_route(route_cities, start_dt, lang="zh", dates=None):
     """
     对路线涉及城市的特色景观点位打分。
     :return: list[{name, city, type, prob, prob_label, window, vis_km, risk_label,
@@ -636,7 +637,7 @@ def predict_for_route(route_cities, start_dt, lang="zh"):
         info = city_map.get(city)
         if not info:
             continue
-        summary = weather_api.get_weather_summary(start_dt, info["bbox"])
+        summary = weather_api.get_weather_summary((dates or {}).get(city,start_dt), info["bbox"])
         if summary is None:
             from services.travel_engine import _mock_weather
             summary = _mock_weather(info, _season_of(start_dt))

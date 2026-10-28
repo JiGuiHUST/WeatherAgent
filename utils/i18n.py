@@ -34,7 +34,7 @@ _STRINGS = {
     "route.crowd.photo": {"zh": "摄影游", "en": "Photography"},
     "route.crowd.study": {"zh": "研学游", "en": "Study tour"},
     "route.forecast": {"zh": "整程连贯逐时气象总览", "en": "Coherent hourly weather overview"},
-    "route.landscape": {"zh": "特色景观观赏概率预判", "en": "Featured landscape viewing probability"},
+    "route.landscape": {"zh": "特色景观观赏适宜指数预判", "en": "Featured landscape viewing probability"},
     "route.itinerary": {"zh": "分人群智能行程规划", "en": "Crowd-aware itinerary"},
     "route.itin.source.llm": {"zh": "AI 生成", "en": "AI generated"},
     "route.itin.source.rule": {"zh": "规则建议", "en": "Rule-based"},
@@ -106,7 +106,7 @@ _STRINGS = {
     "sci.diagram": {"zh": "简易气象示意图", "en": "Weather diagram"},
 
     # 景观
-    "land.prob": {"zh": "观赏概率", "en": "Viewing prob"},
+    "land.prob": {"zh": "观赏适宜指数", "en": "Viewing prob"},
     "land.window": {"zh": "最佳拍摄时段", "en": "Best shoot window"},
     "land.risk": {"zh": "拍摄安全风险", "en": "Safety risk"},
     "land.principle": {"zh": "气象原理", "en": "Meteorological principle"},
@@ -214,7 +214,7 @@ _STRINGS = {
     "home.time_tip": {"zh": "可输入季节文字，或 8 位日期(YYYYMMDD)，或精确到 12 位(YYYYMMDDHHMM)。气象数据来自 {{ data_year }} 年存档，输入的日期会自动映射到 {{ data_year }} 年同期。",
                       "en": "Enter a season name, 8-digit date (YYYYMMDD), or precise 12-digit datetime (YYYYMMDDHHMM). Weather data is archived from {{ data_year }}; your input will auto-map to the {{ data_year }} equivalent."},
     "home.start": {"zh": "开始查看", "en": "Start Planning"},
-    "home.feature_route_desc": {"zh": "多国逐时 · 景观概率 · 人群行程", "en": "Multi-country hourly · Landscape odds · Crowd-aware itinerary"},
+    "home.feature_route_desc": {"zh": "多国逐时 · 景观适宜指数 · 人群行程", "en": "Multi-country hourly · Landscape odds · Crowd-aware itinerary"},
     "home.feature_qa_desc": {"zh": "真实 LLM · 中英问答 · 实景案例", "en": "Real LLM · Bilingual Q&A · Live cases"},
     "home.feature_science_desc": {"zh": "伴随科普 · 研学素材导出", "en": "Companion science · Study material export"},
 

@@ -56,15 +56,13 @@ def t_injected():
 def t_missing_data():
     res = dispatch("plan_trip", {"date": "2026-10-25", "data_dir": r"D:\__no_such_dir__",
                                  "max_spots": 2})
-    assert res.get("ok"), res
-    assert any("降级" in w for w in res.get("warnings", [])), res.get("warnings")
-    assert res["data"]["source"]["kind"] == "bootstrap", res["data"]
-    return "数据缺失时降级为内置示例（%d 个景点）" % res["data"]["spots"]
+    assert not res.get("ok"), res
+    return "正式数据缺失时拒绝可执行规划，避免示例冒充真实数据"
 
 
 def t_bad_input():
     ok, err = validate({"date": "2026/10/25"})
-    assert not ok and "YYYY-MM-DD" in err, err
+    assert not ok, err
     res = dispatch("plan_trip", {"date": "not-a-date"})
     assert not res.get("ok"), res
     return "非法日期被拒绝（%s）" % res.get("error")

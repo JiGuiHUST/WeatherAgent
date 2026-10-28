@@ -1,0 +1,110 @@
+{
+  "checked_at": "2026-10-28T20:57:40.427036+08:00",
+  "results": [
+    {
+      "date": "2026-10-29",
+      "point": {
+        "lat": 30.5506,
+        "lon": 114.3366
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 24,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 1.17
+    },
+    {
+      "date": "2026-10-28",
+      "point": {
+        "lat": 30.5506,
+        "lon": 114.3366
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 3,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 0.92
+    },
+    {
+      "date": "2026-10-30",
+      "point": {
+        "lat": 30.5506,
+        "lon": 114.3366
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 24,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 1.04
+    },
+    {
+      "date": "2026-10-29",
+      "point": {
+        "lat": 30.619,
+        "lon": 114.252
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 24,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 0.87
+    },
+    {
+      "date": "2026-10-29",
+      "point": {
+        "lat": 30.5289,
+        "lon": 114.317
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 24,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 0.92
+    },
+    {
+      "date": "2026-10-29",
+      "point": {
+        "lat": 30.5797,
+        "lon": 114.2857
+      },
+      "status": 200,
+      "passed": true,
+      "hours": 24,
+      "source": "华风爱科",
+      "national_source_verified": true,
+      "error": null,
+      "seconds": 0.89
+    },
+    {
+      "name": "repeat refresh",
+      "passed": true,
+      "status": 200,
+      "cached": false,
+      "error": null
+    },
+    {
+      "name": "repeat refresh",
+      "passed": true,
+      "status": 200,
+      "cached": true,
+      "error": null
+    },
+    {
+      "name": "repeat refresh",
+      "passed": true,
+      "status": 200,
+      "cached": true,
+      "error": null
+    }
+  ]
+}

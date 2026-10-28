@@ -1,0 +1,11 @@
+﻿case,mode,baseline_stops,optimized_stops,baseline_rain_min,optimized_rain_min,status,error
+晴天,synthetic_simulation,3,4,0,0,feasible,
+上午雨,synthetic_simulation,3,4,0,0,feasible,
+午后雨,synthetic_simulation,3,4,210,0,feasible,
+全天雨,synthetic_simulation,3,2,360,0,feasible,
+傍晚雨,synthetic_simulation,3,4,139,0,feasible,
+小雨,synthetic_simulation,3,4,180,30,feasible,
+高温,synthetic_simulation,3,4,0,0,feasible,
+大风,synthetic_simulation,3,4,0,0,feasible,
+雷暴,synthetic_simulation,3,0,0,,no_safe_plan,转场时段存在雷暴、极强降水或关键风险数据缺失，建议暂缓出发或调整出发时间。
+雷暴缺失,synthetic_simulation,3,0,0,,no_safe_plan,转场时段存在雷暴、极强降水或关键风险数据缺失，建议暂缓出发或调整出发时间。

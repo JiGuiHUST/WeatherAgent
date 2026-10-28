@@ -68,12 +68,26 @@ def plan(route_forecast, crowd, lang="zh"):
             "source": d["source"],
         } for d in seg["days"]]
 
+        if city == "武汉":
+            from trip_tool.contract import dispatch
+            for d in days_data:
+                result = dispatch("plan_trip", {"date":d["date"],"max_spots":4})
+                if result.get("ok"):
+                    sch = [{"time":s["arrive"]+"–"+s["leave"],"title":s["name"],"detail":s["reason"]} for s in result["days"][0]["stops"]]
+                    notes = "；".join(result["warnings"][:5]) or "出发前更新预报并确认景区公告和预约。"
+                else:
+                    sch=[];notes=result.get("error","暂未生成可行行程")
+                plan_days.append(dict(d,schedule=sch,notes=notes))
+            sources.append("tool")
+            continue
+
         # 优先按城市批量调 LLM
         llm_plans = llm_client.generate_itinerary(city, days_data, crowd, lang)
         if llm_plans is not None and len(llm_plans) == len(days_data):
             sources.append("llm")
             for d, p in zip(days_data, llm_plans):
                 merged = {**d, **p}
+                merged["notes"] = "AI 行程灵感：景点开放、预约与交通尚未校验；请核实后采用。" + (merged.get("notes") or "")
                 # notes 兜底：LLM 偶尔会漏，用规则补
                 if not merged.get("notes"):
                     merged["notes"] = _route_plan_for_day(d, crowd, lang)["notes"]
@@ -86,7 +100,9 @@ def plan(route_forecast, crowd, lang="zh"):
             logger.info("城市=%s 使用规则回退生成 %d 天行程", city, len(days_data))
 
     road_risk = _collect_road_risk(segments, lang)
-    if all(s == "llm" for s in sources):
+    if sources and all(s == "tool" for s in sources):
+        source = "tool"
+    elif all(s == "llm" for s in sources):
         source = "llm"
     elif all(s == "rule" for s in sources):
         source = "rule"

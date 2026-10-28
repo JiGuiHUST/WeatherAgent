@@ -1,0 +1,18 @@
+{
+  "ready_for_outdoor": true,
+  "missing_required_counts": {
+    "tmp": 0,
+    "apparent_temp": 0,
+    "precip": 0,
+    "wind10_speed": 0,
+    "thunder": 0
+  },
+  "hours": 24,
+  "national_source_verified": true,
+  "alerts_status": "available",
+  "full_day": true,
+  "source": "华风爱科",
+  "alerts_count": 0,
+  "activation_passed": true,
+  "activation": "未修改激活状态"
+}

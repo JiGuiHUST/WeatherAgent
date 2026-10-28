@@ -16,5 +16,15 @@ data/wuhan/.cache/
 
 # ===== 凭据与本地环境（切勿提交）=====
 .env
+.session_secret
+data/.weather_cache/
+data/.weathercn_cache/
+data/.weathercn_quota.json
+data/sessions/
+data/saved_trips/
+pip-metadata-*/
+pip-unpack-*/
+static/weather_img/route_*.png
+static/weather_img/diagram_*.png
 .env.local
 .env.*.local

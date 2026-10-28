@@ -1,25 +1,33 @@
-# -*- coding: utf-8 -*-
-"""顺序求解：带时间窗的开放式车辆路径（TSPTW）。
-
-问题定义（problem 字典）
-    n            节点数，0 号是起点
-    mins[i][j]   节点间耗时（分钟，整数）
-    stay[i]      在第 i 个节点的停留分钟数（0 号为 0）
-    windows[i]   第 i 个节点的到达窗口 (lo, hi, peak)，i>=1
-    day_start    当天开始（分钟，相对 00:00）
-    day_end      当天结束
-    max_spots    最多访问几个景点
-
-预留接口
---------
-    class MySolver:
-        def solve(self, problem) -> list[(node_idx, arrive_min)]
-"""
+"""Open itinerary with disjoint arrival windows and service duration."""
 from __future__ import annotations
 
-import logging
 
-logger = logging.getLogger("trip_tool.solver")
+def windows_for(problem, node):
+    value = problem["windows"][node]
+    return value if isinstance(value, list) else [value]
+
+
+class GreedySolver:
+    name = "greedy"
+
+    def solve(self, problem):
+        left = set(range(1, problem["n"]))
+        cur, clock, out = 0, problem["day_start"], []
+        while left and len(out) < problem["max_spots"]:
+            options = []
+            for i in left:
+                for lo, hi, fit in windows_for(problem, i):
+                    arrive = max(clock + problem["mins"][cur][i], lo)
+                    if arrive <= hi and arrive + problem["stay"][i] <= problem["day_end"]:
+                        priority = 1000 if i in problem.get("must_nodes", []) else 0
+                        options.append((priority + fit - problem["mins"][cur][i] * .3, -arrive, i, arrive))
+            if not options:
+                break
+            _, _, cur, arrive = max(options)
+            out.append((cur, arrive))
+            clock = arrive + problem["stay"][cur]
+            left.remove(cur)
+        return out, sorted(left)
 
 
 class OrtoolsSolver:
@@ -27,105 +35,57 @@ class OrtoolsSolver:
 
     def solve(self, problem):
         from ortools.constraint_solver import pywrapcp, routing_enums_pb2
+        n, start, end = problem["n"], problem["day_start"], problem["day_end"]
+        mgr = pywrapcp.RoutingIndexManager(n + 1, 1, [0], [n])
+        route = pywrapcp.RoutingModel(mgr)
 
-        n = problem["n"]
-        mins = problem["mins"]
-        stay = problem["stay"]
-        windows = problem["windows"]
-        day_start = problem["day_start"]
-        day_end = problem["day_end"]
-        max_spots = problem["max_spots"]
+        def cost(a, b):
+            x, y = mgr.IndexToNode(a), mgr.IndexToNode(b)
+            return 0 if y == n else problem["mins"][x][y]
 
-        mgr = pywrapcp.RoutingIndexManager(n, 1, 0)
-        rt = pywrapcp.RoutingModel(mgr)
-        rt.SetArcCostEvaluatorOfAllVehicles(
-            rt.RegisterTransitCallback(lambda f, t: mins[mgr.IndexToNode(f)][mgr.IndexToNode(t)]))
+        def duration(a, b):
+            x, y = mgr.IndexToNode(a), mgr.IndexToNode(b)
+            return problem["stay"][x] + (0 if y == n else problem["mins"][x][y])
 
-        def transit(f, t):
-            a, b = mgr.IndexToNode(f), mgr.IndexToNode(t)
-            return mins[a][b] + (stay[a] if a else 0)
-
-        horizon = day_end - day_start
-        rt.AddDimension(rt.RegisterTransitCallback(transit), horizon, horizon, False, "Time")
-        td = rt.GetDimensionOrDie("Time")
-        td.CumulVar(rt.Start(0)).SetRange(0, 0)
-        td.CumulVar(rt.End(0)).SetRange(0, horizon)
-
-        # 最多访问 max_spots 个
-        rt.AddDimension(rt.RegisterTransitCallback(
-            lambda f, t: 1 if mgr.IndexToNode(f) != 0 else 0), 0, max_spots, True, "Count")
-
+        route.SetArcCostEvaluatorOfAllVehicles(route.RegisterTransitCallback(cost))
+        route.AddDimension(route.RegisterTransitCallback(duration), end-start, end, False, "Time")
+        dim = route.GetDimensionOrDie("Time")
+        dim.CumulVar(route.Start(0)).SetRange(start, start)
+        dim.CumulVar(route.End(0)).SetRange(start, end)
+        route.AddDimension(route.RegisterTransitCallback(lambda a,b: int(0 < mgr.IndexToNode(a) < n)),
+                           0, problem["max_spots"], True, "Count")
         for i in range(1, n):
             idx = mgr.NodeToIndex(i)
-            lo, hi, peak = windows[i]
-            lo, hi = max(0, lo - day_start), min(horizon, hi - day_start)
-            if lo > hi:
-                rt.AddDisjunction([idx], 10 ** 6)
-                continue
-            td.CumulVar(idx).SetRange(lo, hi)
-            # 放弃惩罚随适宜度升高：越合适的越不该丢掉
-            rt.AddDisjunction([idx], 100 + int(peak) * 4)
-
-        p = pywrapcp.DefaultRoutingSearchParameters()
-        p.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-        p.local_search_metaheuristic = routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
-        p.time_limit.FromSeconds(5)
-        sol = rt.SolveWithParameters(p)
-        if not sol:
-            return [], []
-
-        out, idx = [], rt.Start(0)
-        while not rt.IsEnd(idx):
+            windows = sorted(windows_for(problem, i))
+            dim.CumulVar(idx).SetRange(windows[0][0], windows[-1][1])
+            for a, b in zip(windows, windows[1:]):
+                if a[1] + 1 <= b[0] - 1:
+                    dim.CumulVar(idx).RemoveInterval(a[1] + 1, b[0] - 1)
+            if i not in problem.get("must_nodes", []):
+                route.AddDisjunction([idx], 200 + int(max(w[2] for w in windows)) * 5)
+            route.AddVariableMinimizedByFinalizer(dim.CumulVar(idx))
+        param = pywrapcp.DefaultRoutingSearchParameters()
+        param.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION
+        param.local_search_metaheuristic = routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
+        param.time_limit.FromMilliseconds(900)
+        solution = route.SolveWithParameters(param)
+        if not solution:
+            return [], list(range(1, n))
+        out, idx = [], route.Start(0)
+        while not route.IsEnd(idx):
             node = mgr.IndexToNode(idx)
-            if node != 0:
-                out.append((node, day_start + sol.Min(td.CumulVar(idx))))
-            idx = sol.Value(rt.NextVar(idx))
-        dropped = [i for i in range(1, n)
-                   if sol.Value(rt.NextVar(mgr.NodeToIndex(i))) == mgr.NodeToIndex(i)]
+            if node:
+                out.append((node, solution.Min(dim.CumulVar(idx))))
+            idx = solution.Value(route.NextVar(idx))
+        dropped = [i for i in range(1, n) if solution.Value(route.NextVar(mgr.NodeToIndex(i))) == mgr.NodeToIndex(i)]
         return out, dropped
 
 
-class GreedySolver:
-    """没有 ortools 时的退化实现：每次挑"可行且适宜度最高"的下一站。"""
-
-    name = "greedy"
-
-    def solve(self, problem):
-        n = problem["n"]
-        mins = problem["mins"]
-        stay = problem["stay"]
-        windows = problem["windows"]
-        day_start = problem["day_start"]
-        day_end = problem["day_end"]
-        max_spots = problem["max_spots"]
-
-        left = set(range(1, n))
-        cur, t, out = 0, day_start, []
-        while left and len(out) < max_spots:
-            cands = []
-            for i in left:
-                lo, hi, peak = windows[i]
-                arr = max(t + mins[cur][i], lo)
-                if arr > hi or arr + stay[i] > day_end:
-                    continue
-                cands.append((peak, -mins[cur][i], i, arr))
-            if not cands:
-                break
-            cands.sort(reverse=True)
-            _, _, i, arr = cands[0]
-            out.append((i, arr))
-            t = arr + stay[i]
-            cur = i
-            left.discard(i)
-        return out, sorted(left)
-
-
 def pick_solver(preferred=None):
-    """优先用注入的求解器，其次 ortools，最后贪心。"""
-    if preferred is not None:
+    if preferred:
         return preferred
     try:
-        import ortools  # noqa: F401
+        import ortools
         return OrtoolsSolver()
-    except Exception:
+    except ImportError:
         return GreedySolver()

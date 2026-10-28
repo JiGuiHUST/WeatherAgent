@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "0.1",
-    "updated": "2026-10-19",
+    "updated": "2026-10-28",
     "region": "武汉市",
     "crs": "WGS84",
     "coord_note": "坐标一律为 WGS84（OpenStreetMap / GPS）。高德、百度地图坐标为 GCJ-02/BD-09，不可直接填入。",
@@ -28,7 +28,7 @@
         "typical_duration_h": 3
       },
       "open_hours": {
-        "text": "周二至周日 09:00–17:00，16:00 停止入馆；周一闭馆（法定节假日除外），除夕闭馆；需提前预约",
+        "text": "周二至周日 09:00–17:00，16:00 停止入馆；周一闭馆（节假日与特殊安排以官方公告为准）",
         "periods": [
           {
             "days": "Tue-Sun",
@@ -41,11 +41,10 @@
           "周一（法定节假日除外）",
           "除夕"
         ],
-        "reservation": "需预约：官方微信公众号或官网，最多提前 5 天，每日 17:18 放票",
-        "source": "https://news.qq.com/rain/a/20260424A04GPX00",
-        "checked": "2026-10-19",
-        "confidence": "中",
-        "conflict": "携程页面写 08:30–18:00 且未提周一闭馆，与报道不符，采用报道口径"
+        "reservation": "须在官方渠道预约并按预约时段入场；本系统不查询余票、不代预约",
+        "source": "https://hbsbwg.cjyun.org/p/12728.html",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [],
@@ -84,29 +83,20 @@
         "typical_duration_h": 2
       },
       "open_hours": {
-        "text": "日场 08:30–18:00（17:00 停止售票，17:20 停止入园）；夜场 19:30 起，结束时间各来源为 22:00 或 22:30；日夜场门票不通用",
+        "text": "官方常规日场：4–10月 08:00–18:00，11–3月 08:00–17:00；规划保守采用 17:00 前离园、16:00 前入场，临时公告优先",
         "periods": [
           {
             "days": "Mon-Sun",
-            "open": "08:30",
-            "close": "18:00",
-            "last_entry": "17:20",
-            "label": "日场"
-          },
-          {
-            "days": "Mon-Sun",
-            "open": "19:30",
-            "close": "22:00",
-            "last_entry": "21:30",
-            "label": "夜场"
+            "open": "08:00",
+            "close": "17:00",
+            "last_entry": "16:00"
           }
         ],
         "closed": [],
-        "reservation": "需购票（日夜场分开）",
-        "source": "https://you.ctrip.com/sight/wuhan145/8979.html",
-        "checked": "2026-10-19",
-        "confidence": "中",
-        "conflict": "夜场结束时间有 22:00 / 22:30 两种说法，暂取较早的 22:00；未查到分夏季/冬季的时间"
+        "reservation": "须自行通过官方渠道购票并确认入园时段；未纳入独立夜游场次",
+        "source": "https://www.wuchang.gov.cn/zwgk_37/fdzdgknr/shgysy/ly/202209/t20220930_2050896.html",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [
@@ -335,21 +325,20 @@
         "typical_duration_h": 2
       },
       "open_hours": {
-        "text": "09:00–17:00，16:30 停止入馆；凭有效证件入馆，无需网上预约（2026 年国庆公告）",
+        "text": "周三至周一 09:00–17:00，16:30 停止入馆；周二闭馆（法定节假日除外）",
         "periods": [
           {
-            "days": "Mon-Sun",
+            "days": "Wed-Mon",
             "open": "09:00",
             "close": "17:00",
             "last_entry": "16:30"
           }
         ],
         "closed": [],
-        "reservation": "无需预约，凭有效证件",
-        "source": "https://i.ifeng.com/c/8wqnCpgXWxk",
-        "checked": "2026-10-19",
-        "confidence": "中",
-        "conflict": "公告未说明周一是否闭馆，待核实"
+        "reservation": "出发前通过武汉博物馆官方渠道确认预约与临时公告",
+        "source": "https://www.jianghan.gov.cn/zfxxgk/fdzdgknr/gysyjs/ggwhfw/gyxwhtyhd/202304/t20230427_2192804.shtml",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [],
@@ -388,7 +377,7 @@
         "typical_duration_h": 2
       },
       "open_hours": {
-        "text": "09:00–17:00，16:00 停止入园；较早资料称周一闭馆",
+        "text": "南区：周二至周日 09:00–17:00，16:00 停止入馆；周一闭馆（节假日除外）",
         "periods": [
           {
             "days": "Tue-Sun",
@@ -400,11 +389,10 @@
         "closed": [
           "周一（较早资料，待核实）"
         ],
-        "reservation": "待核实",
-        "source": "https://gs.ctrip.com/html5/you/sight/wuhan145/9102.html",
-        "checked": "2026-10-19",
-        "confidence": "低",
-        "conflict": "未找到 2026 年官方开放与预约规定"
+        "reservation": "按南区安排；北区闭馆日不同，预约及临时调整以官方渠道为准",
+        "source": "https://1911museum.cn/index/home.html",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [],
@@ -443,7 +431,7 @@
         "typical_duration_h": 3
       },
       "open_hours": {
-        "text": "周三至周日 09:00–16:30，15:30 停止入馆；周一、周二闭馆（法定节假日除外）",
+        "text": "常规周三至周日 09:00–16:30，周一、周二闭馆；采用保守 15:30 最晚入场约束，出发前核实预约时段",
         "periods": [
           {
             "days": "Wed-Sun",
@@ -456,11 +444,10 @@
           "周一",
           "周二（法定节假日除外）"
         ],
-        "reservation": "待核实",
-        "source": "https://news.qq.com/rain/a/20260424A04GPX00",
-        "checked": "2026-10-19",
-        "confidence": "中",
-        "conflict": "另一资料站写“周一闭馆”，未提周二；预约方式未查到"
+        "reservation": "通过武汉科学技术馆官方渠道预约，工作日/节假日场次以预约页面为准",
+        "source": "https://www.whstm.org.cn/shownews/detail/141",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [],
@@ -637,22 +624,22 @@
         "typical_duration_h": 1
       },
       "open_hours": {
-        "text": "周二至周日 09:00–17:00，17:00 停止入场；免费",
+        "text": "日间周二至周日 09:00–17:00，16:30 停止入馆；周一闭馆（节假日除外）",
         "periods": [
           {
             "days": "Tue-Sun",
             "open": "09:00",
-            "close": "17:00"
+            "close": "17:00",
+            "last_entry": "16:30"
           }
         ],
         "closed": [
           "周一（一份资料所述，待核实）"
         ],
-        "reservation": "免费",
-        "source": "https://you.ctrip.com/sight/wuhan145/89908.html",
-        "checked": "2026-10-19",
-        "confidence": "中",
-        "conflict": "另一份攻略写 09:00–17:00 未提周一闭馆"
+        "reservation": "日间免费，须通过官方微信公众号预约；夜间收费场次未纳入自动规划",
+        "source": "https://www.wuhan.gov.cn/zjwh/whly/202603/t20260310_2737818.shtml",
+        "checked": "2026-10-28",
+        "confidence": "高（官方常规开放信息，临时公告优先）"
       },
       "sensitivity_overrides": {},
       "photo_opportunities": [

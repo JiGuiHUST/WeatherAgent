@@ -11,7 +11,6 @@ import logging
 
 from config import LLM_ENABLED
 from services import llm_client
-from services.forecast_service import _derive_wind, _derive_visibility
 
 logger = logging.getLogger("qa_engine")
 
@@ -115,7 +114,7 @@ def _format_trip_plan(plan, lang):
         lines = ["Planned with the trip tool (solver: %s, %d ms)." % (solver, plan.get("elapsed_ms", 0))]
         for day in days:
             w = day.get("weather", {})
-            rain = ("rain %s-%sh" % (w.get("rain_start"), (w.get("rain_end") or 0) + 1)
+            rain = 'incomplete precipitation coverage' if w.get('partial_day') else ("rain %s-%sh" % (w.get("rain_start"), (w.get("rain_end") or 0) + 1)
                     if w.get("rain_start") is not None else "no rain")
             lines.append("%s %s · %s, feels-like max %s℃" % (day["date"], day["weekday"], rain, w.get("feels_max")))
             for s in day.get("stops") or []:
@@ -171,16 +170,16 @@ def _keyword_answer(question, weather, lang="zh"):
 
     w = dict(weather or {})
     city = w.get("city") or ("芽庄" if lang != "en" else "Nha Trang")
-    tmp = w.get("tmp") if w.get("tmp") is not None else 27
-    pre = w.get("pre") if w.get("pre") is not None else 3
-    rh = w.get("rh") or 78
+    tmp = w.get("tmp") if w.get("tmp") is not None else "未知"
+    pre = w.get("pre") if w.get("pre") is not None else "未知"
+    rh = w.get('rh') if w.get('rh') is not None else '未知'
     season = w.get("season") or ("当前季节" if lang != "en" else "current season")
-    wind = w.get("wind") if w.get("wind") is not None else _derive_wind(pre, 14)
-    vis = w.get("vis") if w.get("vis") is not None else _derive_visibility(pre, rh, 14)
+    wind = w.get("wind") if w.get("wind") is not None else "未知"
+    vis = w.get("vis") if w.get("vis") is not None else "未知"
 
     tmpl = entry["answer"][lang if lang in entry["answer"] else "zh"]
     advice_text = entry.get("advice", {}).get(lang) or entry.get("advice", {}).get("zh", "")
-    return tmpl.format(city=city, tmp=tmp, pre=pre, wind=wind, vis=vis, season=season, advice=advice_text)
+    return "数据来源："+str(w.get("source") or "未确认")+"；日期："+str(w.get("date") or "未指定")+"\n"+tmpl.format(city=city, tmp=tmp, pre=pre, wind=wind, vis=vis, season=season, advice=advice_text)
 
 
 def example_questions(lang="zh"):

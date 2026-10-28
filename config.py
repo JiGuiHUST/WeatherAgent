@@ -24,6 +24,9 @@ def _load_env_file(path):
         pass
 
 
+# Dedicated local Huafeng credentials; excluded from Git and delivery archives.
+_load_env_file(os.path.join(BASE_DIR, '.env.weathercn.local'))
+
 try:
     from dotenv import load_dotenv
     load_dotenv(_ENV_FILE)
@@ -67,16 +70,30 @@ PREFERENCE_CATEGORY_PRIORITY = {
 }
 
 # Flask
-SECRET_KEY = "weather-travel-secret-change-me"
-DEBUG = True
-HOST = "0.0.0.0"
-PORT = 5000
+_secret_path = os.path.join(BASE_DIR, ".session_secret")
+if not os.path.exists(_secret_path):
+    import secrets
+    try:
+        with open(_secret_path, "x", encoding="utf-8") as _fp:
+            _fp.write(secrets.token_hex(32))
+    except FileExistsError:
+        pass
+with open(_secret_path, encoding="utf-8") as _fp:
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY") or _fp.read().strip()
+DEBUG = os.getenv("FLASK_DEBUG", "0") == "1"
+HOST = os.getenv("HOST", "127.0.0.1")
+PORT = int(os.getenv("PORT", "5000"))
 
 # ===================== LLM 配置（OpenAI 兼容接口）=====================
 # 凭据从 .env / 环境变量读取，避免硬编码到源码
 LLM_API_KEY = os.getenv("OPENAI_API_KEY", "")
 LLM_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://10.104.160.105/v1").rstrip("/")
 LLM_MODEL = os.getenv("LLM_MODEL", "Qwen3-14B")
-LLM_TIMEOUT = 60
-LLM_MAX_TOKENS = 800
+LLM_TIMEOUT = 25
+LLM_MAX_TOKENS = 1400
 LLM_ENABLED = bool(LLM_API_KEY)
+
+# Huafeng is activated only after a real key/permission probe, never by a mock test.
+WEATHER_PROVIDER = os.getenv("WEATHER_PROVIDER", "auto").lower()
+WEATHERCN_OPENAPI_KEY = os.getenv("WEATHERCN_OPENAPI_KEY", "")
+WEATHERCN_ENABLED = os.getenv("WEATHERCN_ENABLED", "0") == "1"

@@ -76,31 +76,9 @@ def resolve_city(destination):
 
 
 def _mock_weather(city_info, season_label):
-    """API 不可达时的气候默认值兜底"""
-    season_map = {"春季": "spring", "夏季": "summer", "秋季": "autumn", "冬季": "winter"}
-    key = season_map.get(season_label, "spring")
-    tmp, pre = city_info.get("climate", {}).get(key, [26, 30])
-    # 在均值上做轻微随机化，避免一成不变
-    now = datetime.datetime.now()
-    seed = (now.hour + now.minute) % 5
-    avg_tmp = round(tmp + (seed - 2) * 0.4, 1)
-    return {
-        "source": "气候默认值",
-        "times": [],
-        "tmp_series": [avg_tmp],
-        "pre_series": [pre / 3.0],
-        "rh_series": [78],
-        "avg_tmp": avg_tmp,
-        "max_tmp": round(avg_tmp + 3.5, 1),
-        "min_tmp": round(avg_tmp - 3.0, 1),
-        "total_pre": round(pre / 3.0, 1),
-        "avg_rh": 78,
-        "update_time": fmt_display(now),
-        "_res_json": None,
-        "_grid": None,
-        "_lats": None,
-        "_lons": None,
-    }
+    """Retired compatibility function; synthetic data must not masquerade as weather."""
+    from services.live_weather import WeatherUnavailable
+    raise WeatherUnavailable("真实天气资料不可用；已禁用气候均值合成预报，请选择有效日期后重试。")
 
 
 def judge_weather(avg_tmp, total_pre):

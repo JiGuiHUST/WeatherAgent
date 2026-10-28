@@ -123,6 +123,8 @@ def dispatch(name, arguments=None):
             arguments = json.loads(arguments or "{}")
         except json.JSONDecodeError as e:
             return {"ok": False, "error": "arguments 不是合法 JSON: %s" % e}
+    if not isinstance(arguments, (dict, type(None))):
+        return {"ok": False, "error": "参数必须是 JSON 对象"}
     arguments = dict(arguments or {})
 
     if name == "plan_trip":
@@ -131,6 +133,8 @@ def dispatch(name, arguments=None):
             return {"ok": False, "error": err}
         try:
             return planner.plan(arguments)
+        except ValueError as e:
+            return {"ok": False, "error": str(e)}
         except Exception as e:
             import logging
             logging.getLogger("trip_tool").exception("plan_trip 失败")
@@ -173,3 +177,7 @@ def _list_spots(args):
         if len(out) >= limit:
             break
     return {"ok": True, "count": len(out), "spots": out}
+
+
+# Shared validation also used by the planner and HTTP API.
+from .validation import validate

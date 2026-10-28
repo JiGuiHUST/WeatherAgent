@@ -28,6 +28,10 @@ def plan_trip_api():
     payload = request.get_json(silent=True)
     if payload is None:
         payload = request.form.to_dict() or {}
+    if not isinstance(payload, dict):
+        return jsonify(ok=False,error="请求体必须为 JSON 对象"),400
+    if "data_dir" in payload or "weather" in payload:
+        return jsonify(ok=False,error="HTTP 真实规划不接受测试注入或自定义数据目录，请使用独立模拟接口"),400
     result = dispatch("plan_trip", payload)
     return jsonify(result), (200 if result.get("ok") else 422)
 

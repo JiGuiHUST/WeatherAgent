@@ -59,9 +59,11 @@
         </h6>
         <ul class="list-unstyled mb-0 small">
           <li>{{ lang=='en' and 'City' or '城市' }}: <b>{{ live_case.city }}</b></li>
-          <li>{{ t('route.tmp') }}: <b>{{ live_case.tmp }}℃</b></li>
-          <li>{{ t('route.pre') }}: <b>{{ live_case.pre }}mm</b></li>
-          <li>{{ t('route.wind') }}: <b>{{ live_case.wind }}</b> · {{ t('route.vis') }}: <b>{{ live_case.vis }}km</b></li>
+          <li>{{ live_case.date }} · {{ live_case.source }}</li>
+          {% if live_case.coverage_note %}<li>{{ live_case.coverage_note }}</li>{% endif %}
+          <li>{{ t('route.tmp') }}: <b>{{ live_case.tmp if live_case.tmp is not none else '—' }}℃</b></li>
+          <li>{{ t('route.pre') }}: <b>{{ live_case.pre if live_case.pre is not none else '—' }}mm</b></li>
+          <li>{{ t('route.wind') }}: <b>{{ live_case.wind if live_case.wind is not none else '—' }}</b> · {{ t('route.vis') }}: <b>{{ live_case.vis if live_case.vis is not none else '—' }}km</b></li>
         </ul>
       </div>
     </div>

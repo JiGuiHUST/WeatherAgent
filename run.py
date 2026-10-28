@@ -72,6 +72,28 @@ def create_app():
     app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["MAX_CONTENT_LENGTH"] = 4 * 1024 * 1024
+    from services.file_sessions import FileSessions
+    app.session_interface = FileSessions(os.path.join(os.path.dirname(__file__), "data", "sessions"))
+    from services.travel_api import bp as travel_bp
+    app.register_blueprint(travel_bp)
+
+    @app.before_request
+    def _local_write_origin():
+        from urllib.parse import urlparse
+        origin = request.headers.get("Origin")
+        if request.method in ("POST", "PUT", "DELETE") and origin and urlparse(origin).netloc != request.host:
+            return jsonify(ok=False, error="跨站写入请求已拒绝"), 403
+
+    from services.live_weather import WeatherUnavailable
+    @app.errorhandler(WeatherUnavailable)
+    def _weather_unavailable(e):
+        if request.path.startswith("/api/"):
+            return jsonify(ok=False, error=str(e)), 503
+        return render_template("error.html", code="503", message="真实天气暂不可用", detail=str(e)), 503
+
+    @app.errorhandler(ValueError)
+    def _invalid_input(e):
+        return render_template("error.html", code="400", message="请检查输入", detail=str(e)), 400
 
     # ---- 行程规划工具（trip_tool）：以蓝本挂载 /api/trip/* ----
     # 工具本身只新增文件，不改既有路由；行程序列由 OR-Tools 求解，缺依赖时自动退化为贪心
@@ -104,6 +126,11 @@ def create_app():
     # ---------- 目的地气候规划 ----------
     @app.route("/")
     def index():
+        from services.live_weather import today
+        return render_template("workspace.html", default_date=(today()+datetime.timedelta(days=1)).isoformat())
+
+    @app.route("/destinations")
+    def destinations_page():
         return render_template("index.html", preferences=PREFERENCES,
                                dest_menu=destinations.menu(g.lang))
 
@@ -204,12 +231,13 @@ def create_app():
                 selected_spots = []
         # 只保留与本次勾选城市匹配的景点，避免脏数据
         sel_cities = set(cities)
-        selected_spots = [s for s in selected_spots if s.get("city") in sel_cities]
+        selected_spots = [s for s in selected_spots if isinstance(s,dict) and s.get("city") in sel_cities][:12]
 
         rf = build_route_forecast(cities, start or data_today_str(), days, lang,
                                   selected_spots=selected_spots)
         start_dt, _ = parse_time_input(start or data_today_str(), SEASON_MONTH)
-        landscapes = predict_for_route([s["city"] for s in rf["segments"]], start_dt, lang)
+        landscapes = predict_for_route([s["city"] for s in rf["segments"]], start_dt, lang,
+                                      dates={s["city"]:datetime.datetime.fromisoformat(s["days"][0]["date"]) for s in rf["segments"]})
 
         # 行程部分延后异步生成：存参数到 session 并生成 token，前端加载完主线段后
         # 调 /route_itinerary_async?token=xxx 拉取，避免用户等 LLM 缓慢响应
@@ -330,7 +358,7 @@ def create_app():
         """trip_tool 的站点页面：输入日期，输出当天景点时间线（调用 /api/trip/plan_trip）"""
         import datetime as _dt
         default_date = (_dt.date.today() + _dt.timedelta(days=1)).isoformat()
-        return render_template("trip.html", default_date=default_date, llm_enabled=LLM_ENABLED)
+        return render_template("workspace.html", default_date=default_date)
 
     # ---------- 双语气象问答 ----------
     @app.route("/qa", methods=["GET", "POST"])
@@ -339,6 +367,8 @@ def create_app():
         history = session.get("qa_history", [])
         if request.method == "POST":
             q = request.form.get("question", "").strip()
+            if len(q)>1500:
+                raise ValueError("问题请控制在 1500 字以内")
             if q:
                 w = _weather_for_qa(lang)
                 res = qa_answer(q, w, lang)
@@ -422,7 +452,8 @@ def _route_from_session(lang):
         rf = build_route_forecast(rd["cities"], rd["start"] or data_today_str(),
                                   rd.get("days", 1), lang)
         start_dt, _ = parse_time_input(rd["start"] or data_today_str(), SEASON_MONTH)
-        landscapes = predict_for_route([s["city"] for s in rf["segments"]], start_dt, lang)
+        landscapes = predict_for_route([s["city"] for s in rf["segments"]], start_dt, lang,
+                                      dates={s["city"]:datetime.datetime.fromisoformat(s["days"][0]["date"]) for s in rf["segments"]})
         return rf, landscapes, start_dt
     except Exception as e:
         logger.warning("会话路线重建失败: %s", e)
@@ -433,30 +464,38 @@ def _weather_for_qa(lang):
     """构造 QA 实景案例所需的当日天气。优先用会话路线首城首日。"""
     rd = session.get("route")
     city_map = _load_json(CITY_BBOX_FILE)
-    from services.travel_engine import resolve_city, _mock_weather
-    from services.forecast_service import _derive_wind, _derive_visibility
+    from services.travel_engine import resolve_city
 
     if rd and rd.get("cities"):
         city = resolve_city(rd["cities"][0]) or rd["cities"][0]
         start = rd.get("start") or data_today_str()
     else:
-        city = "芽庄"
+        city = "武汉"
         start = data_today_str()
 
     info = city_map.get(city)
     if not info:
         return {"city": city}
     start_dt, season = parse_time_input(start, SEASON_MONTH)
-    summary = weather_api.get_weather_summary(start_dt, info["bbox"])
-    if summary is None:
-        summary = _mock_weather(info, season)
-    tmp = summary.get("avg_tmp")
-    pre = summary.get("total_pre") or 0
-    rh = summary.get("avg_rh") or 78
-    wind = _derive_wind(pre, 14)
-    vis = _derive_visibility(pre, rh, 14)
+    from services.live_weather import fetch,WeatherUnavailable
+    bounds=[float(v) for v in info['bbox'].split(',')]
+    try:data=fetch((bounds[1]+bounds[3])/2,(bounds[0]+bounds[2])/2,start_dt.date().isoformat())
+    except WeatherUnavailable as exc:
+        return dict(city=city,date=start_dt.date().isoformat(),source='天气暂不可用：'+str(exc),tmp=None,pre=None,rh=None,wind=None,vis=None)
+    rows=data['hours']
+    temperatures=[r['tmp'] for r in rows if r.get('tmp') is not None]
+    humidity=[r['rh'] for r in rows if r.get('rh') is not None]
+    tmp=round(sum(temperatures)/len(temperatures),1) if temperatures else None
+    pre=round(sum(r['precip'] for r in rows),1) if all(r.get('precip') is not None for r in rows) else None
+    rh=round(sum(humidity)/len(humidity)) if humidity else None
+    from services.forecast_service import wind_beaufort
+    ws = [r['wind10_speed'] for r in rows if r.get('wind10_speed') is not None]
+    vs = [r['visibility'] for r in rows if r.get('visibility') is not None]
+    wind = wind_beaufort(max(ws)) if ws else None
+    vis = min(vs) if vs else None
     return {"city": city, "tmp": tmp, "pre": pre, "rh": rh, "wind": wind,
-            "vis": vis, "season": season}
+            "vis": vis, "season": season, "date": start_dt.date().isoformat(), "source":data['label'],
+            "coverage_note":f"{rows[0]['hour']:02}:00–{rows[-1]['hour']:02}:59 时段统计"+('，未覆盖全天' if len(rows)<24 else '')}
 
 
 app = create_app()
